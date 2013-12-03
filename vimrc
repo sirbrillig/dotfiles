@@ -1,5 +1,5 @@
 " Summary: Payton's vimrc file
-" Version: 2.0.0
+" Version: 2.1.0
 " --------------------
 
 " == Some useful options:
@@ -25,6 +25,8 @@ set backspace=indent,eol,start "allow erasing previously entered characters in i
 set wildmenu " show list instead of just completing
 set scrolloff=3 " minimum lines to keep above and below cursor
 set laststatus=2 " always show the status line
+set cmdheight=2 " slightly more room for notices
+let g:netrw_silent=1 " be quiet when using netrw
 
 " Status line
 set statusline=%y " file type
@@ -167,6 +169,14 @@ set path+=**
 
 " Map leader-; to add a semicolon to the end of the line
 nnoremap <Leader>; mqA;<esc>`q
+
+" Map leader-l to last tab
+let g:lasttab = 1
+nnoremap <Leader>l :execute "tabn ".g:lasttab<CR>
+augroup last_tab
+  autocmd!
+  autocmd TabLeave * let g:lasttab = tabpagenr()
+augroup END
 
 " Allow pathogen plugins (http://www.vim.org/scripts/script.php?script_id=2332)
 call pathogen#infect()
