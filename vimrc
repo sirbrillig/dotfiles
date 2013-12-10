@@ -1,5 +1,5 @@
 " Summary: Payton's vimrc file
-" Version: 2.1.0
+" Version: 2.2.0
 " --------------------
 
 " == Some useful options:
@@ -31,6 +31,7 @@ let g:netrw_silent=1 " be quiet when using netrw
 " Status line
 set statusline=%y " file type
 set statusline+=\ \-\  " separator
+set statusline+=%r\  " readonly flag
 set statusline+=%F " file path
 set statusline+=%= " switch to right side
 set statusline+=Line\  " separator
@@ -126,8 +127,6 @@ endfunc
 " Map Leader-cc to toggle comments
 nnoremap <silent> <Leader>cc :call ToggleComment()<CR>
 vnoremap <silent> <Leader>cc :call ToggleComment()<CR>
-" nnoremap <silent> <Leader>c :<C-B>sil <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:noh<CR>
-" noremap <silent> <Leader>u :<C-B>sil <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:noh<CR>
 augroup comment_leaders
   autocmd FileType haskell,vhdl,ada let b:comment_leader = '-- '
   autocmd FileType vim let b:comment_leader = '" '
@@ -161,7 +160,6 @@ set completeopt=menuone,longest
 
 " Configure vim-grep plugin
 let Grep_Default_Options = '-Irn'
-" let Grep_Path = 'ssh -t -t wpsandbox grep'
 set switchbuf+=newtab
 
 " Allow recursive find
@@ -177,6 +175,16 @@ augroup last_tab
   autocmd!
   autocmd TabLeave * let g:lasttab = tabpagenr()
 augroup END
+
+" Configure taboo plugin
+let g:taboo_tab_format = ' %N:%f%m'
+
+" Map leader-[1-10] to switch to a tab
+let i = 1
+while i <# 10
+  execute "nnoremap <Leader>" .i. "  " .i. "gt"
+  let i += 1
+endwhile
 
 " Allow pathogen plugins (http://www.vim.org/scripts/script.php?script_id=2332)
 call pathogen#infect()
