@@ -80,7 +80,7 @@ vnoremap <Leader>w gq
 
 " keys for tab behavior in vim 7:
 " map CTRL-t to new tab.
-" also map Leader-pageup and Leader-pagedown to tab navigation.
+" also map Leader-[ and Leader-] to tab navigation.
 nnoremap <C-T> :tabnew 
 nnoremap <Leader>[ :tabprev<CR>
 nnoremap <Leader>] :tabnext<CR>
@@ -98,7 +98,7 @@ hi PmenuSel term=NONE cterm=NONE ctermfg=White ctermbg=Blue
 hi Pmenu term=NONE cterm=NONE ctermfg=Black ctermbg=White
 
 " map leader-p to toggle paste mode.
-map <silent> <Leader>p :call Paste_on_off()<bar>:set paste?<CR>
+nnoremap <silent> <Leader>p :call Paste_on_off()<bar>:set paste?<CR>
 set pastetoggle=
 let paste_mode = 0 " 0 = normal, 1 = paste
 function! Paste_on_off()
@@ -109,19 +109,6 @@ function! Paste_on_off()
     set nopaste
     let g:paste_mode = 0
   endif
-endfunc
-
-" Map leader-h to toggle highlight select (hls) mode.
-map <silent> <Leader>h :call Toggle_hls()<bar>:set hls?<CR>
-let hls_mode = 1
-func! Toggle_hls()
-if g:hls_mode == 0
-  set hls
-  let g:hls_mode = 1
-else
-  set hls!
-  let g:hls_mode = 0
-endif
 endfunc
 
 " Map Leader-cc to toggle comments
@@ -152,7 +139,7 @@ augroup filetype_gemfile
 augroup END
 
 " map Leader-n to toggle NERDTree
-map <Leader>n <plug>NERDTreeTabsToggle<CR>
+nnoremap <Leader>n <plug>NERDTreeTabsToggle<CR>
 
 " Configure tab autocomplete
 let g:SuperTabDefaultCompletionType = "<c-n>"
@@ -177,7 +164,7 @@ augroup last_tab
 augroup END
 
 " Configure taboo plugin
-let g:taboo_tab_format = ' %N:%f%m'
+let g:taboo_tab_format = ' %N:%T%m '
 
 " Map leader-[1-10] to switch to a tab
 let i = 1
@@ -185,6 +172,12 @@ while i <# 10
   execute "nnoremap <Leader>" .i. "  " .i. "gt"
   let i += 1
 endwhile
+
+" Configure the MRU plugin
+let g:MRU_Open_File_Use_Tabs = 1
+
+" Map leader-x to close the quickfix window
+nnoremap <Leader>x :ccl<CR>
 
 " Allow pathogen plugins (http://www.vim.org/scripts/script.php?script_id=2332)
 call pathogen#infect()
