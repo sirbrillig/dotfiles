@@ -1,5 +1,5 @@
 " Summary: Payton's vimrc file
-" Version: 2.2.0
+" Version: 2.3.0
 " --------------------
 
 " == Some useful options:
@@ -181,3 +181,19 @@ nnoremap <Leader>x :ccl<CR>
 
 " Allow pathogen plugins (http://www.vim.org/scripts/script.php?script_id=2332)
 call pathogen#infect()
+
+" *Plugins recommended*
+" ===========================================================================
+" pathogen.vim (https://github.com/tpope/vim-pathogen)
+" vim-trailing-whitespace (https://github.com/bronson/vim-trailing-whitespace)
+" findbyname.vim (https://github.com/sirbrillig/findbyname.vim)
+" grep.vim (https://github.com/vim-scripts/grep.vim)
+" jshint2.vim (https://github.com/Shutnik/jshint2.vim)
+" mru.vim (https://github.com/vim-scripts/mru.vim)
+" nerdtree (https://github.com/scrooloose/nerdtree)
+" netgrep (https://github.com/sirbrillig/netgrep)
+" taboo.vim (https://github.com/sirbrillig/taboo.vim or https://github.com/gcmt/taboo.vim)
+" vim-autocomplpop (https://bitbucket.org/ns9tks/vim-autocomplpop/)
+" vim-coffee-script (https://github.com/kchmck/vim-coffee-script)
+" vim-json-master (https://github.com/elzr/vim-json)
+" vim-nerdtree-tabs (https://github.com/jistr/vim-nerdtree-tabs)
