@@ -40,8 +40,8 @@ set statusline+=/ " separator
 set statusline+=%L " total lines
 
 " turn on filetype indentation
-filetype on 
-filetype plugin on 
+filetype on
+filetype plugin on
 filetype indent on
 
 " == Keymapping
@@ -81,7 +81,7 @@ vnoremap <Leader>w gq
 " keys for tab behavior in vim 7:
 " map CTRL-t to new tab.
 " also map Leader-[ and Leader-] to tab navigation.
-nnoremap <C-T> :tabnew 
+nnoremap <C-T> :tabnew
 nnoremap <Leader>[ :tabprev<CR>
 nnoremap <Leader>] :tabnext<CR>
 
