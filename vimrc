@@ -31,6 +31,8 @@ let g:netrw_silent=1 " be quiet when using netrw
 " Status line
 set statusline=%y " file type
 set statusline+=\ \-\  " separator
+set statusline+=%{(&expandtab?'SPACES':'TABS')} " expandtab status
+set statusline+=\ \-\  " separator
 set statusline+=%r\  " readonly flag
 set statusline+=%F " file path
 set statusline+=%= " switch to right side
@@ -38,6 +40,7 @@ set statusline+=Line\  " separator
 set statusline+=%l " current line
 set statusline+=/ " separator
 set statusline+=%L " total lines
+set statusline+=\ %P " percent through file
 
 " turn on filetype indentation
 filetype on
@@ -81,7 +84,7 @@ vnoremap <Leader>w gq
 " keys for tab behavior in vim 7:
 " map CTRL-t to new tab.
 " also map Leader-[ and Leader-] to tab navigation.
-nnoremap <C-T> :tabnew
+nnoremap <C-T> :tabnew 
 nnoremap <Leader>[ :tabprev<CR>
 nnoremap <Leader>] :tabnext<CR>
 
