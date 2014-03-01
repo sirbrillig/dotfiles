@@ -7,6 +7,8 @@ syntax on
 set hlsearch
 set autoindent "use previous line's indent level
 set background=dark "assume dark background.
+set hidden "allow edited buffers to be hidden
+set switchbuf=useopen "use existing buffer rather than opening a new one
 set showtabline=2 "always show the tab bar
 set tabstop=2 "use 2-spaces for tabs.
 set shiftwidth=2 "use 2-spaces for indenting.
@@ -84,9 +86,11 @@ vnoremap <Leader>w gq
 " keys for tab behavior in vim 7:
 " map CTRL-t to new tab.
 " also map Leader-[ and Leader-] to tab navigation.
-nnoremap <C-T> :tabnew 
-nnoremap <Leader>[ :tabprev<CR>
-nnoremap <Leader>] :tabnext<CR>
+nnoremap <C-T> :tabnew<space>
+" nnoremap <Leader>[ :tabprev<CR>
+" nnoremap <Leader>] :tabnext<CR>
+nnoremap <Leader>[ :bp<CR>
+nnoremap <Leader>] :bn<CR>
 
 " Modify the colors in the vim 7 tabs.
 hi TabLine term=reverse ctermfg=Gray ctermbg=NONE
@@ -114,9 +118,9 @@ function! Paste_on_off()
   endif
 endfunc
 
-" Map Leader-cc to toggle comments
-nnoremap <silent> <Leader>cc :call ToggleComment()<CR>
-vnoremap <silent> <Leader>cc :call ToggleComment()<CR>
+" Map Leader-/ to toggle comments
+nnoremap <silent> <Leader>/ :call ToggleComment()<CR>
+vnoremap <silent> <Leader>/ :call ToggleComment()<CR>
 augroup comment_leaders
   autocmd FileType haskell,vhdl,ada let b:comment_leader = '-- '
   autocmd FileType vim let b:comment_leader = '" '
@@ -142,15 +146,14 @@ augroup filetype_gemfile
 augroup END
 
 " map Leader-n to toggle NERDTree
-nnoremap <Leader>n <plug>NERDTreeTabsToggle<CR>
+nnoremap <Leader>n :NERDTreeTabsToggle<CR>
 
 " Configure tab autocomplete
-let g:SuperTabDefaultCompletionType = "<c-n>"
 set completeopt=menuone,longest
 
 " Configure vim-grep plugin
 let Grep_Default_Options = '-Irn'
-set switchbuf+=newtab
+" set switchbuf+=newtab
 
 " Allow recursive find
 set path+=**
@@ -158,13 +161,27 @@ set path+=**
 " Map leader-; to add a semicolon to the end of the line
 nnoremap <Leader>; mqA;<esc>`q
 
-" Map leader-l to last tab
-let g:lasttab = 1
-nnoremap <Leader>l :execute "tabn ".g:lasttab<CR>
+" Map leader-l to last buffer
+let g:lasttabs = [1]
+function! LastTab()
+  if len(g:lasttabs) < 1
+    return
+  endif
+  let last_tab = remove(g:lasttabs, -1)
+  while last_tab > tabpagenr('$') || last_tab == tabpagenr()
+  	let last_tab = remove(g:lasttabs, -1)
+  endwhile
+	execute "tabn ".last_tab
+endfunction
+function! PushLastTab()
+  call add(g:lasttabs, tabpagenr())
+endfunction
 augroup last_tab
   autocmd!
-  autocmd TabLeave * let g:lasttab = tabpagenr()
+  autocmd TabLeave * call PushLastTab()
 augroup END
+" nnoremap <Leader>l :call LastTab()<CR>
+nnoremap <Leader>l :b#<CR>
 
 " Configure taboo plugin
 let g:taboo_tab_format = ' %N:%T%m '
@@ -177,10 +194,22 @@ while i <# 10
 endwhile
 
 " Configure the MRU plugin
-let g:MRU_Open_File_Use_Tabs = 1
+" let g:MRU_Open_File_Use_Tabs = 1
 
 " Map leader-x to close the quickfix window
 nnoremap <Leader>x :ccl<CR>
+
+" Map CTRL-f to the FindByName plugin
+nnoremap <C-f> :FindByName<space>
+
+" Map leader-P to CtrlP without activation so a directory can be added
+nnoremap <Leader>P :CtrlP<space>
+" Map leader-m to the CtrlPMRU search
+nnoremap <Leader>m :CtrlPMRU<CR>
+" Map leader-b to the CtrlPBuffer search
+nnoremap <Leader>b :CtrlPBuffer<CR>
+" Map leader-x to close the current buffer
+nnoremap <Leader>x :bw<CR>
 
 " Allow pathogen plugins (http://www.vim.org/scripts/script.php?script_id=2332)
 call pathogen#infect()
