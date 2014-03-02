@@ -104,6 +104,12 @@ hi MatchParen term=NONE cterm=bold ctermbg=NONE ctermfg=DarkCyan
 hi PmenuSel term=NONE cterm=NONE ctermfg=White ctermbg=Blue
 hi Pmenu term=NONE cterm=NONE ctermfg=Black ctermbg=White
 
+" Modify the cursorline colors to show just the line number highlighted
+hi CursorLineNr ctermbg=3
+hi CursorLine cterm=none
+set cursorline
+set number
+
 " map leader-p to toggle paste mode.
 nnoremap <silent> <Leader>p :call Paste_on_off()<bar>:set paste?<CR>
 set pastetoggle=
