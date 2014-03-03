@@ -1,5 +1,5 @@
 " Summary: Payton's vimrc file
-" Version: 2.3.0
+" Version: 2.4.0
 " --------------------
 
 " == Some useful options:
@@ -9,7 +9,7 @@ set autoindent "use previous line's indent level
 set background=dark "assume dark background.
 set hidden "allow edited buffers to be hidden
 set switchbuf=useopen "use existing buffer rather than opening a new one
-set showtabline=2 "always show the tab bar
+set showtabline=1 "show the tab bar only if more than 1 tab
 set tabstop=2 "use 2-spaces for tabs.
 set shiftwidth=2 "use 2-spaces for indenting.
 set smarttab "pressing tab fixes indent.
@@ -83,12 +83,9 @@ nnoremap \ :w<CR>
 nnoremap <Leader>w gq
 vnoremap <Leader>w gq
 
-" keys for tab behavior in vim 7:
-" map CTRL-t to new tab.
-" also map Leader-[ and Leader-] to tab navigation.
-nnoremap <C-T> :tabnew<space>
-" nnoremap <Leader>[ :tabprev<CR>
-" nnoremap <Leader>] :tabnext<CR>
+" map CTRL-o to new buffer.
+" also map Leader-[ and Leader-] to navigation.
+nnoremap <C-T> :e<space>
 nnoremap <Leader>[ :bp<CR>
 nnoremap <Leader>] :bn<CR>
 
@@ -159,7 +156,6 @@ set completeopt=menuone,longest
 
 " Configure vim-grep plugin
 let Grep_Default_Options = '-Irn'
-" set switchbuf+=newtab
 
 " Allow recursive find
 set path+=**
@@ -168,45 +164,10 @@ set path+=**
 nnoremap <Leader>; mqA;<esc>`q
 
 " Map leader-l to last buffer
-let g:lasttabs = [1]
-function! LastTab()
-  if len(g:lasttabs) < 1
-    return
-  endif
-  let last_tab = remove(g:lasttabs, -1)
-  while last_tab > tabpagenr('$') || last_tab == tabpagenr()
-  	let last_tab = remove(g:lasttabs, -1)
-  endwhile
-	execute "tabn ".last_tab
-endfunction
-function! PushLastTab()
-  call add(g:lasttabs, tabpagenr())
-endfunction
-augroup last_tab
-  autocmd!
-  autocmd TabLeave * call PushLastTab()
-augroup END
-" nnoremap <Leader>l :call LastTab()<CR>
 nnoremap <Leader>l :b#<CR>
-
-" Configure taboo plugin
-let g:taboo_tab_format = ' %N:%T%m '
-
-" Map leader-[1-10] to switch to a tab
-let i = 1
-while i <# 10
-  execute "nnoremap <Leader>" .i. "  " .i. "gt"
-  let i += 1
-endwhile
-
-" Configure the MRU plugin
-" let g:MRU_Open_File_Use_Tabs = 1
 
 " Map leader-x to close the quickfix window
 nnoremap <Leader>x :ccl<CR>
-
-" Map CTRL-f to the FindByName plugin
-nnoremap <C-f> :FindByName<space>
 
 " Map leader-P to CtrlP without activation so a directory can be added
 nnoremap <Leader>P :CtrlP<space>
@@ -230,8 +191,7 @@ call pathogen#infect()
 " mru.vim (https://github.com/vim-scripts/mru.vim)
 " nerdtree (https://github.com/scrooloose/nerdtree)
 " netgrep (https://github.com/sirbrillig/netgrep)
-" taboo.vim (https://github.com/sirbrillig/taboo.vim or https://github.com/gcmt/taboo.vim)
 " vim-autocomplpop (https://bitbucket.org/ns9tks/vim-autocomplpop/)
 " vim-coffee-script (https://github.com/kchmck/vim-coffee-script)
 " vim-json-master (https://github.com/elzr/vim-json)
-" vim-nerdtree-tabs (https://github.com/jistr/vim-nerdtree-tabs)
+" vim-bufferline (https://github.com/bling/vim-bufferline)
