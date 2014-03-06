@@ -32,10 +32,12 @@ let g:netrw_silent=1 " be quiet when using netrw
 
 " Status line
 set statusline=%y " file type
-set statusline+=\ \-\  " separator
-set statusline+=%{(&expandtab?'SPACES':'TABS')} " expandtab status
-set statusline+=\ \-\  " separator
-set statusline+=%r\  " readonly flag
+set statusline+=(
+set statusline+=tabs\ are\ %{&expandtab?'spaces':'tabs'} " expandtab status
+set statusline+=%{&readonly?',readonly':''} " readonly flag
+set statusline+=)
+set statusline+=\ \»\  " separator
+set statusline+=%{GitStatus()}
 set statusline+=%F " file path
 set statusline+=%= " switch to right side
 set statusline+=Line\  " separator
@@ -43,6 +45,14 @@ set statusline+=%l " current line
 set statusline+=/ " separator
 set statusline+=%L " total lines
 set statusline+=\ %P " percent through file
+function! GitStatus()
+  let git_status = substitute(system('git rev-parse --abbrev-ref HEAD'), '\n', '', 'g')
+  if git_status !=# ""
+    let git_status='branch ' . git_status . ' » '
+    return git_status
+  endif
+  return ''
+endfunction
 
 " turn on filetype indentation
 filetype on
@@ -102,6 +112,7 @@ hi PmenuSel term=NONE cterm=NONE ctermfg=White ctermbg=Blue
 hi Pmenu term=NONE cterm=NONE ctermfg=Black ctermbg=White
 
 " Modify the cursorline colors to show just the line number highlighted
+hi LineNr ctermfg=DarkGray
 hi CursorLineNr ctermbg=3
 hi CursorLine cterm=none
 set cursorline
@@ -165,9 +176,6 @@ nnoremap <Leader>; mqA;<esc>`q
 
 " Map leader-l to last buffer
 nnoremap <Leader>l :b#<CR>
-
-" Map leader-x to close the quickfix window
-nnoremap <Leader>x :ccl<CR>
 
 " Map leader-P to CtrlP without activation so a directory can be added
 nnoremap <Leader>P :CtrlP<space>
