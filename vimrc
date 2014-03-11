@@ -30,29 +30,42 @@ set laststatus=2 " always show the status line
 set cmdheight=2 " slightly more room for notices
 let g:netrw_silent=1 " be quiet when using netrw
 
-" Status line
-set statusline=%y " file type
-set statusline+=(
-set statusline+=tabs\ are\ %{&expandtab?'spaces':'tabs'} " expandtab status
-set statusline+=%{&readonly?',readonly':''} " readonly flag
-set statusline+=)
-set statusline+=\ \»\  " separator
-set statusline+=%{GitStatus()}
-set statusline+=%F " file path
-set statusline+=%= " switch to right side
-set statusline+=Line\  " separator
-set statusline+=%l " current line
-set statusline+=/ " separator
-set statusline+=%L " total lines
-set statusline+=\ %P " percent through file
-function! GitStatus()
-  let git_status = substitute(system('git rev-parse --abbrev-ref HEAD'), '\n', '', 'g')
-  if git_status !=# ""
-    let git_status='branch ' . git_status . ' » '
-    return git_status
-  endif
-  return ''
+" For vim-airline
+let g:bufferline_echo = 0
+set t_Co=256
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_enable_syntastic  = 1
+function! TabSection(...)
+  call a:1.add_section('airline_a', ' '.g:airline_section_a.' ')
+  call a:1.add_section('airline_c', " tabs are %{&expandtab?'spaces':'tabs'} ")
+  call a:1.add_section('airline_b', ' '.g:airline_section_b.' ')
+  call a:1.add_section('airline_c', ' '.g:airline_section_c.' ')
+  call a:1.split()
+  call a:1.add_section('airline_x', ' '.g:airline_section_x.' ')
+  call a:1.add_section('airline_y', ' '.g:airline_section_y.' ')
+  call a:1.add_section('airline_z', ' '.g:airline_section_z.' ')
+  call a:1.add_section('airline_warning', g:airline_section_warning) "TODO: this should be add_raw
+  return 1
 endfunction
+function! AirlineInit()
+  call airline#add_statusline_func('TabSection')
+endfunction
+autocmd VimEnter * call AirlineInit()
+
+" Status line
+" set statusline=%y " file type
+" set statusline+=(
+" set statusline+=tabs\ are\ %{&expandtab?'spaces':'tabs'} " expandtab status
+" set statusline+=%{&readonly?',readonly':''} " readonly flag
+" set statusline+=)
+" set statusline+=\ \»\  " separator
+" set statusline+=%F " file path
+" set statusline+=%= " switch to right side
+" set statusline+=Line\  " separator
+" set statusline+=%l " current line
+" set statusline+=/ " separator
+" set statusline+=%L " total lines
+" set statusline+=\ %P " percent through file
 
 " turn on filetype indentation
 filetype on
