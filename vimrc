@@ -29,6 +29,9 @@ set scrolloff=3 " minimum lines to keep above and below cursor
 set laststatus=2 " always show the status line
 set cmdheight=2 " slightly more room for notices
 let g:netrw_silent=1 " be quiet when using netrw
+set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set undodir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 
 " For vim-airline
 let g:bufferline_echo = 0
@@ -198,6 +201,14 @@ nnoremap <Leader>m :CtrlPMRU<CR>
 nnoremap <Leader>b :CtrlPBuffer<CR>
 " Map leader-x to close the current buffer
 nnoremap <Leader>x :bw<CR>
+
+" Open a new file (c-y) in the current window
+let g:ctrlp_open_new_file = 'r'
+
+" When pressing <CR> within a curly brace, add two lines and move up one.
+let delimitMate_expand_cr = 1
+" When pressing <SPACE> within a paren, add two spaces and move back one.
+let delimitMate_expand_space = 1
 
 " Allow pathogen plugins (http://www.vim.org/scripts/script.php?script_id=2332)
 call pathogen#infect()
