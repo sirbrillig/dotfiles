@@ -77,9 +77,6 @@ set number " show line numbers
 set path+=** " Allow recursive find
 set completeopt=menuone,longest " Configure tab autocomplete
 
-" Configure vim-grep plugin
-let Grep_Default_Options = '-Irn'
-
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set undodir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
@@ -91,6 +88,10 @@ let g:ctrlp_open_new_file = 'r'
 let delimitMate_expand_cr = 1
 " When pressing <SPACE> within a paren, add two spaces and move back one.
 let delimitMate_expand_space = 1
+
+let Grep_Default_Options = '-Irn -i --exclude="*\.po*" --exclude="*\.svn*" --exclude-dir="vip" --exclude="*\.min\.*" --exclude-dir="compiled" --exclude-dir="node_modules" --exclude-dir="glotpress.dir" --exclude="*\.unison\.tmp" --exclude="*compiledTemplates.js" --exclude="*merged.js" --exclude="*mergedAssets.js" --exclude="*api/data*"'
+
+let g:NERDTreeDirArrows=0
 
 " ----------------------------------------------------------------------------
 " vim-airline
