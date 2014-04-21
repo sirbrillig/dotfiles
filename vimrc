@@ -1,8 +1,48 @@
+" vimrc
+" ----------------------------------------------------------------------------
 " Summary: Payton's vimrc file
-" Version: 2.4.0
-" --------------------
+" URL: https://github.com/sirbrillig/dotfiles
+" Version: 2.5.0
+" ----------------------------------------------------------------------------
 
-" == Some useful options:
+" ----------------------------------------------------------------------------
+" Set up Vundle
+" ----------------------------------------------------------------------------
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" ----------------------------------------------------------------------------
+" Plugins
+" ----------------------------------------------------------------------------
+Plugin 'gmarik/vundle'
+Plugin 'vim-scripts/L9'
+Plugin 'kien/ctrlp.vim'
+Plugin 'bronson/vim-trailing-whitespace'
+Plugin 'sirbrillig/findbyname.vim'
+Plugin 'vim-scripts/grep.vim'
+Plugin 'Shutnik/jshint2.vim'
+Plugin 'vim-scripts/mru.vim'
+Plugin 'scrooloose/nerdtree'
+Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'sirbrillig/netgrep'
+Plugin 'othree/vim-autocomplpop'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'elzr/vim-json'
+Plugin 'bling/vim-bufferline'
+Plugin 'mustache/vim-mustache-handlebars'
+Plugin 'Raimondi/delimitMate'
+Plugin 'scrooloose/syntastic'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-sleuth'
+Plugin 'bling/vim-airline'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-endwise'
+
+" ----------------------------------------------------------------------------
+" Options
+" ----------------------------------------------------------------------------
 syntax on
 set hlsearch
 set autoindent "use previous line's indent level
@@ -29,11 +69,32 @@ set scrolloff=3 " minimum lines to keep above and below cursor
 set laststatus=2 " always show the status line
 set cmdheight=2 " slightly more room for notices
 let g:netrw_silent=1 " be quiet when using netrw
+filetype on
+filetype plugin on
+filetype indent on
+set cursorline " highlight the current cursor line number
+set number " show line numbers
+set path+=** " Allow recursive find
+set completeopt=menuone,longest " Configure tab autocomplete
+
+" Configure vim-grep plugin
+let Grep_Default_Options = '-Irn'
+
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set undodir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 
-" For vim-airline
+" Open a new file (c-y) in the current window
+let g:ctrlp_open_new_file = 'r'
+
+" When pressing <CR> within a curly brace, add two lines and move up one.
+let delimitMate_expand_cr = 1
+" When pressing <SPACE> within a paren, add two spaces and move back one.
+let delimitMate_expand_space = 1
+
+" ----------------------------------------------------------------------------
+" vim-airline
+" ----------------------------------------------------------------------------
 let g:bufferline_echo = 0
 set t_Co=256
 let g:airline#extensions#tabline#enabled = 1
@@ -55,27 +116,9 @@ function! AirlineInit()
 endfunction
 autocmd VimEnter * call AirlineInit()
 
-" Status line
-" set statusline=%y " file type
-" set statusline+=(
-" set statusline+=tabs\ are\ %{&expandtab?'spaces':'tabs'} " expandtab status
-" set statusline+=%{&readonly?',readonly':''} " readonly flag
-" set statusline+=)
-" set statusline+=\ \»\  " separator
-" set statusline+=%F " file path
-" set statusline+=%= " switch to right side
-" set statusline+=Line\  " separator
-" set statusline+=%l " current line
-" set statusline+=/ " separator
-" set statusline+=%L " total lines
-" set statusline+=\ %P " percent through file
-
-" turn on filetype indentation
-filetype on
-filetype plugin on
-filetype indent on
-
-" == Keymapping
+" ----------------------------------------------------------------------------
+" Keybindings
+" ----------------------------------------------------------------------------
 " map CTRL-A and CTRL-E to home and end, respectively.
 map  <C-A> <Home>
 map  <C-E> <End>
@@ -115,25 +158,6 @@ nnoremap <C-T> :e<space>
 nnoremap <Leader>[ :bp<CR>
 nnoremap <Leader>] :bn<CR>
 
-" Modify the colors in the vim 7 tabs.
-hi TabLine term=reverse ctermfg=Gray ctermbg=NONE
-hi TabLineSel term=reverse cterm=underline ctermfg=0 ctermbg=2
-hi TabLineFill term=underline cterm=underline ctermfg=8 ctermbg=0
-
-" Modify some highlight colors to be less offensive to the eye.
-hi IncSearch term=reverse,underline cterm=reverse,bold,underline ctermbg=NONE ctermfg=NONE
-hi Search term=NONE cterm=reverse,bold ctermbg=NONE ctermfg=NONE
-hi MatchParen term=NONE cterm=bold ctermbg=NONE ctermfg=DarkCyan
-hi PmenuSel term=NONE cterm=NONE ctermfg=White ctermbg=Blue
-hi Pmenu term=NONE cterm=NONE ctermfg=Black ctermbg=White
-
-" Modify the cursorline colors to show just the line number highlighted
-hi LineNr ctermfg=DarkGray
-hi CursorLineNr ctermbg=3
-hi CursorLine cterm=none
-set cursorline
-set number
-
 " map leader-p to toggle paste mode.
 nnoremap <silent> <Leader>p :call Paste_on_off()<bar>:set paste?<CR>
 set pastetoggle=
@@ -167,25 +191,8 @@ function! ToggleComment()
   endif
 endfunction
 
-" Treat Gemfile and Vagrantfile as Ruby
-" (http://ilkka.github.io/blog/2011/02/03/teach_vim_about_gemfiles/)
-augroup filetype_gemfile
-  autocmd!
-  autocmd BufNewFile,BufRead Gemfile setlocal filetype=ruby
-  autocmd BufNewFile,BufRead Vagrantfile setlocal filetype=ruby
-augroup END
-
 " map Leader-n to toggle NERDTree
 nnoremap <Leader>n :NERDTreeTabsToggle<CR>
-
-" Configure tab autocomplete
-set completeopt=menuone,longest
-
-" Configure vim-grep plugin
-let Grep_Default_Options = '-Irn'
-
-" Allow recursive find
-set path+=**
 
 " Map leader-; to add a semicolon to the end of the line
 nnoremap <Leader>; mqA;<esc>`q
@@ -202,34 +209,34 @@ nnoremap <Leader>b :CtrlPBuffer<CR>
 " Map leader-x to close the current buffer
 nnoremap <Leader>x :bw<CR>
 
-" Open a new file (c-y) in the current window
-let g:ctrlp_open_new_file = 'r'
+" ----------------------------------------------------------------------------
+" Colors
+" ----------------------------------------------------------------------------
+" Modify the colors in the vim 7 tabs.
+hi TabLine term=reverse ctermfg=Gray ctermbg=NONE
+hi TabLineSel term=reverse cterm=underline ctermfg=0 ctermbg=2
+hi TabLineFill term=underline cterm=underline ctermfg=8 ctermbg=0
 
-" When pressing <CR> within a curly brace, add two lines and move up one.
-let delimitMate_expand_cr = 1
-" When pressing <SPACE> within a paren, add two spaces and move back one.
-let delimitMate_expand_space = 1
+" Modify some highlight colors to be less offensive to the eye.
+hi IncSearch term=reverse,underline cterm=reverse,bold,underline ctermbg=NONE ctermfg=NONE
+hi Search term=NONE cterm=reverse,bold ctermbg=NONE ctermfg=NONE
+hi MatchParen term=NONE cterm=bold ctermbg=NONE ctermfg=DarkCyan
+hi PmenuSel term=NONE cterm=NONE ctermfg=White ctermbg=Blue
+hi Pmenu term=NONE cterm=NONE ctermfg=Black ctermbg=White
 
-" Allow pathogen plugins (http://www.vim.org/scripts/script.php?script_id=2332)
-call pathogen#infect()
+" Modify the cursorline colors to show just the line number highlighted
+hi LineNr ctermfg=DarkGray
+hi CursorLineNr ctermbg=3
+hi CursorLine cterm=none
 
-" *Plugins recommended*
-" ===========================================================================
-" pathogen.vim (https://github.com/tpope/vim-pathogen)
-" vim-trailing-whitespace (https://github.com/bronson/vim-trailing-whitespace)
-" findbyname.vim (https://github.com/sirbrillig/findbyname.vim)
-" grep.vim (https://github.com/vim-scripts/grep.vim)
-" jshint2.vim (https://github.com/Shutnik/jshint2.vim)
-" mru.vim (https://github.com/vim-scripts/mru.vim)
-" nerdtree (https://github.com/scrooloose/nerdtree)
-" netgrep (https://github.com/sirbrillig/netgrep)
-" vim-autocomplpop (https://bitbucket.org/ns9tks/vim-autocomplpop/)
-" vim-coffee-script (https://github.com/kchmck/vim-coffee-script)
-" vim-json-master (https://github.com/elzr/vim-json)
-" vim-bufferline (https://github.com/bling/vim-bufferline)
-" vim-mustache-handlebars (https://github.com/mustache/vim-mustache-handlebars)
-" delimitMate (https://github.com/Raimondi/delimitMate)
-" syntastic (https://github.com/scrooloose/syntastic)
-" vim-fugitive (https://github.com/tpope/vim-fugitive)
-" vim-sleuth (https://github.com/tpope/vim-sleuth)
-" vim-airline (https://github.com/bling/vim-airline)
+" ----------------------------------------------------------------------------
+" FileTypes
+" ----------------------------------------------------------------------------
+" Treat Gemfile and Vagrantfile as Ruby
+" (http://ilkka.github.io/blog/2011/02/03/teach_vim_about_gemfiles/)
+augroup filetype_gemfile
+  autocmd!
+  autocmd BufNewFile,BufRead Gemfile setlocal filetype=ruby
+  autocmd BufNewFile,BufRead Vagrantfile setlocal filetype=ruby
+augroup END
+
