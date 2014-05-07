@@ -10,14 +10,14 @@
 " ----------------------------------------------------------------------------
 set nocompatible
 filetype off
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
 " ----------------------------------------------------------------------------
 " Plugins
 " ----------------------------------------------------------------------------
 Plugin 'gmarik/vundle'
-Plugin 'vim-scripts/L9'
+Plugin 'vim-scripts/L9', {'name': 'newL9'}
 Plugin 'kien/ctrlp.vim'
 Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'sirbrillig/findbyname.vim'
@@ -40,6 +40,8 @@ Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-endwise'
 
+call vundle#end()
+filetype plugin indent on
 " ----------------------------------------------------------------------------
 " Options
 " ----------------------------------------------------------------------------
