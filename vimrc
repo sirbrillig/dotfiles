@@ -39,6 +39,7 @@ Plugin 'tpope/vim-sleuth'
 Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-endwise'
+Plugin 'airblade/vim-gitgutter'
 
 " ----------------------------------------------------------------------------
 " Options
@@ -229,6 +230,12 @@ hi Pmenu term=NONE cterm=NONE ctermfg=Black ctermbg=White
 hi LineNr ctermfg=DarkGray
 hi CursorLineNr ctermbg=3
 hi CursorLine cterm=none
+
+" Modify the SignColumn to make it easier to read.
+hi SignColumn ctermbg=NONE guibg=NONE
+hi GitGutterAdd ctermfg=2 guifg=#009900 ctermbg=NONE guibg=NONE
+hi GitGutterDelete ctermfg=1 ctermbg=NONE guifg=#ff2222 guibg=NONE
+hi GitGutterChangeDefault ctermfg=3 ctermbg=NONE guifg=#bbbb00 guibg=NONE
 
 " ----------------------------------------------------------------------------
 " FileTypes
