@@ -40,6 +40,11 @@ Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-endwise'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'jelera/vim-javascript-syntax'
+Plugin 'pangloss/vim-javascript'
+Plugin 'goatslacker/mango.vim'
+Plugin 'Lokaltog/vim-distinguished'
+Plugin 'tpope/vim-vividchalk'
 
 " ----------------------------------------------------------------------------
 " Options
@@ -90,7 +95,7 @@ let delimitMate_expand_cr = 1
 " When pressing <SPACE> within a paren, add two spaces and move back one.
 let delimitMate_expand_space = 1
 
-let Grep_Default_Options = '-Irn -i --exclude="*\.po*" --exclude="*\.svn*" --exclude-dir="vip" --exclude="*\.min\.*" --exclude-dir="compiled" --exclude-dir="node_modules" --exclude-dir="glotpress.dir" --exclude="*\.unison\.tmp" --exclude="*compiledTemplates.js" --exclude="*merged.js" --exclude="*mergedAssets.js" --exclude="*api/data*"'
+let Grep_Default_Options = '-Irn -i --exclude="*\.po*" --exclude="*\.svn*" --exclude-dir="vip" --exclude="*\.min\.*" --exclude-dir="compiled" --exclude-dir="node_modules" --exclude-dir="glotpress.dir" --exclude="*\.unison\.tmp" --exclude="*compiledTemplates.js" --exclude="*merged.js" --exclude="*mergedAssets.js" --exclude="*api/data*" --exclude-dir="vendor" --exclude-dir="tmp"'
 
 let g:NERDTreeDirArrows=0
 
@@ -214,22 +219,26 @@ nnoremap <Leader>x :bw<CR>
 " ----------------------------------------------------------------------------
 " Colors
 " ----------------------------------------------------------------------------
+
+" Set the theme
+colorscheme vividchalk
+
 " Modify the colors in the vim 7 tabs.
-hi TabLine term=reverse ctermfg=Gray ctermbg=NONE
-hi TabLineSel term=reverse cterm=underline ctermfg=0 ctermbg=2
-hi TabLineFill term=underline cterm=underline ctermfg=8 ctermbg=0
+" hi TabLine term=reverse ctermfg=Gray ctermbg=NONE
+" hi TabLineSel term=reverse cterm=underline ctermfg=0 ctermbg=2
+" hi TabLineFill term=underline cterm=underline ctermfg=8 ctermbg=0
 
 " Modify some highlight colors to be less offensive to the eye.
-hi IncSearch term=reverse,underline cterm=reverse,bold,underline ctermbg=NONE ctermfg=NONE
-hi Search term=NONE cterm=reverse,bold ctermbg=NONE ctermfg=NONE
-hi MatchParen term=NONE cterm=bold ctermbg=NONE ctermfg=DarkCyan
-hi PmenuSel term=NONE cterm=NONE ctermfg=White ctermbg=Blue
-hi Pmenu term=NONE cterm=NONE ctermfg=Black ctermbg=White
+" hi IncSearch term=reverse,underline cterm=reverse,bold,underline ctermbg=NONE ctermfg=NONE
+" hi Search term=NONE cterm=reverse,bold ctermbg=NONE ctermfg=NONE
+" hi MatchParen term=NONE cterm=bold ctermbg=NONE ctermfg=DarkCyan
+" hi PmenuSel term=NONE cterm=NONE ctermfg=White ctermbg=Blue
+" hi Pmenu term=NONE cterm=NONE ctermfg=Black ctermbg=White
 
 " Modify the cursorline colors to show just the line number highlighted
 hi LineNr ctermfg=DarkGray
 hi CursorLineNr ctermbg=3
-hi CursorLine cterm=none
+hi CursorLine cterm=none ctermbg=none
 
 " Modify the SignColumn to make it easier to read.
 hi SignColumn ctermbg=NONE guibg=NONE
