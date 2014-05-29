@@ -45,6 +45,7 @@ Plugin 'pangloss/vim-javascript'
 Plugin 'goatslacker/mango.vim'
 Plugin 'Lokaltog/vim-distinguished'
 Plugin 'tpope/vim-vividchalk'
+Plugin 'danro/rename.vim'
 
 " ----------------------------------------------------------------------------
 " Options
