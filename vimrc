@@ -46,6 +46,8 @@ Plugin 'goatslacker/mango.vim'
 Plugin 'Lokaltog/vim-distinguished'
 Plugin 'tpope/vim-vividchalk'
 Plugin 'danro/rename.vim'
+Plugin 'mxw/vim-jsx'
+Plugin 'idanarye/vim-merginal'
 
 " ----------------------------------------------------------------------------
 " Options
