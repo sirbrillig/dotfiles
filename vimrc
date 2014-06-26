@@ -219,6 +219,14 @@ nnoremap <Leader>b :CtrlPBuffer<CR>
 " Map leader-x to close the current buffer
 nnoremap <Leader>x :bw<CR>
 
+" Map leader-i to re-indent the selected lines
+vnoremap <Leader>i :call Reindent()<CR>
+function! Reindent()
+  execute "normal! <100"
+  execute "normal! =="
+endfunction
+
+
 " ----------------------------------------------------------------------------
 " Colors
 " ----------------------------------------------------------------------------
