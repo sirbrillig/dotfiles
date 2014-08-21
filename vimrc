@@ -48,6 +48,7 @@ Plugin 'tpope/vim-vividchalk'
 Plugin 'danro/rename.vim'
 Plugin 'mxw/vim-jsx'
 Plugin 'idanarye/vim-merginal'
+Plugin 'mhinz/vim-startify'
 
 " ----------------------------------------------------------------------------
 " Options
@@ -207,6 +208,9 @@ nnoremap <Leader>n :NERDTreeTabsToggle<CR>
 " Map leader-; to add a semicolon to the end of the line
 nnoremap <Leader>; mqA;<esc>`q
 
+" Map leader-, to add a comma to the end of the line
+nnoremap <Leader>, mqA,<esc>`q
+
 " Map leader-l to last buffer
 nnoremap <Leader>l :b#<CR>
 
@@ -267,4 +271,8 @@ augroup filetype_gemfile
   autocmd BufNewFile,BufRead Gemfile setlocal filetype=ruby
   autocmd BufNewFile,BufRead Vagrantfile setlocal filetype=ruby
 augroup END
+
+" Use jsxhint for React's JSX files.
+let g:syntastic_javascript_checkers = ['jsxhint']
+
 
