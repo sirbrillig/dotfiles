@@ -48,7 +48,10 @@ Plugin 'tpope/vim-vividchalk'
 Plugin 'danro/rename.vim'
 Plugin 'mxw/vim-jsx'
 Plugin 'idanarye/vim-merginal'
-Plugin 'mhinz/vim-startify'
+Plugin 'Keithbsmiley/swift.vim'
+Plugin 'fatih/vim-go'
+Plugin 'rking/ag.vim'
+Plugin 'moll/vim-bbye'
 
 " ----------------------------------------------------------------------------
 " Options
@@ -125,7 +128,10 @@ endfunction
 function! AirlineInit()
   call airline#add_statusline_func('TabSection')
 endfunction
-autocmd VimEnter * call AirlineInit()
+augroup airline_init
+  autocmd!
+  autocmd VimEnter * call AirlineInit()
+augroup END
 
 " ----------------------------------------------------------------------------
 " Keybindings
@@ -154,7 +160,7 @@ vnoremap <Leader>s :s///c<Left><Left><Left>
 nnoremap <Leader>o o^
 
 " map leader-r to reload the vimrc.
-nnoremap <Leader>r :source $MYVIMRC<CR>:echom "vimrc reloaded"<CR>
+nnoremap <Leader>r :source $MYVIMRC<CR>:AirlineToggle<CR>:AirlineToggle<CR>:AirlineRefresh<CR>:echom "vimrc reloaded"<CR>
 
 " map backslash to save.
 nnoremap \ :w<CR>
@@ -221,7 +227,7 @@ nnoremap <Leader>m :CtrlPMRU<CR>
 " Map leader-b to the CtrlPBuffer search
 nnoremap <Leader>b :CtrlPBuffer<CR>
 " Map leader-x to close the current buffer
-nnoremap <Leader>x :bw<CR>
+nnoremap <Leader>x :Bdelete<CR>
 
 " Map leader-i to re-indent the selected lines
 vnoremap <Leader>i :call Reindent()<CR>
@@ -275,4 +281,5 @@ augroup END
 " Use jsxhint for React's JSX files.
 let g:syntastic_javascript_checkers = ['jsxhint']
 
-
+" Display indentation guides
+set list listchars=tab:❘-,trail:·,extends:»,precedes:«,nbsp:×
