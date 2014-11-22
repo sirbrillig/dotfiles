@@ -89,6 +89,7 @@ set cursorline " highlight the current cursor line number
 set number " show line numbers
 set path+=** " Allow recursive find
 set completeopt=menuone,longest " Configure tab autocomplete
+set iskeyword+=\- " Adds dash character to keyword characters
 
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set undodir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
