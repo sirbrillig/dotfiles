@@ -20,6 +20,7 @@ Plugin 'gmarik/vundle'
 Plugin 'vim-scripts/L9'
 Plugin 'kien/ctrlp.vim'
 Plugin 'bronson/vim-trailing-whitespace'
+Plugin 'EinfachToll/DidYouMean'
 Plugin 'sirbrillig/findbyname.vim'
 Plugin 'vim-scripts/grep.vim'
 Plugin 'Shutnik/jshint2.vim'
@@ -35,7 +36,7 @@ Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'Raimondi/delimitMate'
 Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-sleuth'
+" Plugin 'tpope/vim-sleuth'
 Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-endwise'
@@ -113,7 +114,7 @@ let g:NERDTreeDirArrows=0
 let g:bufferline_echo = 0
 set t_Co=256
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_enable_syntastic  = 1
+let g:airline#extensions#syntastic#enabled = 1
 function! TabSection(...)
   call a:1.add_section('airline_a', ' '.g:airline_section_a.' ')
   call a:1.add_section('airline_c', " tabs are %{&expandtab?'spaces':'tabs'} ")
@@ -236,6 +237,9 @@ function! Reindent()
   execute "normal! <100"
   execute "normal! =="
 endfunction
+
+" Map leader-g to grep for the word under the cursor
+nnoremap <Leader>g :Grep <cword> *<CR>
 
 
 " ----------------------------------------------------------------------------
