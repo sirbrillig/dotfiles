@@ -54,6 +54,9 @@ Plugin 'fatih/vim-go'
 Plugin 'rking/ag.vim'
 Plugin 'moll/vim-bbye'
 
+" Allow matching ruby do/end blocks
+runtime macros/matchit.vim
+
 " ----------------------------------------------------------------------------
 " Options
 " ----------------------------------------------------------------------------
