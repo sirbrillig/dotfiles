@@ -291,3 +291,6 @@ let g:syntastic_javascript_checkers = ['jsxhint']
 
 " Display indentation guides
 set list listchars=tab:❘-,trail:·,extends:»,precedes:«,nbsp:×
+
+" Override phpmd options
+let g:syntastic_php_phpmd_post_args = 'design,unusedcode'
