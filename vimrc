@@ -102,6 +102,19 @@ set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 " Open a new file (c-y) in the current window
 let g:ctrlp_open_new_file = 'r'
 
+" Use ag for super-fast ctrlp indexing
+let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
+      \ --ignore .git
+      \ --ignore .svn
+      \ --ignore .hg
+      \ --ignore .DS_Store
+      \ --ignore "**/*.pyc"
+      \ --ignore ".sass-cache"
+      \ --ignore "*.log"
+      \ --ignore "node_modules"
+      \ --ignore "*.min.*"
+      \ -g ""'
+
 " When pressing <CR> within a curly brace, add two lines and move up one.
 let delimitMate_expand_cr = 1
 " When pressing <SPACE> within a paren, add two spaces and move back one.
