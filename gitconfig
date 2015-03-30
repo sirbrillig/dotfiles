@@ -1,0 +1,28 @@
+[user]
+	email = payton@foolord.com
+	name = Payton Swick
+[credential]
+	username = sirbrillig
+[color]
+	ui = true
+[push]
+	default = simple
+[alias]
+  cm = commit
+  co = checkout
+  st = status
+  pushnew = push -u origin HEAD
+  cpull = "!f() { git checkout $1 && git pull; }; f"
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+  last = log --oneline --decorate -10
+  undo = reset HEAD~1 --mixed
+  bclean = "!f() { git branch --merged ${1-master} | grep -v ${1-master}$ | xargs -r git branch -d; }; f"
+[filter "media"]
+	clean = git-media-clean %f
+	smudge = git-media-smudge %f
+[merge]
+	tool = vimdiff
+[filter "hawser"]
+	clean = git hawser clean %f
+	smudge = git hawser smudge %f
+	required = true
