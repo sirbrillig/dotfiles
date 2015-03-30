@@ -124,6 +124,12 @@ let Grep_Default_Options = '-Irn -i --exclude="*\.po*" --exclude="*\.svn*" --exc
 
 let g:NERDTreeDirArrows=0
 
+" Display indentation guides
+set list listchars=tab:❘-,trail:·,extends:»,precedes:«,nbsp:×
+
+" Override phpmd options
+let g:syntastic_php_phpmd_post_args = 'design,unusedcode'
+
 " ----------------------------------------------------------------------------
 " vim-airline
 " ----------------------------------------------------------------------------
@@ -257,6 +263,9 @@ endfunction
 " Map leader-g to grep for the word under the cursor
 nnoremap <Leader>g :Grep <cword> *<CR>
 
+" Map leader-c, leader-C to copy/paste selected text in MacOS
+vnoremap <Leader>c :w !pbcopy<CR><CR>:echom "copied to MacOS clipboard"<CR>
+nnoremap <Leader>C :set paste<CR>:r !pbpaste<CR>:set nopaste<CR>:echom "pasted from MacOS clipboard"<CR>
 
 " ----------------------------------------------------------------------------
 " Colors
@@ -301,9 +310,3 @@ augroup END
 
 " Use jsxhint for React's JSX files.
 let g:syntastic_javascript_checkers = ['jsxhint']
-
-" Display indentation guides
-set list listchars=tab:❘-,trail:·,extends:»,precedes:«,nbsp:×
-
-" Override phpmd options
-let g:syntastic_php_phpmd_post_args = 'design,unusedcode'
