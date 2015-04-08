@@ -130,6 +130,9 @@ set list listchars=tab:❘-,trail:·,extends:»,precedes:«,nbsp:×
 " Override phpmd options
 let g:syntastic_php_phpmd_post_args = 'design,unusedcode'
 
+" Highlight searches made by Ag
+let g:ag_highlight=1
+
 " ----------------------------------------------------------------------------
 " vim-airline
 " ----------------------------------------------------------------------------
@@ -261,7 +264,7 @@ function! Reindent()
 endfunction
 
 " Map leader-g to grep for the word under the cursor
-nnoremap <Leader>g :Grep <cword> *<CR>
+nnoremap <Leader>g :Ag! <cword><CR>
 
 " Map leader-c, leader-C to copy/paste selected text in MacOS
 vnoremap <Leader>c :w !pbcopy<CR><CR>:echom "copied to MacOS clipboard"<CR>
