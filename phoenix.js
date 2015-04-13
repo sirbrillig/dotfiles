@@ -10,7 +10,7 @@ function debug( message ) {
  * BINDINGS
  ***********************************************/
 
-debugMode = true;
+debugMode = false;
 
 var simpleMods = ['alt', 'cmd'];
 var preciseMods = ['ctrl', 'cmd', 'alt'];
