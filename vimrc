@@ -266,6 +266,9 @@ endfunction
 " Map leader-g to grep for the word under the cursor
 nnoremap <Leader>g :Ag! <cword><CR>
 
+" Map leader-G to begin a search
+nnoremap <Leader>G :Ag!<space>
+
 " Map leader-c, leader-C to copy/paste selected text in MacOS
 vnoremap <Leader>c :w !pbcopy<CR><CR>:echom "copied to MacOS clipboard"<CR>
 nnoremap <Leader>C :set paste<CR>:r !pbpaste<CR>:set nopaste<CR>:echom "pasted from MacOS clipboard"<CR>
