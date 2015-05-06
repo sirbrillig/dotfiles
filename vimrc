@@ -36,7 +36,6 @@ Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'Raimondi/delimitMate'
 Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-fugitive'
-" Plugin 'tpope/vim-sleuth'
 Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-endwise'
@@ -138,8 +137,10 @@ let g:ag_highlight=1
 " ----------------------------------------------------------------------------
 let g:bufferline_echo = 0
 set t_Co=256
+let g:airline_theme='wombat'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#syntastic#enabled = 1
+let g:airline_powerline_fonts = 1
 function! TabSection(...)
   call a:1.add_section('airline_a', ' '.g:airline_section_a.' ')
   call a:1.add_section('airline_c', " tabs are %{&expandtab?'spaces':'tabs'} ")
