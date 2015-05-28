@@ -17,6 +17,7 @@
   last = log --oneline --decorate -10
   undo = reset HEAD~1 --mixed
   bclean = "!f() { git branch --merged ${1-master} | grep -v ${1-master}$ | xargs -n1 git branch -d; }; f"
+  bnew = checkout -b
 [filter "media"]
 	clean = git-media-clean %f
 	smudge = git-media-smudge %f
