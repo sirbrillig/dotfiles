@@ -23,7 +23,7 @@ Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'EinfachToll/DidYouMean'
 Plugin 'sirbrillig/findbyname.vim'
 Plugin 'vim-scripts/grep.vim'
-Plugin 'Shutnik/jshint2.vim'
+" Plugin 'Shutnik/jshint2.vim'
 Plugin 'vim-scripts/mru.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs'
@@ -316,4 +316,6 @@ augroup filetype_gemfile
 augroup END
 
 " Use jsxhint for React's JSX files.
-let g:syntastic_javascript_checkers = ['jsxhint']
+" let g:syntastic_javascript_checkers = ['jsxhint']
+" Use eslint for JSX and JS
+let g:syntastic_javascript_checkers = ['eslint']

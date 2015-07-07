@@ -33,7 +33,7 @@ api.bind( 'right', simpleMods, function() {
 	debug( 'Moving to right-half' );
 	var win = Window.focusedWindow(),
 		screenFrame = win.screen().frameWithoutDockOrMenu();
-	win.setFrame( {x: screenFrame.x + screenFrame.width / 2, y: screenFrame.y, width: screenFrame.width / 2, height: screenFrame.height} );
+	win.setFrame( {x: (screenFrame.x + screenFrame.width / 2) - 30, y: screenFrame.y, width: screenFrame.width / 2, height: screenFrame.height} );
 } );
 
 api.bind( 'right', preciseMods, function() {
