@@ -52,6 +52,7 @@ Plugin 'Keithbsmiley/swift.vim'
 Plugin 'fatih/vim-go'
 Plugin 'rking/ag.vim'
 Plugin 'moll/vim-bbye'
+Plugin 'kshenoy/vim-signature'
 
 " Allow matching ruby do/end blocks
 runtime macros/matchit.vim
