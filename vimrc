@@ -18,7 +18,7 @@ call vundle#rc()
 " ----------------------------------------------------------------------------
 Plugin 'gmarik/vundle'
 Plugin 'vim-scripts/L9'
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'EinfachToll/DidYouMean'
 Plugin 'sirbrillig/findbyname.vim'
@@ -53,6 +53,8 @@ Plugin 'fatih/vim-go'
 Plugin 'rking/ag.vim'
 Plugin 'moll/vim-bbye'
 Plugin 'kshenoy/vim-signature'
+Plugin 'cakebaker/scss-syntax.vim'
+Plugin 'hail2u/vim-css3-syntax'
 
 " Allow matching ruby do/end blocks
 runtime macros/matchit.vim
