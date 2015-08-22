@@ -55,6 +55,7 @@ Plugin 'moll/vim-bbye'
 Plugin 'kshenoy/vim-signature'
 Plugin 'cakebaker/scss-syntax.vim'
 Plugin 'hail2u/vim-css3-syntax'
+Plugin 'shime/vim-livedown' " Requires `npm install -g livedown`
 
 " Allow matching ruby do/end blocks
 runtime macros/matchit.vim
