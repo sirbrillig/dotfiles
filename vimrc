@@ -27,6 +27,7 @@ Plugin 'vim-scripts/grep.vim'
 Plugin 'vim-scripts/mru.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'sirbrillig/netgrep'
 Plugin 'vim-scripts/AutoComplPop'
 Plugin 'kchmck/vim-coffee-script'
@@ -55,6 +56,7 @@ Plugin 'moll/vim-bbye'
 Plugin 'kshenoy/vim-signature'
 Plugin 'cakebaker/scss-syntax.vim'
 Plugin 'hail2u/vim-css3-syntax'
+Plugin 'solars/github-vim'
 Plugin 'shime/vim-livedown' " Requires `npm install -g livedown`
 
 " Allow matching ruby do/end blocks
@@ -125,7 +127,8 @@ let delimitMate_expand_space = 1
 
 let Grep_Default_Options = '-Irn -i --exclude="*\.po*" --exclude="*\.svn*" --exclude-dir="vip" --exclude="*\.min\.*" --exclude-dir="compiled" --exclude-dir="node_modules" --exclude-dir="glotpress.dir" --exclude="*\.unison\.tmp" --exclude="*compiledTemplates.js" --exclude="*merged.js" --exclude="*mergedAssets.js" --exclude="*api/data*" --exclude-dir="vendor" --exclude-dir="tmp"'
 
-let g:NERDTreeDirArrows=0
+" Hide the NERDTree arrows because some systems don't have support for those characters
+" let g:NERDTreeDirArrows=0
 
 " Display indentation guides
 set list listchars=tab:❘-,trail:·,extends:»,precedes:«,nbsp:×
