@@ -58,6 +58,7 @@ Plugin 'cakebaker/scss-syntax.vim'
 Plugin 'hail2u/vim-css3-syntax'
 Plugin 'solars/github-vim'
 Plugin 'shime/vim-livedown' " Requires `npm install -g livedown`
+Plugin 'csscomb/vim-csscomb'
 
 " Allow matching ruby do/end blocks
 runtime macros/matchit.vim

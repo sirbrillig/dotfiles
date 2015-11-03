@@ -74,6 +74,7 @@ export EDITOR='vim'
 # vim-mode configuration
 bindkey '^e' end-of-line
 bindkey '^a' beginning-of-line
+bindkey '^R' history-incremental-search-backward
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
