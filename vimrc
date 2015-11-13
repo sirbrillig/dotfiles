@@ -300,11 +300,11 @@ colorscheme elflord
 " hi TabLineFill term=underline cterm=underline ctermfg=8 ctermbg=0
 
 " Modify some highlight colors to be less offensive to the eye.
-" hi IncSearch term=reverse,underline cterm=reverse,bold,underline ctermbg=NONE ctermfg=NONE
-" hi Search term=NONE cterm=reverse,bold ctermbg=NONE ctermfg=NONE
-" hi MatchParen term=NONE cterm=bold ctermbg=NONE ctermfg=DarkCyan
-" hi PmenuSel term=NONE cterm=NONE ctermfg=White ctermbg=Blue
-" hi Pmenu term=NONE cterm=NONE ctermfg=Black ctermbg=White
+hi IncSearch term=reverse,underline cterm=reverse,bold,underline ctermbg=NONE ctermfg=NONE
+hi Search term=NONE cterm=reverse,bold ctermbg=NONE ctermfg=NONE
+hi MatchParen term=NONE cterm=bold ctermbg=NONE ctermfg=DarkCyan
+hi PmenuSel term=NONE cterm=NONE ctermfg=White ctermbg=Blue
+hi Pmenu term=NONE cterm=NONE ctermfg=Black ctermbg=White
 
 " Modify the cursorline colors to show just the line number highlighted
 hi LineNr ctermfg=DarkGray
@@ -312,10 +312,10 @@ hi CursorLineNr ctermbg=3
 hi CursorLine cterm=none ctermbg=none
 
 " Modify the SignColumn to make it easier to read.
-" hi SignColumn ctermbg=NONE guibg=NONE
-" hi GitGutterAdd ctermfg=2 guifg=#009900 ctermbg=NONE guibg=NONE
-" hi GitGutterDelete ctermfg=1 ctermbg=NONE guifg=#ff2222 guibg=NONE
-" hi GitGutterChangeDefault ctermfg=3 ctermbg=NONE guifg=#bbbb00 guibg=NONE
+hi SignColumn ctermbg=NONE guibg=NONE
+hi GitGutterAdd ctermfg=2 guifg=#009900 ctermbg=NONE guibg=NONE
+hi GitGutterDelete ctermfg=1 ctermbg=NONE guifg=#ff2222 guibg=NONE
+hi GitGutterChangeDefault ctermfg=3 ctermbg=NONE guifg=#bbbb00 guibg=NONE
 
 " ----------------------------------------------------------------------------
 " FileTypes
