@@ -23,7 +23,6 @@ Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'EinfachToll/DidYouMean'
 Plugin 'sirbrillig/findbyname.vim'
 Plugin 'vim-scripts/grep.vim'
-" Plugin 'Shutnik/jshint2.vim'
 Plugin 'vim-scripts/mru.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs'
@@ -46,6 +45,7 @@ Plugin 'pangloss/vim-javascript'
 Plugin 'goatslacker/mango.vim'
 Plugin 'Lokaltog/vim-distinguished'
 Plugin 'tpope/vim-vividchalk'
+Plugin 'fcevado/molokai_dark'
 Plugin 'danro/rename.vim'
 Plugin 'mxw/vim-jsx'
 Plugin 'idanarye/vim-merginal'
@@ -56,7 +56,6 @@ Plugin 'moll/vim-bbye'
 Plugin 'kshenoy/vim-signature'
 Plugin 'cakebaker/scss-syntax.vim'
 Plugin 'hail2u/vim-css3-syntax'
-Plugin 'solars/github-vim'
 Plugin 'shime/vim-livedown' " Requires `npm install -g livedown`
 Plugin 'csscomb/vim-csscomb'
 
@@ -139,6 +138,12 @@ let g:syntastic_php_phpmd_post_args = 'design,unusedcode'
 
 " Highlight searches made by Ag
 let g:ag_highlight=1
+
+let g:startify_custom_header = [
+      \ '                                   Good Day, Payton!',
+      \ '',
+      \ '',
+      \ ]
 
 " ----------------------------------------------------------------------------
 " vim-airline
@@ -287,7 +292,7 @@ nnoremap <Leader>C :set paste<CR>:r !pbpaste<CR>:set nopaste<CR>:echom "pasted f
 " ----------------------------------------------------------------------------
 
 " Set the theme
-colorscheme vividchalk
+colorscheme elflord
 
 " Modify the colors in the vim 7 tabs.
 " hi TabLine term=reverse ctermfg=Gray ctermbg=NONE
@@ -307,10 +312,10 @@ hi CursorLineNr ctermbg=3
 hi CursorLine cterm=none ctermbg=none
 
 " Modify the SignColumn to make it easier to read.
-hi SignColumn ctermbg=NONE guibg=NONE
-hi GitGutterAdd ctermfg=2 guifg=#009900 ctermbg=NONE guibg=NONE
-hi GitGutterDelete ctermfg=1 ctermbg=NONE guifg=#ff2222 guibg=NONE
-hi GitGutterChangeDefault ctermfg=3 ctermbg=NONE guifg=#bbbb00 guibg=NONE
+" hi SignColumn ctermbg=NONE guibg=NONE
+" hi GitGutterAdd ctermfg=2 guifg=#009900 ctermbg=NONE guibg=NONE
+" hi GitGutterDelete ctermfg=1 ctermbg=NONE guifg=#ff2222 guibg=NONE
+" hi GitGutterChangeDefault ctermfg=3 ctermbg=NONE guifg=#bbbb00 guibg=NONE
 
 " ----------------------------------------------------------------------------
 " FileTypes
@@ -323,6 +328,9 @@ augroup filetype_gemfile
   autocmd BufNewFile,BufRead Vagrantfile setlocal filetype=ruby
 augroup END
 
+" ----------------------------------------------------------------------------
+" Syntastic
+" ----------------------------------------------------------------------------
 " Use jsxhint for React's JSX files.
 " let g:syntastic_javascript_checkers = ['jsxhint']
 " Use eslint for JSX and JS
