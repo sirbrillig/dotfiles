@@ -131,7 +131,7 @@ let Grep_Default_Options = '-Irn -i --exclude="*\.po*" --exclude="*\.svn*" --exc
 " let g:NERDTreeDirArrows=0
 
 " Display indentation guides
-set list listchars=tab:❘-,trail:·,extends:»,precedes:«,nbsp:×
+set list listchars=tab:\|\ ,trail:·,extends:»,precedes:«,nbsp:×
 
 " Override phpmd options
 let g:syntastic_php_phpmd_post_args = 'design,unusedcode'
@@ -316,6 +316,9 @@ hi SignColumn ctermbg=NONE guibg=NONE
 hi GitGutterAdd ctermfg=2 guifg=#009900 ctermbg=NONE guibg=NONE
 hi GitGutterDelete ctermfg=1 ctermbg=NONE guifg=#ff2222 guibg=NONE
 hi GitGutterChangeDefault ctermfg=3 ctermbg=NONE guifg=#bbbb00 guibg=NONE
+
+" Modify the invisible characters colors (tabs)
+hi SpecialKey ctermfg=DarkGray
 
 " ----------------------------------------------------------------------------
 " FileTypes
