@@ -75,7 +75,7 @@ set showtabline=1 "show the tab bar only if more than 1 tab
 set tabstop=2 "use 2-spaces for tabs.
 set shiftwidth=2 "use 2-spaces for indenting.
 set smarttab "pressing tab fixes indent.
-set expandtab "use spaces, not tabs.
+set noexpandtab "use tabs, not spaces.
 set showmatch "highlight matching braces, etc.
 set ruler "show cursor position
 set incsearch "do incremental searches
