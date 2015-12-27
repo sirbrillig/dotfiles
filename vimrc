@@ -320,6 +320,11 @@ hi GitGutterChangeDefault ctermfg=3 ctermbg=NONE guifg=#bbbb00 guibg=NONE
 " Modify the invisible characters colors (tabs)
 hi SpecialKey ctermfg=DarkGray
 
+" Highlight ES6 template strings
+hi link javaScriptTemplateDelim String
+hi link javaScriptTemplateVar Text
+hi link javaScriptTemplateString String
+
 " ----------------------------------------------------------------------------
 " FileTypes
 " ----------------------------------------------------------------------------
@@ -337,4 +342,5 @@ augroup END
 " Use jsxhint for React's JSX files.
 " let g:syntastic_javascript_checkers = ['jsxhint']
 " Use eslint for JSX and JS
-let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_javascript_checkers = ['eslint', 'mixedindentlint']
+let g:syntastic_scss_checkers = ['mixedindentlint', 'sass']
