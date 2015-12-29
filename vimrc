@@ -107,6 +107,9 @@ set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 " Open a new file (c-y) in the current window
 let g:ctrlp_open_new_file = 'r'
 
+" Show only MRU files in the current working directory
+let g:ctrlp_mruf_relative = 1
+
 " Use ag for super-fast ctrlp indexing
 let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
       \ --ignore .git
