@@ -75,7 +75,7 @@ set showtabline=1 "show the tab bar only if more than 1 tab
 set tabstop=2 "use 2-spaces for tabs.
 set shiftwidth=2 "use 2-spaces for indenting.
 set smarttab "pressing tab fixes indent.
-set noexpandtab "use tabs, not spaces.
+set expandtab "use spaces to indent
 set showmatch "highlight matching braces, etc.
 set ruler "show cursor position
 set incsearch "do incremental searches
@@ -250,6 +250,16 @@ function! ToggleComment()
   else
     execute "normal! I" . b:comment_leader
   endif
+endfunction
+
+" Function to replace a `require` line with an `import` line
+function! ES6Import()
+  execute "normal! 0dwiimport \<esc>f=df(ifrom\<esc>$T'Da;"
+endfunction
+
+" Function to replace a `function` line with a `() =>` line
+function! ES6Function()
+  execute "normal! 0/function\<cr>dwf)a =>\<esc>"
 endfunction
 
 " map Leader-n to toggle NERDTree
