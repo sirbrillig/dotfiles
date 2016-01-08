@@ -42,10 +42,6 @@ Plugin 'tpope/vim-endwise'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'jelera/vim-javascript-syntax'
 Plugin 'pangloss/vim-javascript'
-Plugin 'goatslacker/mango.vim'
-Plugin 'Lokaltog/vim-distinguished'
-Plugin 'tpope/vim-vividchalk'
-Plugin 'fcevado/molokai_dark'
 Plugin 'danro/rename.vim'
 Plugin 'mxw/vim-jsx'
 Plugin 'idanarye/vim-merginal'
@@ -58,6 +54,13 @@ Plugin 'cakebaker/scss-syntax.vim'
 Plugin 'hail2u/vim-css3-syntax'
 Plugin 'shime/vim-livedown' " Requires `npm install -g livedown`
 Plugin 'csscomb/vim-csscomb'
+Plugin 'tpope/vim-sleuth'
+
+" Color scheme plugins
+Plugin 'goatslacker/mango.vim'
+Plugin 'Lokaltog/vim-distinguished'
+Plugin 'tpope/vim-vividchalk'
+Plugin 'fcevado/molokai_dark'
 
 " Allow matching ruby do/end blocks
 runtime macros/matchit.vim
@@ -75,7 +78,7 @@ set showtabline=1 "show the tab bar only if more than 1 tab
 set tabstop=2 "use 2-spaces for tabs.
 set shiftwidth=2 "use 2-spaces for indenting.
 set smarttab "pressing tab fixes indent.
-set expandtab "use spaces to indent
+set noet "use tabs to indent
 set showmatch "highlight matching braces, etc.
 set ruler "show cursor position
 set incsearch "do incremental searches
