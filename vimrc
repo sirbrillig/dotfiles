@@ -75,10 +75,13 @@ set background=dark "assume dark background.
 set hidden "allow edited buffers to be hidden
 set switchbuf=useopen "use existing buffer rather than opening a new one
 set showtabline=1 "show the tab bar only if more than 1 tab
-set tabstop=2 "use 2-spaces for tabs.
-set shiftwidth=2 "use 2-spaces for indenting.
 set smarttab "pressing tab fixes indent.
 set noet "use tabs to indent
+set copyindent
+set preserveindent
+set softtabstop=0
+set shiftwidth=2
+set tabstop=2
 set showmatch "highlight matching braces, etc.
 set ruler "show cursor position
 set incsearch "do incremental searches
@@ -139,9 +142,6 @@ let Grep_Default_Options = '-Irn -i --exclude="*\.po*" --exclude="*\.svn*" --exc
 " Display indentation guides
 set list listchars=tab:\|\ ,trail:·,extends:»,precedes:«,nbsp:×
 
-" Override phpmd options
-let g:syntastic_php_phpmd_post_args = 'design,unusedcode'
-
 " Highlight searches made by Ag
 let g:ag_highlight=1
 
@@ -159,6 +159,7 @@ set t_Co=256
 let g:airline_theme='wombat'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#syntastic#enabled = 1
+let g:airline#extensions#whitespace#enabled = 0
 let g:airline_powerline_fonts = 1
 function! TabSection(...)
   call a:1.add_section('airline_a', ' '.g:airline_section_a.' ')
@@ -355,8 +356,9 @@ augroup END
 " ----------------------------------------------------------------------------
 " Syntastic
 " ----------------------------------------------------------------------------
-" Use jsxhint for React's JSX files.
-" let g:syntastic_javascript_checkers = ['jsxhint']
+" Override phpmd options
+let g:syntastic_php_phpmd_post_args = 'design,unusedcode'
+
 " Use eslint for JSX and JS
 let g:syntastic_javascript_checkers = ['eslint', 'mixedindentlint']
 let g:syntastic_scss_checkers = ['mixedindentlint', 'sass']
