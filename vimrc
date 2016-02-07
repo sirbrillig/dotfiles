@@ -55,6 +55,7 @@ Plugin 'hail2u/vim-css3-syntax'
 Plugin 'shime/vim-livedown' " Requires `npm install -g livedown`
 Plugin 'csscomb/vim-csscomb'
 Plugin 'tpope/vim-sleuth'
+Plugin 'tacahiroy/ctrlp-funky'
 
 " Color scheme plugins
 Plugin 'goatslacker/mango.vim'
@@ -78,7 +79,7 @@ set showtabline=1 "show the tab bar only if more than 1 tab
 set smarttab "pressing tab fixes indent.
 set noet "use tabs to indent
 set copyindent
-set preserveindent
+" set preserveindent
 set softtabstop=0
 set shiftwidth=2
 set tabstop=2
@@ -115,6 +116,7 @@ let g:ctrlp_open_new_file = 'r'
 
 " Show only MRU files in the current working directory
 let g:ctrlp_mruf_relative = 1
+let g:ctrlp_mruf_exclude_nomod = 1
 
 " Use ag for super-fast ctrlp indexing
 let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
@@ -284,13 +286,15 @@ nnoremap <Leader>P :CtrlP<space>
 nnoremap <Leader>m :CtrlPMRU<CR>
 " Map leader-b to the CtrlPBuffer search
 nnoremap <Leader>b :CtrlPBuffer<CR>
+" Map leader-f to CtrlPFunky
+nnoremap <Leader>f :CtrlPFunky<CR>
 " Map leader-x to close the current buffer
 nnoremap <Leader>x :Bdelete<CR>
 
 " Map leader-i to re-indent the selected lines
 vnoremap <Leader>i :call Reindent()<CR>
 function! Reindent()
-  execute "normal! <100"
+  execute "normal! 10<"
   execute "normal! =="
 endfunction
 
@@ -341,6 +345,12 @@ hi SpecialKey ctermfg=DarkGray
 hi link javaScriptTemplateDelim String
 hi link javaScriptTemplateVar Text
 hi link javaScriptTemplateString String
+
+" Simplify colors during vimdiff
+highlight DiffAdd    cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
+highlight DiffDelete cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
+highlight DiffChange cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
+highlight DiffText   cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=bg guibg=Red
 
 " ----------------------------------------------------------------------------
 " FileTypes
