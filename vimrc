@@ -56,7 +56,7 @@ Plugin 'hail2u/vim-css3-syntax'
 Plugin 'shime/vim-livedown' " Requires `npm install -g livedown`
 Plugin 'csscomb/vim-csscomb'
 Plugin 'tpope/vim-sleuth'
-Plugin 'tacahiroy/ctrlp-funky'
+" Plugin 'tacahiroy/ctrlp-funky'
 
 " Color scheme plugins
 Plugin 'goatslacker/mango.vim'
@@ -164,29 +164,34 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#whitespace#enabled = 0
 let g:airline_powerline_fonts = 1
-function! TabSection(...)
-  call a:1.add_section('airline_a', ' '.g:airline_section_a.' ')
-  call a:1.add_section('airline_c', " tabs are %{&expandtab?'spaces':'tabs'} ")
-  call a:1.add_section('airline_b', ' '.g:airline_section_b.' ')
-  call a:1.add_section('airline_c', ' '.g:airline_section_c.' ')
-  call a:1.split()
-  call a:1.add_section('airline_x', ' '.g:airline_section_x.' ')
-  call a:1.add_section('airline_y', ' '.g:airline_section_y.' ')
-  call a:1.add_section('airline_z', ' '.g:airline_section_z.' ')
-  call a:1.add_section('airline_warning', g:airline_section_warning) "TODO: this should be add_raw
-  return 1
-endfunction
-function! AirlineInit()
-  call airline#add_statusline_func('TabSection')
-endfunction
-augroup airline_init
-  autocmd!
-  autocmd VimEnter * call AirlineInit()
-augroup END
+" function! TabSection(...)
+  " call a:1.add_section('airline_a', ' '.g:airline_section_a.' ')
+  " call a:1.add_section('airline_c', " tabs are %{&expandtab?'spaces':'tabs'} ")
+  " call a:1.add_section('airline_b', ' '.g:airline_section_b.' ')
+  " call a:1.add_section('airline_c', ' '.g:airline_section_c.' ')
+  " call a:1.split()
+  " call a:1.add_section('airline_x', ' '.g:airline_section_x.' ')
+  " call a:1.add_section('airline_y', ' '.g:airline_section_y.' ')
+  " call a:1.add_section('airline_z', ' '.g:airline_section_z.' ')
+  " call a:1.add_section('airline_warning', g:airline_section_warning) "TODO: this should be add_raw
+  " return 1
+" endfunction
+" function! AirlineInit()
+  " call airline#add_statusline_func('TabSection')
+" endfunction
+" augroup airline_init
+  " autocmd!
+  " autocmd VimEnter * call AirlineInit()
+" augroup END
 
 " ----------------------------------------------------------------------------
 " Keybindings
 " ----------------------------------------------------------------------------
+" quit with capital Q also
+command! -bar -bang Q quit<bang>
+command! -bar -bang Qa quit<bang>
+command! Ccl ccl
+
 " map CTRL-A and CTRL-E to home and end, respectively.
 map  <C-A> <Home>
 map  <C-E> <End>
