@@ -45,13 +45,15 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git brew osx bgnotify vi-mode)
+plugins=(git brew osx bgnotify vi-mode vagrant tmux npm node grunt)
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
 export PATH="/Users/payton/.rvm/gems/ruby-2.0.0-p247/bin:/Users/payton/.rvm/gems/ruby-2.0.0-p247@global/bin:/Users/payton/.rvm/rubies/ruby-2.0.0-p247/bin:/Users/payton/.rvm/bin:/Users/payton/.rvm/bin:/usr/local/bin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/go/bin:/opt/local/bin:/opt/local/sbin:/Users/payton/bin:./bin:/var/lib/gems/1.8/bin:/usr/local/share/npm/bin:/Users/payton/bin:./bin:/var/lib/gems/1.8/bin:/Users/payton/bin:/usr/local/share/npm/bin"
+export GOPATH=$HOME/Code/go
+export PATH=$PATH:/usr/local/opt/go/libexec/bin
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -85,6 +87,7 @@ bindkey '^R' history-incremental-search-backward
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias zshconfig="vim ~/.zshrc"
+alias mcsync='unison -ui text -repeat watch dev-mc'
 alias usyn='unison -ui text -repeat watch automattic-sandbox'
 alias unisync-force-local='unison -ui text -auto -force "/Users/payton/Code/automattic-sandbox" automattic-sandbox'
 alias unisync-force-remote='unison -ui text -auto -force "ssh://wpdev@wpsandbox//home/wpcom/public_html" automattic-sandbox'

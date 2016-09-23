@@ -49,6 +49,7 @@ Plugin 'idanarye/vim-merginal'
 Plugin 'Keithbsmiley/swift.vim'
 Plugin 'fatih/vim-go'
 Plugin 'rking/ag.vim'
+Plugin 'nazo/pt.vim'
 Plugin 'moll/vim-bbye'
 Plugin 'kshenoy/vim-signature'
 Plugin 'cakebaker/scss-syntax.vim'
@@ -80,7 +81,6 @@ set showtabline=1 "show the tab bar only if more than 1 tab
 set smarttab "pressing tab fixes indent.
 set noet "use tabs to indent
 set copyindent
-" set preserveindent
 set softtabstop=0
 set shiftwidth=2
 set tabstop=2
@@ -119,25 +119,13 @@ let g:ctrlp_open_new_file = 'r'
 let g:ctrlp_mruf_relative = 1
 let g:ctrlp_mruf_exclude_nomod = 1
 
-" Use ag for super-fast ctrlp indexing
-let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
-      \ --ignore .git
-      \ --ignore .svn
-      \ --ignore .hg
-      \ --ignore .DS_Store
-      \ --ignore "**/*.pyc"
-      \ --ignore ".sass-cache"
-      \ --ignore "*.log"
-      \ --ignore "node_modules"
-      \ --ignore "*.min.*"
-      \ -g ""'
+" Use pt (the platinum searcher) for super-fast ctrlp indexing
+let g:ctrlp_user_command = 'pt %s -i --nocolor --nogroup -g=""'
 
 " When pressing <CR> within a curly brace, add two lines and move up one.
 let delimitMate_expand_cr = 1
 " When pressing <SPACE> within a paren, add two spaces and move back one.
 let delimitMate_expand_space = 1
-
-let Grep_Default_Options = '-Irn -i --exclude="*\.po*" --exclude="*\.svn*" --exclude-dir="vip" --exclude="*\.min\.*" --exclude-dir="compiled" --exclude-dir="node_modules" --exclude-dir="glotpress.dir" --exclude="*\.unison\.tmp" --exclude="*compiledTemplates.js" --exclude="*merged.js" --exclude="*mergedAssets.js" --exclude="*api/data*" --exclude-dir="vendor" --exclude-dir="tmp"'
 
 " Hide the NERDTree arrows because some systems don't have support for those characters
 " let g:NERDTreeDirArrows=0
@@ -148,15 +136,10 @@ set list listchars=tab:\|\ ,trail:·,extends:»,precedes:«,nbsp:×
 " Highlight searches made by Ag
 let g:ag_highlight=1
 
-let g:startify_custom_header = [
-      \ '                                   Good Day, Payton!',
-      \ '',
-      \ '',
-      \ ]
-
 " ----------------------------------------------------------------------------
 " vim-airline
 " ----------------------------------------------------------------------------
+let g:bufferline_fname_mod = ':p:.'
 let g:bufferline_echo = 0
 set t_Co=256
 let g:airline_theme='wombat'
@@ -225,9 +208,10 @@ nnoremap \ :w<CR>
 nnoremap <Leader>w gq
 vnoremap <Leader>w gq
 
-" map CTRL-o to new buffer.
+" map CTRL-t/Leader-t to new buffer.
 " also map Leader-[ and Leader-] to navigation.
 nnoremap <C-T> :e<space>
+nnoremap <Leader>t :e<space>
 nnoremap <Leader>[ :bp<CR>
 nnoremap <Leader>] :bn<CR>
 
