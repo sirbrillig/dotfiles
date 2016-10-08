@@ -56,7 +56,8 @@ Plugin 'cakebaker/scss-syntax.vim'
 Plugin 'hail2u/vim-css3-syntax'
 Plugin 'shime/vim-livedown' " Requires `npm install -g livedown`
 Plugin 'csscomb/vim-csscomb'
-Plugin 'tpope/vim-sleuth'
+" Plugin 'haya14busa/incsearch.vim' " Doesn't work for some reason
+" Plugin 'tpope/vim-sleuth' " Often annoying
 " Plugin 'tacahiroy/ctrlp-funky'
 
 " Color scheme plugins
@@ -72,7 +73,7 @@ runtime macros/matchit.vim
 " Options
 " ----------------------------------------------------------------------------
 syntax on
-set hlsearch
+set hlsearch "highlight search matches
 set autoindent "use previous line's indent level
 set background=dark "assume dark background.
 set hidden "allow edited buffers to be hidden
@@ -297,6 +298,10 @@ nnoremap <Leader>G :Ag!<space>
 " Map leader-c, leader-C to copy/paste selected text in MacOS
 vnoremap <Leader>c :w !pbcopy<CR><CR>:echom "copied to MacOS clipboard"<CR>
 nnoremap <Leader>C :set paste<CR>:r !pbpaste<CR>:set nopaste<CR>:echom "pasted from MacOS clipboard"<CR>
+
+" Map ctrl-j and ctrl-k to jump to nearest parenthesis, bracket, or brace
+nnoremap <C-j> /[(\)[\]{\}]<CR>:nohlsearch<CR>
+nnoremap <C-k> ?[(\)[\]{\}]<CR>:nohlsearch<CR>
 
 " ----------------------------------------------------------------------------
 " Colors
