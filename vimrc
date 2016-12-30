@@ -56,8 +56,8 @@ Plugin 'cakebaker/scss-syntax.vim'
 Plugin 'hail2u/vim-css3-syntax'
 Plugin 'shime/vim-livedown' " Requires `npm install -g livedown`
 Plugin 'csscomb/vim-csscomb'
+Plugin 'tpope/vim-sleuth'
 " Plugin 'haya14busa/incsearch.vim' " Doesn't work for some reason
-" Plugin 'tpope/vim-sleuth' " Often annoying
 " Plugin 'tacahiroy/ctrlp-funky'
 
 " Color scheme plugins
@@ -92,7 +92,7 @@ set ignorecase "case-insensitive searching
 set smartcase "do case-sensitive if upper-case characters.
 set gdefault "assume the /g flag on :s.
 set formatoptions=crql "auto-format comments in code.
-set textwidth=80 "for wrapping
+set textwidth=0 "for wrapping
 set tabpagemax=20 " allow a lot of tabs to be open
 set backspace=indent,eol,start "allow erasing previously entered characters in insert mode.
 set wildmenu " show list instead of just completing
@@ -112,6 +112,9 @@ set iskeyword+=\- " Adds dash character to keyword characters
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set undodir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+
+" Allow copy/paste between MacOS and tmux
+set clipboard=unnamed
 
 " Open a new file (c-y) in the current window
 let g:ctrlp_open_new_file = 'r'
@@ -367,3 +370,4 @@ let g:syntastic_php_phpmd_post_args = 'design,unusedcode'
 " Use eslint for JSX and JS
 let g:syntastic_javascript_checkers = ['eslint', 'mixedindentlint']
 let g:syntastic_scss_checkers = ['mixedindentlint', 'sass']
+"let g:syntastic_php_checkers = [ 'php', 'phpcs' ]
