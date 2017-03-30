@@ -1,0 +1,27 @@
+# Use the same login and shell variables as the default shell
+deflogin on
+defshell -$SHELL
+
+# Disk space free
+backtick 101 30 15 bash -c "df -h|head -2|tail -1|awk '{print \$5}'"
+
+# Appearance
+startup_message off
+caption string "%?%F%{= Bk}%? %C%A %D %d-%m-%Y %{= kB} %t%= %?%F%{= Bk}%:%{= wk}%? %n "
+hardstatus alwayslastline
+hardstatus string '%{= Kd} %{= Kd}%-w%{= Kr}[%{= KW}%n %t%{= Kr}]%{= Kd}%+w %-= %{KG} %H%{KW} | %l | %{KY}%101`%{KW} | %D %M %d %Y%{= Kc} %C%a%{-}'
+
+# Change scrollback to 10000 lines
+defscrollback 10000
+
+# Change command key to z
+escape ^Zz
+
+# Bind r to reload the screenrc
+bind r source ~/.screenrc
+
+# Start at window 1
+bind c screen 1
+bind ^c screen 1
+bind 0 select 10                                                            
+screen 1
