@@ -92,4 +92,5 @@ alias mcsync='unison -ui text -repeat watch dev-mc'
 alias usyn='unison -ui text -repeat watch automattic-sandbox'
 alias unisync-force-local='unison -ui text -auto -force "/Users/payton/Code/automattic-sandbox" automattic-sandbox'
 alias unisync-force-remote='unison -ui text -auto -force "ssh://wpdev@wpsandbox//home/wpcom/public_html" automattic-sandbox'
+alias pitsync='unison -ui text -repeat watch the-pit-of-despair'
 alias ls="ls -G -F"
