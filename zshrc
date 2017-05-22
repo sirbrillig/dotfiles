@@ -93,4 +93,13 @@ alias usyn='unison -ui text -repeat watch automattic-sandbox'
 alias unisync-force-local='unison -ui text -auto -force "/Users/payton/Code/automattic-sandbox" automattic-sandbox'
 alias unisync-force-remote='unison -ui text -auto -force "ssh://wpdev@wpsandbox//home/wpcom/public_html" automattic-sandbox'
 alias pitsync='unison -ui text -repeat watch the-pit-of-despair'
+alias mcsync='unison -ui text -repeat watch missioncontrol'
 alias ls="ls -G -F"
+
+# Use rg for fzf to ignore gitignore contents
+export FZF_DEFAULT_COMMAND='rg --files'
+export FZF_ALT_C_COMMAND='find . -maxdepth 1 -type d'
+# Enable fzf auto completion
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# Bind CTRL-W to cd with fuzzy-search
+bindkey '^W' fzf-cd-widget
