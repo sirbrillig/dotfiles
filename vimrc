@@ -10,13 +10,13 @@
 " ----------------------------------------------------------------------------
 set nocompatible
 filetype off
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
 " ----------------------------------------------------------------------------
 " Plugins
 " ----------------------------------------------------------------------------
-Plugin 'gmarik/vundle'
+Plugin 'VundleVim/Vundle.vim'
 Plugin 'vim-scripts/L9'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'bronson/vim-trailing-whitespace'
@@ -57,6 +57,7 @@ Plugin 'hail2u/vim-css3-syntax'
 Plugin 'shime/vim-livedown' " Requires `npm install -g livedown`
 Plugin 'csscomb/vim-csscomb'
 Plugin 'tpope/vim-sleuth'
+" Plugin 'junegunn/fzf.vim'
 " Plugin 'haya14busa/incsearch.vim' " Doesn't work for some reason
 " Plugin 'tacahiroy/ctrlp-funky'
 
@@ -65,6 +66,8 @@ Plugin 'goatslacker/mango.vim'
 Plugin 'Lokaltog/vim-distinguished'
 Plugin 'tpope/vim-vividchalk'
 Plugin 'fcevado/molokai_dark'
+
+call vundle#end()
 
 " Allow matching ruby do/end blocks
 runtime macros/matchit.vim
@@ -124,7 +127,14 @@ let g:ctrlp_mruf_relative = 1
 let g:ctrlp_mruf_exclude_nomod = 1
 
 " Use pt (the platinum searcher) for super-fast ctrlp indexing
-let g:ctrlp_user_command = 'pt %s -i --nocolor --nogroup -g=""'
+" if executable('pt')
+  " let g:ctrlp_user_command = 'pt %s -i --nocolor --nogroup -g=""'
+" endif
+" Use rg (ripgrep) for ctrlp indexing
+if executable('rg')
+  let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+  let g:ctrlp_use_caching = 0
+endif
 
 " When pressing <CR> within a curly brace, add two lines and move up one.
 let delimitMate_expand_cr = 1
@@ -151,25 +161,6 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#whitespace#enabled = 0
 let g:airline_powerline_fonts = 1
-" function! TabSection(...)
-  " call a:1.add_section('airline_a', ' '.g:airline_section_a.' ')
-  " call a:1.add_section('airline_c', " tabs are %{&expandtab?'spaces':'tabs'} ")
-  " call a:1.add_section('airline_b', ' '.g:airline_section_b.' ')
-  " call a:1.add_section('airline_c', ' '.g:airline_section_c.' ')
-  " call a:1.split()
-  " call a:1.add_section('airline_x', ' '.g:airline_section_x.' ')
-  " call a:1.add_section('airline_y', ' '.g:airline_section_y.' ')
-  " call a:1.add_section('airline_z', ' '.g:airline_section_z.' ')
-  " call a:1.add_section('airline_warning', g:airline_section_warning) "TODO: this should be add_raw
-  " return 1
-" endfunction
-" function! AirlineInit()
-  " call airline#add_statusline_func('TabSection')
-" endfunction
-" augroup airline_init
-  " autocmd!
-  " autocmd VimEnter * call AirlineInit()
-" augroup END
 
 " ----------------------------------------------------------------------------
 " Keybindings
@@ -370,4 +361,15 @@ let g:syntastic_php_phpmd_post_args = 'design,unusedcode'
 " Use eslint for JSX and JS
 let g:syntastic_javascript_checkers = ['eslint', 'mixedindentlint']
 let g:syntastic_scss_checkers = ['mixedindentlint', 'sass']
-"let g:syntastic_php_checkers = [ 'php', 'phpcs' ]
+let g:syntastic_php_checkers = [ 'php', 'phpcs' ]
+
+" ----------------------------------------------------------------------------
+" Grep
+" ----------------------------------------------------------------------------
+
+" Use Rg to grep
+" if executable("rg")
+  " set grepprg=rg\ --vimgrep\ --no-heading
+  " set grepformat=%f:%l:%c:%m,%f:%l:%m
+" endif
+" command! -nargs=+ -complete=file Rg execute 'silent grep! <args>' | copen
