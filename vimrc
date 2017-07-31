@@ -180,6 +180,9 @@ map! <C-E> <End>
 " reset the mapleader to ;
 let mapleader = ";"
 
+" Use leader-; as "repeat last f or t movement"
+nnoremap <Leader>; ;
+
 " map leader-q to clear the search highlight.
 nnoremap <silent> <leader>q :nohlsearch<CR>
 
@@ -257,8 +260,8 @@ endfunction
 " map Leader-n to toggle NERDTree
 nnoremap <Leader>n :NERDTreeTabsToggle<CR>
 
-" Map leader-; to add a semicolon to the end of the line
-nnoremap <Leader>; mqA;<esc>`q
+" Map leader-: to add a semicolon to the end of the line
+nnoremap <Leader>: mqA;<esc>`q
 
 " Map leader-, to add a comma to the end of the line
 nnoremap <Leader>, mqA,<esc>`q
