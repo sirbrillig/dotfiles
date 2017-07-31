@@ -60,6 +60,7 @@ Plugin 'tpope/vim-sleuth'
 " Plugin 'junegunn/fzf.vim'
 " Plugin 'haya14busa/incsearch.vim' " Doesn't work for some reason
 " Plugin 'tacahiroy/ctrlp-funky'
+Plugin 'jremmen/vim-ripgrep'
 
 " Color scheme plugins
 Plugin 'goatslacker/mango.vim'
