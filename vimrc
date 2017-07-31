@@ -367,6 +367,9 @@ let g:syntastic_javascript_checkers = ['eslint', 'mixedindentlint']
 let g:syntastic_scss_checkers = ['mixedindentlint', 'sass']
 let g:syntastic_php_checkers = [ 'php', 'phpcs' ]
 
+" Only use python3 for python linting
+let g:syntastic_python_checkers= ['python3', 'flake8', 'pylint', 'mypy']
+
 " ----------------------------------------------------------------------------
 " Grep
 " ----------------------------------------------------------------------------
