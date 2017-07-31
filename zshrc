@@ -51,7 +51,7 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export PATH="/Users/payton/.rvm/gems/ruby-2.0.0-p247/bin:/Users/payton/.rvm/gems/ruby-2.0.0-p247@global/bin:/Users/payton/.rvm/rubies/ruby-2.0.0-p247/bin:/Users/payton/.rvm/bin:/Users/payton/.rvm/bin:/usr/local/bin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/go/bin:/opt/local/bin:/opt/local/sbin:/Users/payton/bin:./bin:/var/lib/gems/1.8/bin:/usr/local/share/npm/bin:/Users/payton/bin:./bin:/var/lib/gems/1.8/bin:/Users/payton/bin:/usr/local/share/npm/bin"
+export PATH="/Users/payton/.rvm/gems/ruby-2.0.0-p247/bin:/Users/payton/.rvm/gems/ruby-2.0.0-p247@global/bin:/Users/payton/.rvm/rubies/ruby-2.0.0-p247/bin:/Users/payton/.rvm/bin:/Users/payton/.rvm/bin:/usr/local/bin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/go/bin:/opt/local/bin:/opt/local/sbin:/Users/payton/bin:/var/lib/gems/1.8/bin:/usr/local/share/npm/bin:/Users/payton/bin:/var/lib/gems/1.8/bin:/Users/payton/bin:/usr/local/share/npm/bin"
 export GOPATH=$HOME/Code/go
 export PATH=$PATH:/usr/local/opt/go/libexec/bin
 export PATH=$PATH:/Users/payton/.composer/vendor/bin
@@ -93,7 +93,7 @@ alias usyn='unison -ui text -repeat watch automattic-sandbox'
 alias unisync-force-local='unison -ui text -auto -force "/Users/payton/Code/automattic-sandbox" automattic-sandbox'
 alias unisync-force-remote='unison -ui text -auto -force "ssh://wpdev@wpsandbox//home/wpcom/public_html" automattic-sandbox'
 alias pitsync='unison -ui text -repeat watch the-pit-of-despair'
-alias mcsync='unison -ui text -repeat watch missioncontrol'
+alias gtsync='unison -ui text -repeat watch guided-transfer'
 alias ls="ls -G -F"
 
 # Use rg for fzf to ignore gitignore contents
