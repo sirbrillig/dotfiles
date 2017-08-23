@@ -25,11 +25,8 @@ Plugin 'sirbrillig/findbyname.vim'
 Plugin 'vim-scripts/grep.vim'
 Plugin 'vim-scripts/mru.vim'
 Plugin 'scrooloose/nerdtree'
-Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'sirbrillig/netgrep'
 Plugin 'vim-scripts/AutoComplPop'
-Plugin 'kchmck/vim-coffee-script'
 Plugin 'elzr/vim-json'
 Plugin 'bling/vim-bufferline'
 Plugin 'mustache/vim-mustache-handlebars'
@@ -57,9 +54,6 @@ Plugin 'hail2u/vim-css3-syntax'
 Plugin 'shime/vim-livedown' " Requires `npm install -g livedown`
 Plugin 'csscomb/vim-csscomb'
 Plugin 'tpope/vim-sleuth'
-" Plugin 'junegunn/fzf.vim'
-" Plugin 'haya14busa/incsearch.vim' " Doesn't work for some reason
-" Plugin 'tacahiroy/ctrlp-funky'
 Plugin 'jremmen/vim-ripgrep'
 Plugin 'w0rp/ale'
 
@@ -142,6 +136,8 @@ endif
 let delimitMate_expand_cr = 1
 " When pressing <SPACE> within a paren, add two spaces and move back one.
 let delimitMate_expand_space = 1
+" Disable delimitMate for certain filetypes
+au FileType markdown,html let b:loaded_delimitMate = 0
 
 " Hide the NERDTree arrows because some systems don't have support for those characters
 " let g:NERDTreeDirArrows=0
@@ -151,6 +147,9 @@ set list listchars=tab:\|\ ,trail:·,extends:»,precedes:«,nbsp:×
 
 " Highlight searches made by Ag
 let g:ag_highlight=1
+
+" Disable JSON quote concealing
+let g:vim_json_syntax_conceal = 0
 
 " ----------------------------------------------------------------------------
 " vim-airline
@@ -260,7 +259,7 @@ function! ES6Function()
 endfunction
 
 " map Leader-n to toggle NERDTree
-nnoremap <Leader>n :NERDTreeTabsToggle<CR>
+nnoremap <Leader>n :NERDTreeToggle<CR>
 
 " Map leader-: to add a semicolon to the end of the line
 nnoremap <Leader>: mqA;<esc>`q
