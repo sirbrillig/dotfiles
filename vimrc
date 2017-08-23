@@ -34,7 +34,7 @@ Plugin 'elzr/vim-json'
 Plugin 'bling/vim-bufferline'
 Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'Raimondi/delimitMate'
-Plugin 'scrooloose/syntastic'
+" Plugin 'scrooloose/syntastic' " no async; trying w0rp/ale instead
 Plugin 'tpope/vim-fugitive'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
@@ -61,6 +61,7 @@ Plugin 'tpope/vim-sleuth'
 " Plugin 'haya14busa/incsearch.vim' " Doesn't work for some reason
 " Plugin 'tacahiroy/ctrlp-funky'
 Plugin 'jremmen/vim-ripgrep'
+Plugin 'w0rp/ale'
 
 " Color scheme plugins
 Plugin 'goatslacker/mango.vim'
@@ -161,6 +162,7 @@ let g:airline_theme='wombat'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#whitespace#enabled = 0
+let g:airline#extensions#ale#enabled = 1
 let g:airline_powerline_fonts = 1
 
 " ----------------------------------------------------------------------------
@@ -369,6 +371,7 @@ let g:syntastic_php_checkers = [ 'php', 'phpcs' ]
 
 " Only use python3 for python linting
 let g:syntastic_python_checkers= ['python3', 'flake8', 'pylint', 'mypy']
+"let g:syntastic_python_checkers= ['python3', 'flake8']
 
 " ----------------------------------------------------------------------------
 " Grep
@@ -380,3 +383,10 @@ let g:syntastic_python_checkers= ['python3', 'flake8', 'pylint', 'mypy']
   " set grepformat=%f:%l:%c:%m,%f:%l:%m
 " endif
 " command! -nargs=+ -complete=file Rg execute 'silent grep! <args>' | copen
+
+" ----------------------------------------------------------------------------
+" ALE
+" ----------------------------------------------------------------------------
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\}
