@@ -388,4 +388,5 @@ let g:syntastic_python_checkers= ['python3', 'flake8', 'pylint', 'mypy']
 " ----------------------------------------------------------------------------
 let g:ale_linters = {
 \   'javascript': ['eslint'],
+\   'php': ['php', 'phpcs'],
 \}
