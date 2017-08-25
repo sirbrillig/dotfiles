@@ -391,4 +391,5 @@ let g:ale_lint_delay = 2000
 let g:ale_linters = {
 \   'javascript': ['eslint'],
 \   'php': ['php', 'phpcs'],
+\   'html': [],
 \}
