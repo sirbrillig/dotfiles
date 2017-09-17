@@ -56,6 +56,7 @@ Plugin 'csscomb/vim-csscomb'
 Plugin 'tpope/vim-sleuth'
 Plugin 'jremmen/vim-ripgrep'
 Plugin 'w0rp/ale'
+Plugin 'rizzatti/dash.vim'
 
 " Color scheme plugins
 Plugin 'goatslacker/mango.vim'
@@ -390,6 +391,6 @@ let g:ale_lint_delay = 2000
 "let g:ale_lint_on_text_changed = 'normal'
 let g:ale_linters = {
 \   'javascript': ['eslint'],
-\   'php': ['php', 'phpcs'],
+\   'php': ['php', 'phpcs', 'phpmd'],
 \   'html': [],
 \}
