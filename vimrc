@@ -2,69 +2,72 @@
 " ----------------------------------------------------------------------------
 " Summary: Payton's vimrc file
 " URL: https://github.com/sirbrillig/dotfiles
-" Version: 2.5.0
+" Version: 2.6.0
 " ----------------------------------------------------------------------------
 
 " ----------------------------------------------------------------------------
-" Set up Vundle
+" Set up vim-plug
 " ----------------------------------------------------------------------------
-set nocompatible
-filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin('~/.vim/bundle')
 
 " ----------------------------------------------------------------------------
 " Plugins
 " ----------------------------------------------------------------------------
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'vim-scripts/L9'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'bronson/vim-trailing-whitespace'
-Plugin 'EinfachToll/DidYouMean'
-Plugin 'sirbrillig/findbyname.vim'
-Plugin 'vim-scripts/grep.vim'
-Plugin 'vim-scripts/mru.vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'vim-scripts/AutoComplPop'
-Plugin 'elzr/vim-json'
-Plugin 'bling/vim-bufferline'
-Plugin 'mustache/vim-mustache-handlebars'
-Plugin 'Raimondi/delimitMate'
-" Plugin 'scrooloose/syntastic' " no async; trying w0rp/ale instead
-Plugin 'tpope/vim-fugitive'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-endwise'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'jelera/vim-javascript-syntax'
-Plugin 'pangloss/vim-javascript'
-Plugin 'danro/rename.vim'
-Plugin 'mxw/vim-jsx'
-Plugin 'idanarye/vim-merginal'
-Plugin 'Keithbsmiley/swift.vim'
-Plugin 'fatih/vim-go'
-Plugin 'rking/ag.vim'
-Plugin 'nazo/pt.vim'
-Plugin 'moll/vim-bbye'
-Plugin 'kshenoy/vim-signature'
-Plugin 'cakebaker/scss-syntax.vim'
-Plugin 'hail2u/vim-css3-syntax'
-Plugin 'shime/vim-livedown' " Requires `npm install -g livedown`
-Plugin 'csscomb/vim-csscomb'
-Plugin 'tpope/vim-sleuth'
-Plugin 'jremmen/vim-ripgrep'
-Plugin 'w0rp/ale'
-Plugin 'rizzatti/dash.vim'
+Plug 'vim-scripts/L9'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'bronson/vim-trailing-whitespace'
+Plug 'EinfachToll/DidYouMean'
+Plug 'sirbrillig/findbyname.vim'
+Plug 'vim-scripts/mru.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'vim-scripts/AutoComplPop'
+Plug 'bling/vim-bufferline'
+Plug 'Raimondi/delimitMate'
+Plug 'tpope/vim-fugitive'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-endwise'
+Plug 'airblade/vim-gitgutter'
+Plug 'danro/rename.vim'
+Plug 'idanarye/vim-merginal'
+Plug 'moll/vim-bbye'
+Plug 'kshenoy/vim-signature'
+Plug 'shime/vim-livedown' " Requires `npm install -g livedown`
+Plug 'csscomb/vim-csscomb'
+Plug 'tpope/vim-sleuth'
+Plug 'w0rp/ale'
+
+" Syntax plugins
+Plug 'mxw/vim-jsx'
+Plug 'elzr/vim-json'
+Plug 'mustache/vim-mustache-handlebars'
+Plug 'jelera/vim-javascript-syntax'
+Plug 'pangloss/vim-javascript'
+Plug 'cakebaker/scss-syntax.vim'
+Plug 'hail2u/vim-css3-syntax'
+Plug 'Keithbsmiley/swift.vim'
+Plug 'fatih/vim-go'
+
+" Search plugins
+Plug 'vim-scripts/grep.vim'
+Plug 'rking/ag.vim' " Requires the_silver_searcher
+Plug 'nazo/pt.vim' " Requires the_platinum_searcher
+Plug 'jremmen/vim-ripgrep' " Requires ripgrep
+
+" MacOS plugins
+if has('mac')
+  Plug 'rizzatti/dash.vim'
+endif
 
 " Color scheme plugins
-Plugin 'goatslacker/mango.vim'
-Plugin 'Lokaltog/vim-distinguished'
-Plugin 'tpope/vim-vividchalk'
-Plugin 'fcevado/molokai_dark'
+Plug 'goatslacker/mango.vim'
+Plug 'Lokaltog/vim-distinguished'
+Plug 'tpope/vim-vividchalk'
+Plug 'fcevado/molokai_dark'
 
-call vundle#end()
+call plug#end()
 
 " Allow matching ruby do/end blocks
 runtime macros/matchit.vim
