@@ -38,6 +38,9 @@ Plug 'shime/vim-livedown' " Requires `npm install -g livedown`
 Plug 'csscomb/vim-csscomb'
 Plug 'tpope/vim-sleuth'
 Plug 'w0rp/ale'
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql'] }
 
 " Syntax plugins
 Plug 'mxw/vim-jsx'
@@ -397,3 +400,11 @@ let g:ale_linters = {
 \   'php': ['php', 'phpcs', 'phpmd'],
 \   'html': [],
 \}
+
+" ----------------------------------------------------------------------------
+" Prettier
+" ----------------------------------------------------------------------------
+" https://github.com/prettier/vim-prettier#overwrite-default-prettier-configuration
+" Why can't it just use the project's prettier config?
+" https://github.com/prettier/vim-prettier/pull/52
+let g:prettier#config#bracket_spacing = 'true'
