@@ -283,8 +283,6 @@ nnoremap <Leader>P :CtrlP<space>
 nnoremap <Leader>m :CtrlPMRU<CR>
 " Map leader-b to the CtrlPBuffer search
 nnoremap <Leader>b :CtrlPBuffer<CR>
-" Map leader-f to CtrlPFunky
-nnoremap <Leader>f :CtrlPFunky<CR>
 " Map leader-x to close the current buffer
 nnoremap <Leader>x :Bdelete<CR>
 
@@ -299,7 +297,8 @@ endfunction
 nnoremap <Leader>g :Ag! <cword><CR>
 
 " Map leader-G to begin a search
-nnoremap <Leader>G :Ag!<space>
+"nnoremap <Leader>G :Ag!<space>
+nnoremap <Leader>G :Rg --smart-case -e ""<Left>
 
 " Map leader-c, leader-C to copy/paste selected text in MacOS
 vnoremap <Leader>c :w !pbcopy<CR><CR>:echom "copied to MacOS clipboard"<CR>
