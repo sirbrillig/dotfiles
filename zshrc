@@ -55,6 +55,7 @@ export PATH="/Users/payton/.rvm/gems/ruby-2.0.0-p247/bin:/Users/payton/.rvm/gems
 export GOPATH=$HOME/Code/go
 export PATH=$PATH:/usr/local/opt/go/libexec/bin
 export PATH=$PATH:/Users/payton/.composer/vendor/bin
+export PATH=$PATH:/Users/payton/Code/arcanist/arcanist/bin
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
