@@ -104,3 +104,6 @@ export FZF_ALT_C_COMMAND='find . -maxdepth 1 -type d'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # Bind CTRL-W to cd with fuzzy-search
 bindkey '^W' fzf-cd-widget
+
+# Set environment variable for socks proxy address for using Phabricator (arc):
+export SOCKS5PROXY="127.0.0.1:8080"
