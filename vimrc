@@ -23,7 +23,6 @@ Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'vim-scripts/AutoComplPop'
 Plug 'bling/vim-bufferline'
-Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -41,6 +40,15 @@ Plug 'w0rp/ale'
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql'] }
+Plug 'ternjs/tern_for_vim', {
+  \ 'do': 'npm install',
+  \ 'for': ['javascript', 'typescript'] }
+Plug 'junegunn/vader.vim'
+"Plug 'SirVer/ultisnips' " Doesn't work :-(
+Plug 'Raimondi/delimitMate'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'garbas/vim-snipmate'
 
 " Syntax plugins
 Plug 'mxw/vim-jsx'
@@ -48,6 +56,7 @@ Plug 'elzr/vim-json'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'jelera/vim-javascript-syntax'
 Plug 'pangloss/vim-javascript'
+Plug 'moll/vim-node'
 Plug 'cakebaker/scss-syntax.vim'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'Keithbsmiley/swift.vim'
