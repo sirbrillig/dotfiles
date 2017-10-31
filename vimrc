@@ -153,7 +153,7 @@ let delimitMate_expand_cr = 1
 " When pressing <SPACE> within a paren, add two spaces and move back one.
 let delimitMate_expand_space = 1
 " Disable delimitMate for certain filetypes
-au FileType markdown,html let b:loaded_delimitMate = 0
+"au FileType markdown,html let b:loaded_delimitMate = 0
 
 " Hide the NERDTree arrows because some systems don't have support for those characters
 " let g:NERDTreeDirArrows=0
