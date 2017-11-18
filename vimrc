@@ -45,7 +45,8 @@ Plug 'ternjs/tern_for_vim', {
   \ 'for': ['javascript', 'typescript'] }
 Plug 'junegunn/vader.vim'
 "Plug 'SirVer/ultisnips' " Doesn't work :-(
-Plug 'Raimondi/delimitMate'
+"Plug 'Raimondi/delimitMate'
+Plug 'jiangmiao/auto-pairs'
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
 Plug 'garbas/vim-snipmate'
