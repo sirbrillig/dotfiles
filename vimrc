@@ -407,7 +407,7 @@ let g:syntastic_python_checkers= ['python3', 'flake8', 'pylint', 'mypy']
 " ----------------------------------------------------------------------------
 let g:ale_lint_delay = 2000
 "let g:ale_lint_on_text_changed = 'normal'
-let g:ale_php_phpcs_use_global = 1
+"let g:ale_php_phpcs_use_global = 1
 let g:ale_echo_msg_format = '[%linter%] %s'
 let g:ale_linters = {
 \   'javascript': ['standard','eslint'],
