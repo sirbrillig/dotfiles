@@ -56,6 +56,8 @@ export GOPATH=$HOME/Code/go
 export PATH=$PATH:/usr/local/opt/go/libexec/bin
 export PATH=$PATH:/Users/payton/.composer/vendor/bin
 export PATH=$PATH:/Users/payton/Code/arcanist/arcanist/bin
+export PATH="$(brew --prefix homebrew/php/php71)/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
