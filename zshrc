@@ -109,3 +109,6 @@ bindkey '^W' fzf-cd-widget
 
 # Set environment variable for socks proxy address for using Phabricator (arc):
 export SOCKS5PROXY="127.0.0.1:8080"
+
+# Enable autojump
+[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
