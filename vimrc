@@ -44,8 +44,6 @@ Plug 'ternjs/tern_for_vim', {
   \ 'do': 'npm install',
   \ 'for': ['javascript', 'typescript'] }
 Plug 'junegunn/vader.vim'
-"Plug 'SirVer/ultisnips' " Doesn't work :-(
-"Plug 'Raimondi/delimitMate'
 Plug 'jiangmiao/auto-pairs'
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
@@ -62,6 +60,7 @@ Plug 'cakebaker/scss-syntax.vim'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'Keithbsmiley/swift.vim'
 Plug 'fatih/vim-go'
+Plug 'dag/vim-fish'
 
 " Search plugins
 Plug 'vim-scripts/grep.vim'
@@ -232,6 +231,13 @@ nnoremap <Leader>t :e<space>
 nnoremap <Leader>[ :bp<CR>
 nnoremap <Leader>] :bn<CR>
 
+" Function to fix tab settings when they get screwed up
+function! FixTabSettings()
+  set tabstop=2
+  set shiftwidth=2
+  set noexpandtab
+endfunction
+
 " map leader-p to toggle paste mode.
 nnoremap <silent> <Leader>p :call Paste_on_off()<bar>:set paste?<CR>
 set pastetoggle=
@@ -296,8 +302,7 @@ nnoremap <Leader>b :CtrlPBuffer<CR>
 " Map leader-x to close the current buffer
 nnoremap <Leader>x :Bdelete<CR>
 
-" Map leader-i to re-indent the selected lines
-vnoremap <Leader>i :call Reindent()<CR>
+" Function to re-indent the selected lines
 function! Reindent()
   execute "normal! 10<"
   execute "normal! =="
@@ -307,7 +312,6 @@ endfunction
 nnoremap <Leader>g :Ag! <cword><CR>
 
 " Map leader-G to begin a search
-"nnoremap <Leader>G :Ag!<space>
 nnoremap <Leader>G :Rg --smart-case -e ""<Left>
 
 " Map leader-c, leader-C to copy/paste selected text in MacOS
@@ -317,6 +321,9 @@ nnoremap <Leader>C :set paste<CR>:r !pbpaste<CR>:set nopaste<CR>:echom "pasted f
 " Map ctrl-j and ctrl-k to jump to nearest parenthesis, bracket, or brace
 nnoremap <C-j> /[(\)[\]{\}]<CR>:nohlsearch<CR>
 nnoremap <C-k> ?[(\)[\]{\}]<CR>:nohlsearch<CR>
+
+" Map leader-y to paste from last register 0 (last yank)
+noremap <Leader>y "0p<CR>
 
 " ----------------------------------------------------------------------------
 " Colors

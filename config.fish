@@ -16,3 +16,4 @@ alias unisync-force-local='unison -ui text -auto -force "/Users/payton/Code/auto
 alias unisync-force-remote='unison -ui text -auto -force "ssh://wpdev@wpsandbox//home/wpcom/public_html" automattic-sandbox'
 alias pitsync='unison -ui text -repeat watch the-pit-of-despair'
 alias gtsync='unison -ui text -repeat watch guided-transfer'
+alias sandbox='ssh -t wpsandbox screen -RD'
