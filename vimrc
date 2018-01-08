@@ -309,10 +309,10 @@ function! Reindent()
 endfunction
 
 " Map leader-g to grep for the word under the cursor
-nnoremap <Leader>g :Ag! <cword><CR>
+nnoremap <Leader>g :Rg<CR>
 
 " Map leader-G to begin a search
-nnoremap <Leader>G :Rg --smart-case -e ""<Left>
+nnoremap <Leader>G :Rg --regexp ""<Left>
 
 " Map leader-c, leader-C to copy/paste selected text in MacOS
 vnoremap <Leader>c :w !pbcopy<CR><CR>:echom "copied to MacOS clipboard"<CR>
@@ -408,6 +408,10 @@ let g:syntastic_python_checkers= ['python3', 'flake8', 'pylint', 'mypy']
   " set grepformat=%f:%l:%c:%m,%f:%l:%m
 " endif
 " command! -nargs=+ -complete=file Rg execute 'silent grep! <args>' | copen
+
+" Default Rg to use smartcase
+let g:rg_command = 'rg --vimgrep --smart-case'
+let g:rg_highlight = 1
 
 " ----------------------------------------------------------------------------
 " ALE
