@@ -236,6 +236,11 @@ nnoremap <Leader>t :e<space>
 nnoremap <Leader>[ :bp<CR>
 nnoremap <Leader>] :bn<CR>
 
+function! FindDefinitionJs(word)
+  execute "Rg --regexp '(function\\|const\\|let\\|var)\\s" . a:word . "'"
+endfunction
+command! DefJs call FindDefinitionJs(expand("<cword>"))
+
 " Function to fix tab settings when they get screwed up
 function! FixTabSettings()
   set tabstop=2
