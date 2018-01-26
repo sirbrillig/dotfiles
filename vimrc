@@ -66,6 +66,7 @@ Plug 'hail2u/vim-css3-syntax'
 Plug 'Keithbsmiley/swift.vim'
 Plug 'fatih/vim-go'
 Plug 'dag/vim-fish'
+Plug 'flowtype/vim-flow'
 
 " Search plugins
 Plug 'vim-scripts/grep.vim'
