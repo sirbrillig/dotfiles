@@ -394,6 +394,9 @@ augroup filetype_gemfile
   autocmd BufNewFile,BufRead Vagrantfile setlocal filetype=ruby
 augroup END
 
+" Show flow syntax: https://github.com/pangloss/vim-javascript#configuration-variables
+let g:javascript_plugin_flow = 1
+
 " ----------------------------------------------------------------------------
 " Syntastic
 " ----------------------------------------------------------------------------
