@@ -343,11 +343,6 @@ noremap <Leader>y "0p<CR>
 " Set the theme
 colorscheme elflord
 
-" Modify the colors in the vim 7 tabs.
-" hi TabLine term=reverse ctermfg=Gray ctermbg=NONE
-" hi TabLineSel term=reverse cterm=underline ctermfg=0 ctermbg=2
-" hi TabLineFill term=underline cterm=underline ctermfg=8 ctermbg=0
-
 " Modify some highlight colors to be less offensive to the eye.
 hi IncSearch term=reverse,underline cterm=reverse,bold,underline ctermbg=NONE ctermfg=NONE
 hi Search term=NONE cterm=reverse,bold ctermbg=NONE ctermfg=NONE
@@ -357,7 +352,6 @@ hi Pmenu term=NONE cterm=NONE ctermfg=Black ctermbg=White
 
 " Modify the cursorline colors to show just the line number highlighted
 hi LineNr ctermfg=DarkGray
-hi CursorLineNr ctermbg=3
 hi CursorLine cterm=none ctermbg=none
 
 " Modify the SignColumn to make it easier to read.
@@ -396,6 +390,8 @@ augroup END
 
 " Show flow syntax: https://github.com/pangloss/vim-javascript#configuration-variables
 let g:javascript_plugin_flow = 1
+let g:flow#enable = 0
+let g:flow#showquickfix = 0
 
 " ----------------------------------------------------------------------------
 " Syntastic
@@ -447,3 +443,4 @@ let g:ale_linters = {
 " Why can't it just use the project's prettier config?
 " https://github.com/prettier/vim-prettier/pull/52
 let g:prettier#config#bracket_spacing = 'true'
+let g:prettier#exec_cmd_async = 1
