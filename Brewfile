@@ -49,6 +49,8 @@ brew "vim"
 brew "wget"
 brew "yarn"
 brew "zsh"
+brew "ctags"
+brew "shellcheck"
 brew "bradp/vv/vv"
 brew "homebrew/php/composer"
 brew "homebrew/php/php56", link: false
