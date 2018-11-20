@@ -16,5 +16,15 @@
     "sync.host": "",
     "sync.pathPrefix": "",
     "sync.quietSync": false,
-    "sync.askGistName": false
+    "sync.askGistName": false,
+    "window.zoomLevel": 0,
+    "sync.removeExtensions": true,
+    "sync.syncExtensions": true,
+    "vim.statusBarColorControl": true,
+    "vim.substituteGlobalFlag": true,
+    "workbench.colorCustomizations": {
+        "statusBar.background": "#005f5f",
+        "statusBar.noFolderBackground": "#005f5f",
+        "statusBar.debuggingBackground": "#005f5f"
+    }
 }

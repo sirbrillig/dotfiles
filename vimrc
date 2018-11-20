@@ -45,14 +45,17 @@ Plug 'w0rp/ale'
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql'] }
-Plug 'ternjs/tern_for_vim', {
-  \ 'do': 'npm install',
-  \ 'for': ['javascript', 'typescript'] }
+" Plug 'ternjs/tern_for_vim', {
+  " \ 'do': 'npm install',
+  " \ 'for': ['javascript', 'typescript'] }
 Plug 'junegunn/vader.vim'
-Plug 'jiangmiao/auto-pairs'
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
 Plug 'garbas/vim-snipmate'
+Plug 'tpope/vim-vinegar'
+Plug 'kana/vim-smartinput'
+Plug 'kristijanhusak/vim-carbon-now-sh'
+Plug 'tomtom/tcomment_vim' " Use gc to toggle comments or gcc for a single line
 
 " Syntax plugins
 Plug 'mxw/vim-jsx'
@@ -84,6 +87,8 @@ Plug 'goatslacker/mango.vim'
 Plug 'Lokaltog/vim-distinguished'
 Plug 'tpope/vim-vividchalk'
 Plug 'fcevado/molokai_dark'
+Plug 'nanotech/jellybeans.vim'
+Plug 'semibran/vim-colors-synthetic'
 
 call plug#end()
 
@@ -112,7 +117,7 @@ set incsearch "do incremental searches
 set ignorecase "case-insensitive searching
 set smartcase "do case-sensitive if upper-case characters.
 set gdefault "assume the /g flag on :s.
-set formatoptions=crql "auto-format comments in code.
+set formatoptions+=crqlj "auto-format comments in code.
 set textwidth=0 "for wrapping
 set tabpagemax=20 " allow a lot of tabs to be open
 set backspace=indent,eol,start "allow erasing previously entered characters in insert mode.
@@ -154,13 +159,6 @@ if executable('rg')
   let g:ctrlp_use_caching = 0
 endif
 
-" When pressing <CR> within a curly brace, add two lines and move up one.
-let delimitMate_expand_cr = 1
-" When pressing <SPACE> within a paren, add two spaces and move back one.
-let delimitMate_expand_space = 1
-" Disable delimitMate for certain filetypes
-"au FileType markdown,html let b:loaded_delimitMate = 0
-
 " Hide the NERDTree arrows because some systems don't have support for those characters
 " let g:NERDTreeDirArrows=0
 
@@ -172,6 +170,11 @@ let g:ag_highlight=1
 
 " Disable JSON quote concealing
 let g:vim_json_syntax_conceal = 0
+
+" Help fix syntax issues
+" http://vim.wikia.com/wiki/Fix_syntax_highlighting
+" Or run :syntax sync fromstart
+syntax sync minlines=500
 
 " ----------------------------------------------------------------------------
 " vim-airline
@@ -189,6 +192,11 @@ let g:airline_powerline_fonts = 1
 " ----------------------------------------------------------------------------
 " Keybindings
 " ----------------------------------------------------------------------------
+
+" allow using [[ and ]] for curly braces not in the first column
+map [[ [{
+map ]] ]}
+
 " quit with capital Q also
 command! -bar -bang Q quit<bang>
 command! -bar -bang Qa quit<bang>
@@ -230,15 +238,14 @@ nnoremap \ :w<CR>
 nnoremap <Leader>w gq
 vnoremap <Leader>w gq
 
-" map CTRL-t/Leader-t to new buffer.
+" map Leader-t to new buffer.
 " also map Leader-[ and Leader-] to navigation.
-nnoremap <C-T> :e<space>
 nnoremap <Leader>t :e<space>
 nnoremap <Leader>[ :bp<CR>
 nnoremap <Leader>] :bn<CR>
 
 function! FindDefinitionJs(word)
-  execute "Rg --regexp '(function\\|const\\|let\\|var)\\s" . a:word . "'"
+  execute "Rg '(function\\|const\\|let\\|var)\\s" . a:word . "'"
 endfunction
 command! DefJs call FindDefinitionJs(expand("<cword>"))
 
@@ -248,6 +255,19 @@ function! FixTabSettings()
   set shiftwidth=2
   set noexpandtab
 endfunction
+
+" Function to fix tab and highlight settings when they get screwed up
+function! FixThings()
+  set noet ci pi sts=0 sw=2 ts=2
+  syntax sync fromstart
+endfunction
+command! FixThings call FixThings()
+
+" Function to ignore linting (typing ALEDisableBuffer is hard)
+function! LintIgnore()
+  ALEToggleBuffer
+endfunction
+command! LintIgnore call LintIgnore()
 
 " map leader-p to toggle paste mode.
 nnoremap <silent> <Leader>p :call Paste_on_off()<bar>:set paste?<CR>
@@ -262,25 +282,6 @@ function! Paste_on_off()
     let g:paste_mode = 0
   endif
 endfunc
-
-" Map Leader-/ to toggle comments
-nnoremap <silent> <Leader>/ :call ToggleComment()<CR>
-vnoremap <silent> <Leader>/ :call ToggleComment()<CR>
-augroup comment_leaders
-  autocmd FileType haskell,vhdl,ada let b:comment_leader = '-- '
-  autocmd FileType vim let b:comment_leader = '" '
-  autocmd FileType c,cpp,java,php let b:comment_leader = '// '
-  autocmd FileType sh,make,ruby,perl,yaml,python let b:comment_leader = '# '
-  autocmd FileType let b:comment_leader = '% '
-augroup END
-function! ToggleComment()
-  let b:commented = match( getline('.'), '\v^\s*' . b:comment_leader )
-  if b:commented >=# 0
-    execute "normal! ^" . repeat('x', strlen(b:comment_leader))
-  else
-    execute "normal! I" . b:comment_leader
-  endif
-endfunction
 
 " Function to replace a `require` line with an `import` line
 function! ES6Import()
@@ -314,27 +315,30 @@ nnoremap <Leader>b :CtrlPBuffer<CR>
 nnoremap <Leader>x :Bdelete<CR>
 
 " Function to re-indent the selected lines
-function! Reindent()
-  execute "normal! 10<"
-  execute "normal! =="
+function! Reindent() range
+  execute a:firstline . "," . a:lastline . "<<<<<<<<<<"
+  " FIXME: I can't figure out how to use = as an operator with a range
+  execute a:firstline . "," . a:lastline . " ="
 endfunction
+command! Reindent call Reindent()
 
 " Map leader-g to grep for the word under the cursor
 nnoremap <Leader>g :Rg<CR>
 
 " Map leader-G to begin a search
-nnoremap <Leader>G :Rg --regexp ""<Left>
+nnoremap <Leader>G :Rg 
 
 " Map leader-c, leader-C to copy/paste selected text in MacOS
 vnoremap <Leader>c :w !pbcopy<CR><CR>:echom "copied to MacOS clipboard"<CR>
 nnoremap <Leader>C :set paste<CR>:r !pbpaste<CR>:set nopaste<CR>:echom "pasted from MacOS clipboard"<CR>
 
-" Map ctrl-j and ctrl-k to jump to nearest parenthesis, bracket, or brace
-nnoremap <C-j> /[(\)[\]{\}]<CR>:nohlsearch<CR>
-nnoremap <C-k> ?[(\)[\]{\}]<CR>:nohlsearch<CR>
-
 " Map leader-y to paste from last register 0 (last yank)
 noremap <Leader>y "0p<CR>
+
+" Map ctrl-j and ctrl-k to jump to previous/next linting error (ALE)
+" https://github.com/w0rp/ale#5ix-how-can-i-navigate-between-errors-quickly
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 " ----------------------------------------------------------------------------
 " Colors
@@ -342,6 +346,13 @@ noremap <Leader>y "0p<CR>
 
 " Set the theme
 colorscheme elflord
+" colorscheme synthetic
+
+" Get rid of background colors because I use transparent windows
+hi Normal ctermbg=NONE
+
+" Make comments more visible
+hi Comment ctermfg=8
 
 " Modify some highlight colors to be less offensive to the eye.
 hi IncSearch term=reverse,underline cterm=reverse,bold,underline ctermbg=NONE ctermfg=NONE
@@ -361,7 +372,7 @@ hi GitGutterDelete ctermfg=1 ctermbg=NONE guifg=#ff2222 guibg=NONE
 hi GitGutterChangeDefault ctermfg=3 ctermbg=NONE guifg=#bbbb00 guibg=NONE
 
 " Modify the invisible characters colors (tabs)
-hi SpecialKey ctermfg=DarkGray
+hi SpecialKey ctermfg=DarkGray ctermbg=NONE
 
 " Highlight ES6 template strings
 hi link javaScriptTemplateDelim String
@@ -394,34 +405,12 @@ let g:flow#enable = 0
 let g:flow#showquickfix = 0
 
 " ----------------------------------------------------------------------------
-" Syntastic
-" ----------------------------------------------------------------------------
-" Override phpmd options
-let g:syntastic_php_phpmd_post_args = 'design,unusedcode'
-
-" Use eslint for JSX and JS
-let g:syntastic_javascript_checkers = ['eslint', 'mixedindentlint']
-let g:syntastic_scss_checkers = ['mixedindentlint', 'sass']
-let g:syntastic_php_checkers = [ 'php', 'phpcs' ]
-
-" Only use python3 for python linting
-let g:syntastic_python_checkers= ['python3', 'flake8', 'pylint', 'mypy']
-"let g:syntastic_python_checkers= ['python3', 'flake8']
-
-" ----------------------------------------------------------------------------
 " Grep
 " ----------------------------------------------------------------------------
 
-" Use Rg to grep
-" if executable("rg")
-  " set grepprg=rg\ --vimgrep\ --no-heading
-  " set grepformat=%f:%l:%c:%m,%f:%l:%m
-" endif
-" command! -nargs=+ -complete=file Rg execute 'silent grep! <args>' | copen
-
 " Default Rg to use smartcase
-let g:rg_command = 'rg --vimgrep --smart-case'
-let g:rg_highlight = 1
+" let g:rg_command = 'rg --vimgrep --smart-case'
+" let g:rg_highlight = 1
 
 " ----------------------------------------------------------------------------
 " ALE
@@ -429,7 +418,7 @@ let g:rg_highlight = 1
 let g:ale_lint_delay = 2000
 "let g:ale_lint_on_text_changed = 'normal'
 "let g:ale_php_phpcs_use_global = 1
-let g:ale_echo_msg_format = '[%linter%] %s'
+let g:ale_echo_msg_format = '[%linter%] %s [%code%]'
 let g:ale_linters = {
 \   'javascript': ['standard','eslint'],
 \   'php': ['php', 'phpcs'],
@@ -444,3 +433,7 @@ let g:ale_linters = {
 " https://github.com/prettier/vim-prettier/pull/52
 let g:prettier#config#bracket_spacing = 'true'
 let g:prettier#exec_cmd_async = 1
+
+" https://github.com/airblade/vim-gitgutter/issues/490
+let g:gitgutter_terminal_reports_focus = 0
+

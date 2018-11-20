@@ -51,14 +51,8 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export PATH="/Users/payton/.rvm/gems/ruby-2.0.0-p247/bin:/Users/payton/.rvm/gems/ruby-2.0.0-p247@global/bin:/Users/payton/.rvm/rubies/ruby-2.0.0-p247/bin:/Users/payton/.rvm/bin:/Users/payton/.rvm/bin:/usr/local/bin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/go/bin:/opt/local/bin:/opt/local/sbin:/Users/payton/bin:/var/lib/gems/1.8/bin:/usr/local/share/npm/bin:/Users/payton/bin:/var/lib/gems/1.8/bin:/Users/payton/bin:/usr/local/share/npm/bin"
-export GOPATH=$HOME/Code/go
-export PATH=$PATH:/usr/local/opt/go/libexec/bin
+export PATH="/Users/payton/.rvm/gems/ruby-2.0.0-p247/bin:/Users/payton/.rvm/gems/ruby-2.0.0-p247@global/bin:/Users/payton/.rvm/rubies/ruby-2.0.0-p247/bin:/Users/payton/.rvm/bin:/Users/payton/.rvm/bin:/usr/local/bin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/var/lib/gems/1.8/bin:/usr/local/share/npm/bin:/var/lib/gems/1.8/bin:/Users/payton/bin:/usr/local/share/npm/bin"
 export PATH=$PATH:/Users/payton/.composer/vendor/bin
-export PATH=$PATH:/Users/payton/Code/arcanist/arcanist/bin
-export PATH="$(brew --prefix homebrew/php/php71)/bin:$PATH"
-export PATH="/usr/local/sbin:$PATH"
-# export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
