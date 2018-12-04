@@ -40,7 +40,7 @@ Plug 'moll/vim-bbye'
 Plug 'kshenoy/vim-signature'
 Plug 'shime/vim-livedown' " Requires `npm install -g livedown`
 Plug 'csscomb/vim-csscomb'
-Plug 'tpope/vim-sleuth'
+Plug 'tpope/vim-sleuth' " Sets shiftwidth and expandtab automatically
 Plug 'w0rp/ale'
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
@@ -48,12 +48,11 @@ Plug 'prettier/vim-prettier', {
 " Plug 'ternjs/tern_for_vim', {
   " \ 'do': 'npm install',
   " \ 'for': ['javascript', 'typescript'] }
-Plug 'junegunn/vader.vim'
-Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'tomtom/tlib_vim'
+Plug 'junegunn/vader.vim' " vimscript testing framework
+Plug 'MarcWeber/vim-addon-mw-utils' " Some utilities needed by vim-snipmate
+" Plug 'tomtom/tlib_vim' " Adds a bunch of T... commands
 Plug 'garbas/vim-snipmate'
-Plug 'tpope/vim-vinegar'
-Plug 'kana/vim-smartinput'
+Plug 'kana/vim-smartinput' " Adds autopopulating closing parens/brackets/braces/quotes
 Plug 'kristijanhusak/vim-carbon-now-sh'
 Plug 'tomtom/tcomment_vim' " Use gc to toggle comments or gcc for a single line
 
@@ -70,6 +69,7 @@ Plug 'Keithbsmiley/swift.vim'
 Plug 'fatih/vim-go'
 Plug 'dag/vim-fish'
 Plug 'flowtype/vim-flow'
+Plug 'StanAngeloff/php.vim'
 
 " Search plugins
 Plug 'vim-scripts/grep.vim'
@@ -133,7 +133,8 @@ set cursorline " highlight the current cursor line number
 set number " show line numbers
 set path+=** " Allow recursive find
 set completeopt=menuone,longest " Configure tab autocomplete
-set iskeyword+=\- " Adds dash character to keyword characters
+" set iskeyword+=\- " Adds dash character to keyword characters
+set iskeyword-=\$ " Removes dollar sign from keyword characters
 
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set undodir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
