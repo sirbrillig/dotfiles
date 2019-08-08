@@ -29,6 +29,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'vim-scripts/AutoComplPop'
 Plug 'bling/vim-bufferline'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-surround'
@@ -50,11 +51,13 @@ Plug 'prettier/vim-prettier', {
   " \ 'for': ['javascript', 'typescript'] }
 Plug 'junegunn/vader.vim' " vimscript testing framework
 Plug 'MarcWeber/vim-addon-mw-utils' " Some utilities needed by vim-snipmate
-" Plug 'tomtom/tlib_vim' " Adds a bunch of T... commands
+Plug 'tomtom/tlib_vim' " Adds a bunch of T... commands needed by snipmate
 Plug 'garbas/vim-snipmate'
-Plug 'kana/vim-smartinput' " Adds autopopulating closing parens/brackets/braces/quotes
+" Plug 'kana/vim-smartinput' " Adds autopopulating closing parens/brackets/braces/quotes; not as powerful as auto-pairs but less buggy
+Plug 'jiangmiao/auto-pairs' " Adds autopopulating closing parens/brackets/braces/quotes; has some bugs
 Plug 'kristijanhusak/vim-carbon-now-sh'
 Plug 'tomtom/tcomment_vim' " Use gc to toggle comments or gcc for a single line
+" Plug 'craigemery/vim-autotag'
 
 " Syntax plugins
 Plug 'mxw/vim-jsx'
@@ -70,6 +73,9 @@ Plug 'fatih/vim-go'
 Plug 'dag/vim-fish'
 Plug 'flowtype/vim-flow'
 Plug 'StanAngeloff/php.vim'
+Plug 'jxnblk/vim-mdx-js'
+Plug 'tjvr/vim-nearley'
+Plug 'leafgarland/typescript-vim'
 
 " Search plugins
 Plug 'vim-scripts/grep.vim'
@@ -162,6 +168,8 @@ endif
 
 " Hide the NERDTree arrows because some systems don't have support for those characters
 " let g:NERDTreeDirArrows=0
+" Always show hidden files
+let NERDTreeShowHidden=1
 
 " Display indentation guides
 set list listchars=tab:\|\ ,trail:·,extends:»,precedes:«,nbsp:×
@@ -324,7 +332,7 @@ endfunction
 command! Reindent call Reindent()
 
 " Map leader-g to grep for the word under the cursor
-nnoremap <Leader>g :Rg<CR>
+nnoremap <Leader>g :Rg <cword>
 
 " Map leader-G to begin a search
 nnoremap <Leader>G :Rg 

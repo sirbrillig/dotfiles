@@ -1,20 +1,39 @@
 {
     "editor.minimap.enabled": false,
-    "php.validate.run": "onType",
-    "vim.disableAnnoyingNeovimMessage": true,
     "phpcs.showSources": true,
     "vim.leader": ";",
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+            "before": [
+                "<leader>",
+                ","
+            ],
+            "after": [
+                "m",
+                "q",
+                "A",
+                ",",
+                "<esc>",
+                "`",
+                "q"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "q"
+            ],
+            "commands": [
+                ":nohlsearch"
+            ]
+        }
+    ],
     "workbench.editor.enablePreview": false,
     "workbench.editor.enablePreviewFromQuickOpen": false,
     "sync.autoUpload": true,
     "sync.gist": "c1cbce401bb93338d1614251133eaa40",
-    "sync.lastUpload": "2017-12-21T01:47:58.105Z",
     "sync.autoDownload": false,
-    "sync.lastDownload": "",
     "sync.forceDownload": false,
-    "sync.anonymousGist": false,
-    "sync.host": "",
-    "sync.pathPrefix": "",
     "sync.quietSync": false,
     "sync.askGistName": false,
     "window.zoomLevel": 0,
@@ -26,5 +45,15 @@
         "statusBar.background": "#005f5f",
         "statusBar.noFolderBackground": "#005f5f",
         "statusBar.debuggingBackground": "#005f5f"
-    }
+    },
+    "editor.renderWhitespace": "all",
+    "workbench.editor.highlightModifiedTabs": true,
+    "indentRainbow.ignoreLinePatterns": [],
+    "terminal.integrated.shell.osx": "/bin/zsh",
+    "[javascriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "vim.highlightedyank.enable": true,
+    "vim.hlsearch": true,
+    "vim.useSystemClipboard": true
 }
