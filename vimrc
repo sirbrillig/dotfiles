@@ -349,6 +349,18 @@ noremap <Leader>y "0p<CR>
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
+function! GrepDef()
+  let wordUnderCursor = expand("<cword>")
+  let ftype = &filetype
+  let cmd = 'grepdef --type ' . ftype . ' ' . wordUnderCursor
+  echom cmd
+  let out = system(cmd)
+  cgete out
+  copen
+endfunction
+command! GrepDef call GrepDef()
+nnoremap <Leader>d :GrepDef<CR>
+
 " ----------------------------------------------------------------------------
 " Colors
 " ----------------------------------------------------------------------------
