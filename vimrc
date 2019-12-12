@@ -26,6 +26,7 @@ Plug 'sirbrillig/findbyname.vim'
 Plug 'vim-scripts/mru.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'ryanoasis/vim-devicons'
 Plug 'vim-scripts/AutoComplPop'
 Plug 'bling/vim-bufferline'
 Plug 'tpope/vim-fugitive'
@@ -45,7 +46,7 @@ Plug 'tpope/vim-sleuth' " Sets shiftwidth and expandtab automatically
 Plug 'w0rp/ale'
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
-  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql'] }
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'php'] }
 " Plug 'ternjs/tern_for_vim', {
   " \ 'do': 'npm install',
   " \ 'for': ['javascript', 'typescript'] }
@@ -82,6 +83,7 @@ Plug 'vim-scripts/grep.vim'
 Plug 'rking/ag.vim' " Requires the_silver_searcher
 Plug 'nazo/pt.vim' " Requires the_platinum_searcher
 Plug 'jremmen/vim-ripgrep' " Requires ripgrep
+Plug '~/Code/vim-grepdef'
 
 " MacOS plugins
 if has('mac')
@@ -253,10 +255,18 @@ nnoremap <Leader>t :e<space>
 nnoremap <Leader>[ :bp<CR>
 nnoremap <Leader>] :bn<CR>
 
-function! FindDefinitionJs(word)
-  execute "Rg '(function\\|const\\|let\\|var)\\s" . a:word . "'"
-endfunction
-command! DefJs call FindDefinitionJs(expand("<cword>"))
+" map gp to Prettier
+nnoremap gp :Prettier<CR>
+
+" Add manual command for PHP prettier since the built-in one doesn't seem to
+" work
+command! PrettierPHP silent !prettier --write --use-tabs --trailing-comma-php php5 --brace-style 1tbs --single-quote %
+
+" Alias :GD to :GrepDef
+cnoreabbrev GD GrepDef
+
+" Alias NF to NERDTreeFind
+cnoreabbrev NF NERDTreeFind
 
 " Function to fix tab settings when they get screwed up
 function! FixTabSettings()
@@ -292,16 +302,6 @@ function! Paste_on_off()
   endif
 endfunc
 
-" Function to replace a `require` line with an `import` line
-function! ES6Import()
-  execute "normal! 0dwiimport \<esc>f=df(ifrom\<esc>$T'Da;"
-endfunction
-
-" Function to replace a `function` line with a `() =>` line
-function! ES6Function()
-  execute "normal! 0/function\<cr>dwf)a =>\<esc>"
-endfunction
-
 " map Leader-n to toggle NERDTree
 nnoremap <Leader>n :NERDTreeToggle<CR>
 
@@ -323,14 +323,6 @@ nnoremap <Leader>b :CtrlPBuffer<CR>
 " Map leader-x to close the current buffer
 nnoremap <Leader>x :Bdelete<CR>
 
-" Function to re-indent the selected lines
-function! Reindent() range
-  execute a:firstline . "," . a:lastline . "<<<<<<<<<<"
-  " FIXME: I can't figure out how to use = as an operator with a range
-  execute a:firstline . "," . a:lastline . " ="
-endfunction
-command! Reindent call Reindent()
-
 " Map leader-g to grep for the word under the cursor
 nnoremap <Leader>g :Rg <cword>
 
@@ -348,18 +340,6 @@ noremap <Leader>y "0p<CR>
 " https://github.com/w0rp/ale#5ix-how-can-i-navigate-between-errors-quickly
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
-
-function! GrepDef()
-  let wordUnderCursor = expand("<cword>")
-  let ftype = &filetype
-  let cmd = 'grepdef --type ' . ftype . ' ' . wordUnderCursor
-  echom cmd
-  let out = system(cmd)
-  cgete out
-  copen
-endfunction
-command! GrepDef call GrepDef()
-nnoremap <Leader>d :GrepDef<CR>
 
 " ----------------------------------------------------------------------------
 " Colors
@@ -408,6 +388,7 @@ highlight DiffText   cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=bg guibg=Re
 
 " Make it easier to see ALE errors
 hi link ALEError Error
+hi link ALEWarning Todo
 
 " ----------------------------------------------------------------------------
 " FileTypes
@@ -439,6 +420,7 @@ let g:flow#showquickfix = 0
 let g:ale_lint_delay = 2000
 "let g:ale_lint_on_text_changed = 'normal'
 "let g:ale_php_phpcs_use_global = 1
+let g:ale_fix_on_save = 1
 let g:ale_echo_msg_format = '[%linter%] %s [%code%]'
 let g:ale_linters = {
 \   'javascript': ['standard','eslint'],
@@ -454,7 +436,15 @@ let g:ale_linters = {
 " https://github.com/prettier/vim-prettier/pull/52
 let g:prettier#config#bracket_spacing = 'true'
 let g:prettier#exec_cmd_async = 1
+let g:prettier#config#use_tabs = 'true'
+let g:prettier#config#single_quote = 'true'
+let g:prettier#config#trailing_comma = 'es5'
+" Disable requiring format pragma
+let g:prettier#autoformat = 0
+" autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html Prettier
 
+" ----------------------------------------------------------------------------
+" Other
+" ----------------------------------------------------------------------------
 " https://github.com/airblade/vim-gitgutter/issues/490
 let g:gitgutter_terminal_reports_focus = 0
-
