@@ -2,7 +2,6 @@
 " ----------------------------------------------------------------------------
 " Summary: Payton's vimrc file
 " URL: https://github.com/sirbrillig/dotfiles
-" Version: 2.6.0
 " ----------------------------------------------------------------------------
 
 " ----------------------------------------------------------------------------
@@ -20,45 +19,30 @@ call plug#begin('~/.vim/bundle')
 " ----------------------------------------------------------------------------
 Plug 'vim-scripts/L9'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'bronson/vim-trailing-whitespace'
-Plug 'EinfachToll/DidYouMean'
-Plug 'sirbrillig/findbyname.vim'
 Plug 'vim-scripts/mru.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ryanoasis/vim-devicons'
-Plug 'vim-scripts/AutoComplPop'
-Plug 'bling/vim-bufferline'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rhubarb'
+" Plug 'vim-scripts/AutoComplPop'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-endwise'
 Plug 'airblade/vim-gitgutter'
 Plug 'danro/rename.vim'
-Plug 'idanarye/vim-merginal'
 Plug 'moll/vim-bbye'
 Plug 'kshenoy/vim-signature'
-Plug 'shime/vim-livedown' " Requires `npm install -g livedown`
-Plug 'csscomb/vim-csscomb'
-Plug 'tpope/vim-sleuth' " Sets shiftwidth and expandtab automatically
-Plug 'w0rp/ale'
+" Plug 'tpope/vim-sleuth' " Sets shiftwidth and expandtab automatically
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'php'] }
-" Plug 'ternjs/tern_for_vim', {
-  " \ 'do': 'npm install',
-  " \ 'for': ['javascript', 'typescript'] }
 Plug 'junegunn/vader.vim' " vimscript testing framework
 Plug 'MarcWeber/vim-addon-mw-utils' " Some utilities needed by vim-snipmate
 Plug 'tomtom/tlib_vim' " Adds a bunch of T... commands needed by snipmate
 Plug 'garbas/vim-snipmate'
-" Plug 'kana/vim-smartinput' " Adds autopopulating closing parens/brackets/braces/quotes; not as powerful as auto-pairs but less buggy
 Plug 'jiangmiao/auto-pairs' " Adds autopopulating closing parens/brackets/braces/quotes; has some bugs
-Plug 'kristijanhusak/vim-carbon-now-sh'
 Plug 'tomtom/tcomment_vim' " Use gc to toggle comments or gcc for a single line
-" Plug 'craigemery/vim-autotag'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Syntax plugins
 Plug 'mxw/vim-jsx'
@@ -79,24 +63,12 @@ Plug 'tjvr/vim-nearley'
 Plug 'leafgarland/typescript-vim'
 
 " Search plugins
-Plug 'vim-scripts/grep.vim'
-Plug 'rking/ag.vim' " Requires the_silver_searcher
-Plug 'nazo/pt.vim' " Requires the_platinum_searcher
 Plug 'jremmen/vim-ripgrep' " Requires ripgrep
 Plug '~/Code/vim-grepdef'
 
-" MacOS plugins
-if has('mac')
-  Plug 'rizzatti/dash.vim'
-endif
-
 " Color scheme plugins
-Plug 'goatslacker/mango.vim'
-Plug 'Lokaltog/vim-distinguished'
-Plug 'tpope/vim-vividchalk'
-Plug 'fcevado/molokai_dark'
-Plug 'nanotech/jellybeans.vim'
-Plug 'semibran/vim-colors-synthetic'
+Plug 'tomasr/molokai'
+Plug 'arcticicestudio/nord-vim'
 
 call plug#end()
 
@@ -143,6 +115,12 @@ set path+=** " Allow recursive find
 set completeopt=menuone,longest " Configure tab autocomplete
 " set iskeyword+=\- " Adds dash character to keyword characters
 set iskeyword-=\$ " Removes dollar sign from keyword characters
+" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+" delays and poor user experience.
+set updatetime=300
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+set signcolumn=yes
 
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set undodir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
@@ -158,10 +136,6 @@ let g:ctrlp_open_new_file = 'r'
 let g:ctrlp_mruf_relative = 1
 let g:ctrlp_mruf_exclude_nomod = 1
 
-" Use pt (the platinum searcher) for super-fast ctrlp indexing
-" if executable('pt')
-  " let g:ctrlp_user_command = 'pt %s -i --nocolor --nogroup -g=""'
-" endif
 " Use rg (ripgrep) for ctrlp indexing
 if executable('rg')
   let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
@@ -197,12 +171,20 @@ let g:airline_theme='wombat'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#whitespace#enabled = 0
-let g:airline#extensions#ale#enabled = 1
 let g:airline_powerline_fonts = 1
 
 " ----------------------------------------------------------------------------
 " Keybindings
 " ----------------------------------------------------------------------------
+
+" Map ctrl-j and ctrl-k to jump to previous/next linting error
+nmap <silent> <C-k> <Plug>(coc-diagnostic-prev)
+nmap <silent> <C-j> <Plug>(coc-diagnostic-next)
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
 " allow using [[ and ]] for curly braces not in the first column
 map [[ [{
@@ -282,12 +264,6 @@ function! FixThings()
 endfunction
 command! FixThings call FixThings()
 
-" Function to ignore linting (typing ALEDisableBuffer is hard)
-function! LintIgnore()
-  ALEToggleBuffer
-endfunction
-command! LintIgnore call LintIgnore()
-
 " map leader-p to toggle paste mode.
 nnoremap <silent> <Leader>p :call Paste_on_off()<bar>:set paste?<CR>
 set pastetoggle=
@@ -336,97 +312,39 @@ nnoremap <Leader>C :set paste<CR>:r !pbpaste<CR>:set nopaste<CR>:echom "pasted f
 " Map leader-y to paste from last register 0 (last yank)
 noremap <Leader>y "0p<CR>
 
-" Map ctrl-j and ctrl-k to jump to previous/next linting error (ALE)
-" https://github.com/w0rp/ale#5ix-how-can-i-navigate-between-errors-quickly
-nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-nmap <silent> <C-j> <Plug>(ale_next_wrap)
-
 " ----------------------------------------------------------------------------
 " Colors
 " ----------------------------------------------------------------------------
 
+" Enable "true" colors
+if exists('+termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
+
 " Set the theme
-colorscheme elflord
-" colorscheme synthetic
-
-" Get rid of background colors because I use transparent windows
-hi Normal ctermbg=NONE
-
-" Make comments more visible
-hi Comment ctermfg=8
-
-" Modify some highlight colors to be less offensive to the eye.
-hi IncSearch term=reverse,underline cterm=reverse,bold,underline ctermbg=NONE ctermfg=NONE
-hi Search term=NONE cterm=reverse,bold ctermbg=NONE ctermfg=NONE
-hi MatchParen term=NONE cterm=bold ctermbg=NONE ctermfg=DarkCyan
-hi PmenuSel term=NONE cterm=NONE ctermfg=White ctermbg=Blue
-hi Pmenu term=NONE cterm=NONE ctermfg=Black ctermbg=White
-
-" Modify the cursorline colors to show just the line number highlighted
-hi LineNr ctermfg=DarkGray
-hi CursorLine cterm=none ctermbg=none
-
-" Modify the SignColumn to make it easier to read.
-hi SignColumn ctermbg=NONE guibg=NONE
-hi GitGutterAdd ctermfg=2 guifg=#009900 ctermbg=NONE guibg=NONE
-hi GitGutterDelete ctermfg=1 ctermbg=NONE guifg=#ff2222 guibg=NONE
-hi GitGutterChangeDefault ctermfg=3 ctermbg=NONE guifg=#bbbb00 guibg=NONE
-
-" Modify the invisible characters colors (tabs)
-hi SpecialKey ctermfg=DarkGray ctermbg=NONE
-
-" Highlight ES6 template strings
-hi link javaScriptTemplateDelim String
-hi link javaScriptTemplateVar Text
-hi link javaScriptTemplateString String
+" colorscheme elflord " my favorite for a long time with customizations
+" colorscheme molokai " always a good one
+colorscheme nord 
 
 " Simplify colors during vimdiff
-highlight DiffAdd    cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-highlight DiffDelete cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-highlight DiffChange cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-highlight DiffText   cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=bg guibg=Red
+" highlight DiffAdd    cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
+" highlight DiffDelete cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
+" highlight DiffChange cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
+" highlight DiffText   cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=bg guibg=Red
 
-" Make it easier to see ALE errors
-hi link ALEError Error
-hi link ALEWarning Todo
+" For some reason paragraph text always appears as italic, so make it easier to read at least.
+" hi markdownItalic ctermfg=253 ctermbg=238 guifg=#DADADA guibg=#40403C
 
 " ----------------------------------------------------------------------------
 " FileTypes
 " ----------------------------------------------------------------------------
-" Treat Gemfile and Vagrantfile as Ruby
-" (http://ilkka.github.io/blog/2011/02/03/teach_vim_about_gemfiles/)
-augroup filetype_gemfile
-  autocmd!
-  autocmd BufNewFile,BufRead Gemfile setlocal filetype=ruby
-  autocmd BufNewFile,BufRead Vagrantfile setlocal filetype=ruby
-augroup END
 
 " Show flow syntax: https://github.com/pangloss/vim-javascript#configuration-variables
 let g:javascript_plugin_flow = 1
 let g:flow#enable = 0
 let g:flow#showquickfix = 0
-
-" ----------------------------------------------------------------------------
-" Grep
-" ----------------------------------------------------------------------------
-
-" Default Rg to use smartcase
-" let g:rg_command = 'rg --vimgrep --smart-case'
-" let g:rg_highlight = 1
-
-" ----------------------------------------------------------------------------
-" ALE
-" ----------------------------------------------------------------------------
-let g:ale_lint_delay = 2000
-"let g:ale_lint_on_text_changed = 'normal'
-"let g:ale_php_phpcs_use_global = 1
-let g:ale_fix_on_save = 1
-let g:ale_echo_msg_format = '[%linter%] %s [%code%]'
-let g:ale_linters = {
-\   'javascript': ['standard','eslint'],
-\   'php': ['php', 'phpcs'],
-\   'html': [],
-\}
 
 " ----------------------------------------------------------------------------
 " Prettier

@@ -55,5 +55,23 @@
     },
     "vim.highlightedyank.enable": true,
     "vim.hlsearch": true,
-    "vim.useSystemClipboard": true
+    "vim.useSystemClipboard": true,
+    "vim.history": 300,
+    "prettier.requireConfig": true,
+    "prettier.singleQuote": true,
+    "prettier.trailingComma": "es5",
+    "prettier.useTabs": true,
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "editor.wordWrap": "on",
+    "editor.hover.enabled": false,
+    "typescript.validate.enable": false,
+    "javascript.validate.enable": false,
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "AllAutocomplete.updateOnlyOnSave": true,
+    "breadcrumbs.enabled": true,
+    "editor.renderControlCharacters": false
 }

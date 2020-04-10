@@ -19,6 +19,8 @@
   undo = reset HEAD~1 --mixed
   bclean = "!f() { git branch --merged ${1-master} | grep -v ${1-master}$ | xargs -n1 git branch -d; }; f"
   bnew = checkout -b
+  backup-create = "!f() { git branch -f backup-$(git rev-parse --abbrev-ref HEAD) && echo 'Backup created. Use git backup-restore to restore.'; }; f"
+  backup-restore = "!f() { echo 'Are you sure you want to overwrite the current branch with the latest backup? This cannot be undone!'; select result in Yes No; do [[ $result == "Yes" ]] && git reset --hard backup-$(git rev-parse --abbrev-ref HEAD) && echo 'Backup restored.'; break; done; }; f"
 [filter "media"]
 	clean = git-media-clean %f
 	smudge = git-media-smudge %f
