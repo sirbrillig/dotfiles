@@ -325,8 +325,8 @@ endif
 
 " Set the theme
 " colorscheme elflord " my favorite for a long time with customizations
-" colorscheme molokai " always a good one
-colorscheme nord 
+colorscheme molokai " always a good one
+" colorscheme nord 
 
 " Simplify colors during vimdiff
 " highlight DiffAdd    cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
@@ -366,3 +366,6 @@ let g:prettier#autoformat = 0
 " ----------------------------------------------------------------------------
 " https://github.com/airblade/vim-gitgutter/issues/490
 let g:gitgutter_terminal_reports_focus = 0
+
+" Allow jsonc (json with comments)
+autocmd FileType json syntax match Comment +\/\/.\+$+
