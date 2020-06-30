@@ -5,6 +5,64 @@
     "vim.normalModeKeyBindingsNonRecursive": [
         {
             "before": [
+                "="
+            ],
+            "commands": [
+                "editor.action.reindentselectedlines"
+            ],
+        },
+        {
+            "before": [
+                "ctrl+r"
+            ],
+            "commands": [
+                "redo"
+            ],
+        },
+        {
+            "before": [
+                "u"
+            ],
+            "commands": [
+                "undo"
+            ],
+        },
+        {
+            "before": [
+                "<leader>",
+                ";"
+            ],
+            "after": [
+                ";"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "o"
+            ],
+            "after": [
+                "o",
+                "<esc>"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                ":"
+            ],
+            "after": [
+                "m",
+                "q",
+                "A",
+                ";",
+                "<esc>",
+                "`",
+                "q"
+            ]
+        },
+        {
+            "before": [
                 "<leader>",
                 ","
             ],
@@ -34,13 +92,13 @@
     "sync.gist": "c1cbce401bb93338d1614251133eaa40",
     "sync.autoDownload": false,
     "sync.forceDownload": false,
-    "sync.quietSync": false,
+    "sync.quietSync": true,
     "sync.askGistName": false,
     "window.zoomLevel": 0,
     "sync.removeExtensions": true,
     "sync.syncExtensions": true,
     "vim.statusBarColorControl": true,
-    "vim.substituteGlobalFlag": true,
+    "vim.gdefault": true,
     "workbench.colorCustomizations": {
         "statusBar.background": "#005f5f",
         "statusBar.noFolderBackground": "#005f5f",
@@ -66,12 +124,46 @@
     },
     "editor.wordWrap": "on",
     "editor.hover.enabled": false,
-    "typescript.validate.enable": false,
-    "javascript.validate.enable": false,
     "[typescript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "AllAutocomplete.updateOnlyOnSave": true,
     "breadcrumbs.enabled": true,
-    "editor.renderControlCharacters": false
+    "editor.renderControlCharacters": false,
+    "workbench.editor.restoreViewState": false,
+    "window.restoreWindows": "none",
+    "problems.showCurrentInStatus": true,
+    "workbench.startupEditor": "none",
+    "search.exclude": {
+        "**/*.d.ts": true
+    },
+    "workbench.commandPalette.preserveInput": true,
+    "workbench.editor.mouseBackForwardToNavigate": false,
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "typescript.disableAutomaticTypeAcquisition": true,
+    "vim.visualModeKeyBindingsNonRecursive": [
+        {
+            "before": [
+                "="
+            ],
+            "commands": [
+                "editor.action.reindentselectedlines"
+            ],
+        }
+    ],
+    "typescript.tsserver.log": "normal",
+    "typescript.suggest.autoImports": false,
+    "javascript.implicitProjectConfig.checkJs": true,
+    "editor.codeLens": false,
+    "editor.parameterHints.enabled": false,
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": true,
+        "strings": true
+    },
+    "phpcs.lintOnType": false,
+    "php.suggest.basic": false,
+    "php.validate.enable": false,
+    "AllAutocomplete.cycleOpenDocumentsOnLaunch": true
 }

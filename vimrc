@@ -33,9 +33,6 @@ Plug 'danro/rename.vim'
 Plug 'moll/vim-bbye'
 Plug 'kshenoy/vim-signature'
 " Plug 'tpope/vim-sleuth' " Sets shiftwidth and expandtab automatically
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'yarn install',
-  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'php'] }
 Plug 'junegunn/vader.vim' " vimscript testing framework
 Plug 'MarcWeber/vim-addon-mw-utils' " Some utilities needed by vim-snipmate
 Plug 'tomtom/tlib_vim' " Adds a bunch of T... commands needed by snipmate
@@ -43,13 +40,17 @@ Plug 'garbas/vim-snipmate'
 Plug 'jiangmiao/auto-pairs' " Adds autopopulating closing parens/brackets/braces/quotes; has some bugs
 Plug 'tomtom/tcomment_vim' " Use gc to toggle comments or gcc for a single line
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'EinfachToll/DidYouMean'
+Plug 'iamcco/diagnostic-languageserver', { 'do': 'yarn install' }
 
 " Syntax plugins
-Plug 'mxw/vim-jsx'
+Plug 'yuezk/vim-js'
+Plug 'leafgarland/typescript-vim'
+Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'elzr/vim-json'
 Plug 'mustache/vim-mustache-handlebars'
-Plug 'jelera/vim-javascript-syntax'
-Plug 'pangloss/vim-javascript'
+" Plug 'jelera/vim-javascript-syntax'
+" Plug 'pangloss/vim-javascript'
 Plug 'moll/vim-node'
 Plug 'cakebaker/scss-syntax.vim'
 Plug 'hail2u/vim-css3-syntax'
@@ -60,7 +61,6 @@ Plug 'flowtype/vim-flow'
 Plug 'StanAngeloff/php.vim'
 Plug 'jxnblk/vim-mdx-js'
 Plug 'tjvr/vim-nearley'
-Plug 'leafgarland/typescript-vim'
 
 " Search plugins
 Plug 'jremmen/vim-ripgrep' " Requires ripgrep
@@ -122,9 +122,9 @@ set updatetime=300
 " diagnostics appear/become resolved.
 set signcolumn=yes
 
-set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-set undodir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set backupdir=/tmp
+set undodir=/tmp
+set directory=/tmp
 
 " Allow copy/paste between MacOS and tmux
 set clipboard=unnamed
@@ -146,6 +146,8 @@ endif
 " let g:NERDTreeDirArrows=0
 " Always show hidden files
 let NERDTreeShowHidden=1
+
+let NERDTreeWinSize=55
 
 " Display indentation guides
 set list listchars=tab:\|\ ,trail:·,extends:»,precedes:«,nbsp:×
@@ -349,17 +351,7 @@ let g:flow#showquickfix = 0
 " ----------------------------------------------------------------------------
 " Prettier
 " ----------------------------------------------------------------------------
-" https://github.com/prettier/vim-prettier#overwrite-default-prettier-configuration
-" Why can't it just use the project's prettier config?
-" https://github.com/prettier/vim-prettier/pull/52
-let g:prettier#config#bracket_spacing = 'true'
-let g:prettier#exec_cmd_async = 1
-let g:prettier#config#use_tabs = 'true'
-let g:prettier#config#single_quote = 'true'
-let g:prettier#config#trailing_comma = 'es5'
-" Disable requiring format pragma
-let g:prettier#autoformat = 0
-" autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html Prettier
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 " ----------------------------------------------------------------------------
 " Other
