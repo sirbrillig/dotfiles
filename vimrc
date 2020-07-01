@@ -18,7 +18,6 @@ call plug#begin('~/.vim/bundle')
 " Plugins
 " ----------------------------------------------------------------------------
 Plug 'vim-scripts/L9'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'vim-scripts/mru.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -65,6 +64,9 @@ Plug 'tjvr/vim-nearley'
 " Search plugins
 Plug 'jremmen/vim-ripgrep' " Requires ripgrep
 Plug '~/Code/vim-grepdef'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'pbogut/fzf-mru.vim'
 
 " Color scheme plugins
 Plug 'tomasr/molokai'
@@ -128,19 +130,6 @@ set directory=/tmp
 
 " Allow copy/paste between MacOS and tmux
 set clipboard=unnamed
-
-" Open a new file (c-y) in the current window
-let g:ctrlp_open_new_file = 'r'
-
-" Show only MRU files in the current working directory
-let g:ctrlp_mruf_relative = 1
-let g:ctrlp_mruf_exclude_nomod = 1
-
-" Use rg (ripgrep) for ctrlp indexing
-if executable('rg')
-  let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
-  let g:ctrlp_use_caching = 0
-endif
 
 " Hide the NERDTree arrows because some systems don't have support for those characters
 " let g:NERDTreeDirArrows=0
@@ -292,12 +281,12 @@ nnoremap <Leader>, mqA,<esc>`q
 " Map leader-l to last buffer
 nnoremap <Leader>l :b#<CR>
 
-" Map leader-P to CtrlP without activation so a directory can be added
-nnoremap <Leader>P :CtrlP<space>
-" Map leader-m to the CtrlPMRU search
-nnoremap <Leader>m :CtrlPMRU<CR>
-" Map leader-b to the CtrlPBuffer search
-nnoremap <Leader>b :CtrlPBuffer<CR>
+" Map ctrl-p to FZF files
+nnoremap <C-p> :Files<CR>
+" Map leader-m to the MRU search
+nnoremap <Leader>m :FZFMru<CR>
+" Map leader-b to the buffer search
+nnoremap <Leader>b :Buffers<CR>
 " Map leader-x to close the current buffer
 nnoremap <Leader>x :Bdelete<CR>
 
