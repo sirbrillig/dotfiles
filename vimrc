@@ -22,7 +22,6 @@ Plug 'vim-scripts/mru.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ryanoasis/vim-devicons'
-" Plug 'vim-scripts/AutoComplPop'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-surround'
@@ -31,7 +30,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'danro/rename.vim'
 Plug 'moll/vim-bbye'
 Plug 'kshenoy/vim-signature'
-" Plug 'tpope/vim-sleuth' " Sets shiftwidth and expandtab automatically
+Plug 'tpope/vim-sleuth' " Sets shiftwidth and expandtab automatically
 Plug 'junegunn/vader.vim' " vimscript testing framework
 Plug 'MarcWeber/vim-addon-mw-utils' " Some utilities needed by vim-snipmate
 Plug 'tomtom/tlib_vim' " Adds a bunch of T... commands needed by snipmate
@@ -41,15 +40,15 @@ Plug 'tomtom/tcomment_vim' " Use gc to toggle comments or gcc for a single line
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'EinfachToll/DidYouMean'
 Plug 'iamcco/diagnostic-languageserver', { 'do': 'yarn install' }
+Plug 'ruanyl/vim-gh-line'
 
 " Syntax plugins
 Plug 'yuezk/vim-js'
 Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
 Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'elzr/vim-json'
 Plug 'mustache/vim-mustache-handlebars'
-" Plug 'jelera/vim-javascript-syntax'
-" Plug 'pangloss/vim-javascript'
 Plug 'moll/vim-node'
 Plug 'cakebaker/scss-syntax.vim'
 Plug 'hail2u/vim-css3-syntax'
@@ -241,16 +240,11 @@ cnoreabbrev GD GrepDef
 " Alias NF to NERDTreeFind
 cnoreabbrev NF NERDTreeFind
 
-" Function to fix tab settings when they get screwed up
-function! FixTabSettings()
-  set tabstop=2
-  set shiftwidth=2
-  set noexpandtab
-endfunction
-
 " Function to fix tab and highlight settings when they get screwed up
 function! FixThings()
-  set noet ci pi sts=0 sw=2 ts=2
+  set noexpandtab copyindent preserveindent softtabstop=0 shiftwidth=2 tabstop=2
+  set redrawtime=10000
+  syntax enable
   syntax sync fromstart
 endfunction
 command! FixThings call FixThings()
@@ -347,6 +341,9 @@ command! -nargs=0 Prettier :CocCommand prettier.formatFile
 " ----------------------------------------------------------------------------
 " https://github.com/airblade/vim-gitgutter/issues/490
 let g:gitgutter_terminal_reports_focus = 0
+let g:fzf_mru_relative = 1 " Only list files in the current directory
+let g:fzf_preview_window = '' " Disable preview window
+
 
 " Allow jsonc (json with comments)
 autocmd FileType json syntax match Comment +\/\/.\+$+

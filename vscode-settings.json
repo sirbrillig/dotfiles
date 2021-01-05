@@ -165,5 +165,6 @@
     "phpcs.lintOnType": false,
     "php.suggest.basic": false,
     "php.validate.enable": false,
-    "AllAutocomplete.cycleOpenDocumentsOnLaunch": true
+    "AllAutocomplete.cycleOpenDocumentsOnLaunch": true,
+    "phpcs.trace.server": "messages"
 }

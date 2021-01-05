@@ -45,7 +45,8 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git brew osx bgnotify vi-mode vagrant tmux npm node grunt)
+# plugins=(git brew osx bgnotify vi-mode vagrant tmux npm node grunt)
+plugins=(vi-mode)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -57,7 +58,7 @@ export PATH=$PATH:/Users/payton/.composer/vendor/bin
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
-export EDITOR='vim'
+export EDITOR='nvim'
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
 #   export EDITOR='vim'
@@ -84,7 +85,6 @@ bindkey '^R' history-incremental-search-backward
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias zshconfig="vim ~/.zshrc"
 alias mcsync='unison -ui text -repeat watch dev-mc'
 alias usyn='unison -ui text -repeat watch automattic-sandbox'
 alias unisync-force-local='unison -ui text -auto -force "/Users/payton/Code/automattic-sandbox" automattic-sandbox'
@@ -106,6 +106,11 @@ export SOCKS5PROXY="127.0.0.1:8080"
 
 # Enable autojump
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+
+# Recommended by calypso doctor
+export NODE_OPTIONS=--max-old-space-size=6144
+# export CHROMEDRIVER_SKIP_DOWNLOAD=true
+# export PUPPETEER_SKIP_DOWNLOAD=true
 
 # Enable php@7.2
 #export PATH="/usr/local/opt/php@7.2/bin:$PATH"
