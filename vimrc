@@ -32,9 +32,9 @@ Plug 'moll/vim-bbye'
 Plug 'kshenoy/vim-signature'
 Plug 'tpope/vim-sleuth' " Sets shiftwidth and expandtab automatically
 Plug 'junegunn/vader.vim' " vimscript testing framework
-Plug 'MarcWeber/vim-addon-mw-utils' " Some utilities needed by vim-snipmate
-Plug 'tomtom/tlib_vim' " Adds a bunch of T... commands needed by snipmate
-Plug 'garbas/vim-snipmate'
+" Plug 'MarcWeber/vim-addon-mw-utils' " Some utilities needed by vim-snipmate
+" Plug 'tomtom/tlib_vim' " Adds a bunch of T... commands needed by snipmate
+" Plug 'garbas/vim-snipmate'
 Plug 'jiangmiao/auto-pairs' " Adds autopopulating closing parens/brackets/braces/quotes; has some bugs
 Plug 'tomtom/tcomment_vim' " Use gc to toggle comments or gcc for a single line
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -59,6 +59,7 @@ Plug 'flowtype/vim-flow'
 Plug 'StanAngeloff/php.vim'
 Plug 'jxnblk/vim-mdx-js'
 Plug 'tjvr/vim-nearley'
+Plug 'itspriddle/vim-shellcheck'
 
 " Search plugins
 Plug 'jremmen/vim-ripgrep' " Requires ripgrep
@@ -297,6 +298,16 @@ nnoremap <Leader>C :set paste<CR>:r !pbpaste<CR>:set nopaste<CR>:echom "pasted f
 " Map leader-y to paste from last register 0 (last yank)
 noremap <Leader>y "0p<CR>
 
+" Add command for opening current file and line in OpenGrok
+function! OpenInGrok()
+  let s:filepath = expand('%')
+  let s:linenumber = line(".")
+  let s:baseuri = "https://opengrok.a8c.com/source/xref/trunk/"
+  let s:uri = s:baseuri . s:filepath . "\\#" . s:linenumber
+  exec "!open " . shellescape(s:uri) . ""
+endfunction
+command! OpenInGrok call OpenInGrok()
+
 " ----------------------------------------------------------------------------
 " Colors
 " ----------------------------------------------------------------------------
@@ -343,7 +354,6 @@ command! -nargs=0 Prettier :CocCommand prettier.formatFile
 let g:gitgutter_terminal_reports_focus = 0
 let g:fzf_mru_relative = 1 " Only list files in the current directory
 let g:fzf_preview_window = '' " Disable preview window
-
 
 " Allow jsonc (json with comments)
 autocmd FileType json syntax match Comment +\/\/.\+$+
