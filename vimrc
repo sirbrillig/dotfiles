@@ -38,6 +38,7 @@ Plug 'junegunn/vader.vim' " vimscript testing framework
 Plug 'jiangmiao/auto-pairs' " Adds autopopulating closing parens/brackets/braces/quotes; has some bugs
 Plug 'tomtom/tcomment_vim' " Use gc to toggle comments or gcc for a single line
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc-eslint'
 Plug 'EinfachToll/DidYouMean'
 Plug 'iamcco/diagnostic-languageserver', { 'do': 'yarn install' }
 Plug 'ruanyl/vim-gh-line'
@@ -333,6 +334,9 @@ colorscheme molokai " always a good one
 " For some reason paragraph text always appears as italic, so make it easier to read at least.
 " hi markdownItalic ctermfg=253 ctermbg=238 guifg=#DADADA guibg=#40403C
 
+" Make the background transparent
+hi Normal guibg=NONE ctermbg=NONE
+
 " ----------------------------------------------------------------------------
 " FileTypes
 " ----------------------------------------------------------------------------
@@ -357,3 +361,9 @@ let g:fzf_preview_window = '' " Disable preview window
 
 " Allow jsonc (json with comments)
 autocmd FileType json syntax match Comment +\/\/.\+$+
+
+" Autoformat JS files on save
+" augroup formatOnSave
+"   autocmd!
+"   autocmd BufWritePre *.js,*.ts,*.tsx,*.jsx execute '!yarn eslint --fix %'
+" augroup END
