@@ -309,6 +309,9 @@ function! OpenInGrok()
 endfunction
 command! OpenInGrok call OpenInGrok()
 
+" Map CTRL-Space to autocomplete
+inoremap <c-space> <c-n>
+
 " ----------------------------------------------------------------------------
 " Colors
 " ----------------------------------------------------------------------------
