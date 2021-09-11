@@ -19,8 +19,6 @@ call plug#begin('~/.vim/bundle')
 " ----------------------------------------------------------------------------
 Plug 'vim-scripts/L9'
 Plug 'vim-scripts/mru.vim'
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ryanoasis/vim-devicons'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -47,6 +45,7 @@ Plug 'hrsh7th/cmp-nvim-lsp' " lsp source for nvim-cmp
 Plug 'hrsh7th/cmp-buffer' " buffer source for nvim-cmp
 Plug 'hrsh7th/cmp-path' " path source for nvim-cmp
 Plug 'nvim-treesitter/nvim-treesitter' " Library for other plugs and themes that deal with syntax
+Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
 
 " Syntax plugins
 Plug 'yuezk/vim-js'
@@ -74,10 +73,9 @@ Plug 'junegunn/fzf.vim'
 Plug 'pbogut/fzf-mru.vim'
 
 " Color scheme plugins
-Plug 'tomasr/molokai'
 Plug 'tanvirtin/monokai.nvim'
-Plug 'arcticicestudio/nord-vim'
-Plug 'glepnir/zephyr-nvim'
+Plug 'folke/tokyonight.nvim'
+Plug 'sainnhe/sonokai'
 
 call plug#end()
 
@@ -134,13 +132,6 @@ set directory=/tmp
 
 " Allow copy/paste between MacOS and tmux
 set clipboard=unnamed
-
-" Hide the NERDTree arrows because some systems don't have support for those characters
-" let g:NERDTreeDirArrows=0
-" Always show hidden files
-let NERDTreeShowHidden=1
-
-let NERDTreeWinSize=55
 
 " Display indentation guides
 set list listchars=tab:\|\ ,trail:·,extends:»,precedes:«,nbsp:×
@@ -384,9 +375,6 @@ command! PrettierPHP silent !prettier --write --use-tabs --trailing-comma-php ph
 " Alias :GD to :GrepDef
 cnoreabbrev GD GrepDef
 
-" Alias NF to NERDTreeFind
-cnoreabbrev NF NERDTreeFind
-
 " Function to fix tab and highlight settings when they get screwed up
 function! FixThings()
   set noexpandtab copyindent preserveindent softtabstop=0 shiftwidth=2 tabstop=2
@@ -411,7 +399,7 @@ function! Paste_on_off()
 endfunc
 
 " map Leader-n to toggle NERDTree
-nnoremap <Leader>n :NERDTreeToggle<CR>
+nnoremap <leader>n <cmd>CHADopen<cr>
 
 " Map leader-: to add a semicolon to the end of the line
 nnoremap <Leader>: mqA;<esc>`q
@@ -478,25 +466,11 @@ if exists('+termguicolors')
 endif
 
 " Set the theme
-" colorscheme zephyr
-colorscheme monokai
-
-" Simplify colors during vimdiff
-" highlight DiffAdd    cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-" highlight DiffDelete cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-" highlight DiffChange cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-" highlight DiffText   cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=bg guibg=Red
-
-" For some reason paragraph text always appears as italic, so make it easier to read at least.
-" hi markdownItalic ctermfg=253 ctermbg=238 guifg=#DADADA guibg=#40403C
+let g:sonokai_transparent_background = 1
+colorscheme sonokai
 
 " Make the background transparent
 hi Normal guibg=NONE ctermbg=NONE
-
-" ----------------------------------------------------------------------------
-" Prettier
-" ----------------------------------------------------------------------------
-" command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 " ----------------------------------------------------------------------------
 " Other
@@ -512,3 +486,5 @@ augroup formatOnSave
   autocmd!
   autocmd BufWritePre *.js,*.ts,*.tsx,*.jsx execute '!yarn eslint --fix %'
 augroup END
+
+let g:chadtree_settings = { "view.width": 50 }
