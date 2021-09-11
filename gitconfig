@@ -25,7 +25,9 @@
 	clean = git-media-clean %f
 	smudge = git-media-smudge %f
 [merge]
-	tool = vimdiff
+	tool = nvim-only
+[mergetool "nvim-only"]
+	cmd = nvim $MERGED
 [filter "hawser"]
 	clean = git hawser clean %f
 	smudge = git hawser smudge %f
