@@ -27,21 +27,21 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-endwise'
 Plug 'airblade/vim-gitgutter'
-Plug 'danro/rename.vim'
+Plug 'danro/rename.vim' " Adds :Rename command
 Plug 'moll/vim-bbye'
 Plug 'kshenoy/vim-signature'
 Plug 'tpope/vim-sleuth' " Sets shiftwidth and expandtab automatically
 Plug 'junegunn/vader.vim' " vimscript testing framework
-" Plug 'MarcWeber/vim-addon-mw-utils' " Some utilities needed by vim-snipmate
-" Plug 'tomtom/tlib_vim' " Adds a bunch of T... commands needed by snipmate
-" Plug 'garbas/vim-snipmate'
-Plug 'jiangmiao/auto-pairs' " Adds autopopulating closing parens/brackets/braces/quotes; has some bugs
+Plug 'windwp/nvim-autopairs' " Adds autopopulating closing parens/brackets/braces/quotes
 Plug 'tomtom/tcomment_vim' " Use gc to toggle comments or gcc for a single line
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'neoclide/coc-eslint'
+Plug 'neovim/nvim-lspconfig' " starts language servers, I think
 Plug 'EinfachToll/DidYouMean'
 Plug 'iamcco/diagnostic-languageserver', { 'do': 'yarn install' }
-Plug 'ruanyl/vim-gh-line'
+Plug 'ruanyl/vim-gh-line' " type gh to open selected or current line in github
+Plug 'karb94/neoscroll.nvim' " smooth scrolling
+Plug 'glepnir/dashboard-nvim' " startup dashboard
 
 " Syntax plugins
 Plug 'yuezk/vim-js'
@@ -102,7 +102,6 @@ set smartcase "do case-sensitive if upper-case characters.
 set gdefault "assume the /g flag on :s.
 set formatoptions+=crqlj "auto-format comments in code.
 set textwidth=0 "for wrapping
-set tabpagemax=20 " allow a lot of tabs to be open
 set backspace=indent,eol,start "allow erasing previously entered characters in insert mode.
 set wildmenu " show list instead of just completing
 set scrolloff=3 " minimum lines to keep above and below cursor
@@ -153,6 +152,12 @@ let g:vim_json_syntax_conceal = 0
 " Or run :syntax sync fromstart
 syntax sync minlines=500
 
+lua require('neoscroll').setup()
+
+lua require('nvim-autopairs').setup{}
+
+let g:dashboard_default_executive = 'fzf'
+
 " ----------------------------------------------------------------------------
 " vim-airline
 " ----------------------------------------------------------------------------
@@ -184,7 +189,7 @@ map ]] ]}
 
 " quit with capital Q also
 command! -bar -bang Q quit<bang>
-command! -bar -bang Qa quit<bang>
+command! -bar -bang Qa quitall<bang>
 command! Ccl ccl
 
 " map CTRL-A and CTRL-E to home and end, respectively.
@@ -311,6 +316,15 @@ command! OpenInGrok call OpenInGrok()
 
 " Map CTRL-Space to autocomplete
 inoremap <c-space> <c-n>
+
+nmap <Leader>ss :<C-u>SessionSave<CR>
+nmap <Leader>sl :<C-u>SessionLoad<CR>
+nnoremap <silent> <Leader>fh :DashboardFindHistory<CR>
+nnoremap <silent> <Leader>ff :DashboardFindFile<CR>
+nnoremap <silent> <Leader>tc :DashboardChangeColorscheme<CR>
+nnoremap <silent> <Leader>fa :DashboardFindWord<CR>
+nnoremap <silent> <Leader>fb :DashboardJumpMark<CR>
+nnoremap <silent> <Leader>cn :DashboardNewFile<CR>
 
 " ----------------------------------------------------------------------------
 " Colors
