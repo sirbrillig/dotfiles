@@ -32,16 +32,25 @@ Plug 'moll/vim-bbye'
 Plug 'kshenoy/vim-signature'
 Plug 'tpope/vim-sleuth' " Sets shiftwidth and expandtab automatically
 Plug 'junegunn/vader.vim' " vimscript testing framework
+" Plug 'MarcWeber/vim-addon-mw-utils' " Some utilities needed by vim-snipmate
+" Plug 'tomtom/tlib_vim' " Adds a bunch of T... commands needed by snipmate
+" Plug 'garbas/vim-snipmate'
+" Plug 'jiangmiao/auto-pairs' " Adds autopopulating closing parens/brackets/braces/quotes; has some bugs
 Plug 'windwp/nvim-autopairs' " Adds autopopulating closing parens/brackets/braces/quotes
 Plug 'tomtom/tcomment_vim' " Use gc to toggle comments or gcc for a single line
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'neoclide/coc-eslint'
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'neoclide/coc-eslint'
 Plug 'neovim/nvim-lspconfig' " starts language servers, I think
 Plug 'EinfachToll/DidYouMean'
 Plug 'iamcco/diagnostic-languageserver', { 'do': 'yarn install' }
 Plug 'ruanyl/vim-gh-line' " type gh to open selected or current line in github
 Plug 'karb94/neoscroll.nvim' " smooth scrolling
 Plug 'glepnir/dashboard-nvim' " startup dashboard
+Plug 'hrsh7th/nvim-cmp' " autocomplete
+Plug 'hrsh7th/vim-vsnip' " snippets, required by nvim-cmp
+Plug 'hrsh7th/cmp-buffer' " unknown, required by nvim-cmp
+Plug 'hrsh7th/cmp-nvim-lsp' " lsp source for nvim-cmp
+Plug 'hrsh7th/cmp-buffer' " buffer source for nvim-cmp
 
 " Syntax plugins
 Plug 'yuezk/vim-js'
@@ -102,6 +111,7 @@ set smartcase "do case-sensitive if upper-case characters.
 set gdefault "assume the /g flag on :s.
 set formatoptions+=crqlj "auto-format comments in code.
 set textwidth=0 "for wrapping
+"set tabpagemax=20 " allow a lot of tabs to be open
 set backspace=indent,eol,start "allow erasing previously entered characters in insert mode.
 set wildmenu " show list instead of just completing
 set scrolloff=3 " minimum lines to keep above and below cursor
@@ -171,17 +181,156 @@ let g:airline#extensions#whitespace#enabled = 0
 let g:airline_powerline_fonts = 1
 
 " ----------------------------------------------------------------------------
+" LSP
+" ----------------------------------------------------------------------------
+
+lua << EOF
+local nvim_lsp = require('lspconfig')
+
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+  -- Enable completion triggered by <c-x><c-o>
+  -- buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
+
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  -- buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  -- buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  -- buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  -- buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  -- buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', '<C-j>', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+end
+
+-- Use a loop to conveniently call 'setup' on multiple servers and
+-- map buffer local keybindings when the language server attaches
+local servers = { 'tsserver' }
+for _, lsp in ipairs(servers) do
+  nvim_lsp[lsp].setup {
+    on_attach = on_attach,
+    flags = {
+      debounce_text_changes = 150,
+    }
+  }
+end
+
+nvim_lsp.diagnosticls.setup {
+    on_attach = on_attach,
+    filetypes = {"javascript", "typescript"},
+    init_options = {
+        linters = {
+            eslint = {
+                command = "./node_modules/.bin/eslint",
+                rootPatterns = {".git"},
+                debounce = 100,
+                args = {
+                    "--stdin",
+                    "--stdin-filename",
+                    "%filepath",
+                    "--format",
+                    "json"
+                },
+                sourceName = "eslint",
+                parseJson = {
+                    errorsRoot = "[0].messages",
+                    line = "line",
+                    column = "column",
+                    endLine = "endLine",
+                    endColumn = "endColumn",
+                    message = "${message} [${ruleId}]",
+                    security = "severity"
+                },
+                securities = {
+                    [2] = "error",
+                    [1] = "warning"
+                }
+            },
+        filetypes = {
+            javascript = "eslint",
+            typescript = "eslint"
+        }
+    }
+  }
+}
+
+-- Configure autocomplete
+local cmp = require'cmp'
+cmp.setup({
+  formatting = {
+    format = function(entry, vim_item)
+      -- fancy icons and a name of kind
+      -- vim_item.kind = require("lspkind").presets.default[vim_item.kind] .. " " .. vim_item.kind
+
+      -- set a name for each source
+      vim_item.menu = ({
+        buffer = "[Buffer]",
+        nvim_lsp = "[LSP]",
+        luasnip = "[LuaSnip]",
+        nvim_lua = "[Lua]",
+        latex_symbols = "[Latex]",
+      })[entry.source.name]
+      return vim_item
+    end,
+  },
+  snippet = {
+    expand = function(args)
+      vim.fn["vsnip#anonymous"](args.body)
+    end,
+  },
+  mapping = {
+    -- ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+		['<C-Space>'] = cmp.mapping.complete(),
+  },
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'buffer' },
+  }
+})
+
+-- you need setup cmp first put this after cmp.setup()
+-- require("nvim-autopairs.completion.cmp").setup({
+  -- map_cr = true, --  map <CR> on insert mode
+-- })
+
+-- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers..
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
+get_bufnrs = function()
+  return vim.api.nvim_list_bufs()
+end
+EOF
+
+" ----------------------------------------------------------------------------
 " Keybindings
 " ----------------------------------------------------------------------------
 
 " Map ctrl-j and ctrl-k to jump to previous/next linting error
-nmap <silent> <C-k> <Plug>(coc-diagnostic-prev)
-nmap <silent> <C-j> <Plug>(coc-diagnostic-next)
-" GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+" nmap <silent> <C-k> <Plug>(coc-diagnostic-prev)
+" nmap <silent> <C-j> <Plug>(coc-diagnostic-next)
+" " GoTo code navigation.
+" nmap <silent> gd <Plug>(coc-definition)
+" nmap <silent> gy <Plug>(coc-type-definition)
+" nmap <silent> gi <Plug>(coc-implementation)
+" nmap <silent> gr <Plug>(coc-references)
 
 " allow using [[ and ]] for curly braces not in the first column
 map [[ [{
@@ -315,7 +464,7 @@ endfunction
 command! OpenInGrok call OpenInGrok()
 
 " Map CTRL-Space to autocomplete
-inoremap <c-space> <c-n>
+" inoremap <c-space> <c-n>
 
 nmap <Leader>ss :<C-u>SessionSave<CR>
 nmap <Leader>sl :<C-u>SessionLoad<CR>
@@ -366,7 +515,7 @@ let g:flow#showquickfix = 0
 " ----------------------------------------------------------------------------
 " Prettier
 " ----------------------------------------------------------------------------
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
+" command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 " ----------------------------------------------------------------------------
 " Other
