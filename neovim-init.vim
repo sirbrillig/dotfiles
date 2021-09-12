@@ -1,17 +1,12 @@
-" vimrc
+" init.vim
 " ----------------------------------------------------------------------------
-" Summary: Payton's vimrc file
+" Summary: Payton's neovim config file
 " URL: https://github.com/sirbrillig/dotfiles
 " ----------------------------------------------------------------------------
 
 " ----------------------------------------------------------------------------
 " Set up vim-plug
 " ----------------------------------------------------------------------------
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
 call plug#begin('~/.vim/bundle')
 
 " ----------------------------------------------------------------------------
@@ -19,26 +14,33 @@ call plug#begin('~/.vim/bundle')
 " ----------------------------------------------------------------------------
 Plug 'vim-scripts/L9'
 Plug 'vim-scripts/mru.vim'
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ryanoasis/vim-devicons'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-endwise'
-Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-surround' " Add or change surrounding tokens, eg: quotes
+Plug 'tpope/vim-endwise' " Add end after if, etc, in languages that use those block delimiters
+Plug 'nvim-lua/plenary.nvim' " Library for some neovim things, I think
+Plug 'lewis6991/gitsigns.nvim' " Highlight git additions or removals
 Plug 'danro/rename.vim' " Adds :Rename command
-Plug 'moll/vim-bbye'
-Plug 'kshenoy/vim-signature'
+Plug 'moll/vim-bbye' " alows closing buffers
+Plug 'kshenoy/vim-signature' " displays vim marks in signs column
 Plug 'tpope/vim-sleuth' " Sets shiftwidth and expandtab automatically
 Plug 'junegunn/vader.vim' " vimscript testing framework
 Plug 'windwp/nvim-autopairs' " Adds autopopulating closing parens/brackets/braces/quotes
 Plug 'tomtom/tcomment_vim' " Use gc to toggle comments or gcc for a single line
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'neoclide/coc-eslint'
-Plug 'EinfachToll/DidYouMean'
-Plug 'iamcco/diagnostic-languageserver', { 'do': 'yarn install' }
+Plug 'neovim/nvim-lspconfig' " starts language servers, I think
+Plug 'EinfachToll/DidYouMean' " Shows suggestions when you try to open the wrong filename
 Plug 'ruanyl/vim-gh-line' " type gh to open selected or current line in github
+Plug 'karb94/neoscroll.nvim' " smooth scrolling
+Plug 'glepnir/dashboard-nvim' " startup dashboard
+Plug 'hrsh7th/nvim-cmp' " autocomplete
+Plug 'hrsh7th/vim-vsnip' " snippets, required by nvim-cmp
+Plug 'hrsh7th/cmp-nvim-lsp' " lsp source for nvim-cmp
+Plug 'hrsh7th/cmp-buffer' " buffer source for nvim-cmp
+Plug 'hrsh7th/cmp-path' " path source for nvim-cmp
+Plug 'nvim-treesitter/nvim-treesitter' " Library for other plugs and themes that deal with syntax
+Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
+Plug 'jose-elias-alvarez/null-ls.nvim'
 
 " Syntax plugins
 Plug 'yuezk/vim-js'
@@ -53,7 +55,6 @@ Plug 'hail2u/vim-css3-syntax'
 Plug 'Keithbsmiley/swift.vim'
 Plug 'fatih/vim-go'
 Plug 'dag/vim-fish'
-Plug 'flowtype/vim-flow'
 Plug 'StanAngeloff/php.vim'
 Plug 'jxnblk/vim-mdx-js'
 Plug 'tjvr/vim-nearley'
@@ -67,8 +68,9 @@ Plug 'junegunn/fzf.vim'
 Plug 'pbogut/fzf-mru.vim'
 
 " Color scheme plugins
-Plug 'tomasr/molokai'
-Plug 'arcticicestudio/nord-vim'
+Plug 'tanvirtin/monokai.nvim'
+Plug 'folke/tokyonight.nvim'
+Plug 'sainnhe/sonokai'
 
 call plug#end()
 
@@ -111,15 +113,13 @@ filetype indent on
 set cursorline " highlight the current cursor line number
 set number " show line numbers
 set path+=** " Allow recursive find
-set completeopt=menuone,longest " Configure tab autocomplete
-" set iskeyword+=\- " Adds dash character to keyword characters
+set completeopt=menuone,noselect " Configure tab autocomplete
 set iskeyword-=\$ " Removes dollar sign from keyword characters
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
 set updatetime=300
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-set signcolumn=yes
+" Resize sign column to show multiple signs
+set signcolumn=auto:1
 
 set backupdir=/tmp
 set undodir=/tmp
@@ -127,13 +127,6 @@ set directory=/tmp
 
 " Allow copy/paste between MacOS and tmux
 set clipboard=unnamed
-
-" Hide the NERDTree arrows because some systems don't have support for those characters
-" let g:NERDTreeDirArrows=0
-" Always show hidden files
-let NERDTreeShowHidden=1
-
-let NERDTreeWinSize=55
 
 " Display indentation guides
 set list listchars=tab:\|\ ,trail:·,extends:»,precedes:«,nbsp:×
@@ -149,6 +142,10 @@ let g:vim_json_syntax_conceal = 0
 " Or run :syntax sync fromstart
 syntax sync minlines=500
 
+lua require('neoscroll').setup()
+
+let g:dashboard_default_executive = 'fzf'
+
 " ----------------------------------------------------------------------------
 " vim-airline
 " ----------------------------------------------------------------------------
@@ -162,32 +159,144 @@ let g:airline#extensions#whitespace#enabled = 0
 let g:airline_powerline_fonts = 1
 
 " ----------------------------------------------------------------------------
-" Keybindings
+" LSP
 " ----------------------------------------------------------------------------
 
-" Map ctrl-j and ctrl-k to jump to previous/next linting error
-nmap <silent> <C-k> <Plug>(coc-diagnostic-prev)
-nmap <silent> <C-j> <Plug>(coc-diagnostic-next)
-" GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+lua << EOF
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
-" allow using [[ and ]] for curly braces not in the first column
-map [[ [{
-map ]] ]}
+  -- Enable completion triggered by <c-x><c-o>
+  -- buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
+
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', '<C-j>', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+end
+
+require("null-ls").config({
+  diagnostics_format = "[#{c}] #{m} (#{s})",
+  -- debug = true,
+  sources = {
+    require("null-ls").builtins.formatting.eslint_d,
+    require("null-ls").builtins.diagnostics.eslint_d,
+    require("null-ls").builtins.diagnostics.phpcs,
+  }
+})
+
+require("lspconfig")["null-ls"].setup({
+    on_attach = function(client, bufnr)
+      -- format on save
+      if client.resolved_capabilities.document_formatting then
+          vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
+      end
+      on_attach(client, bufnr);
+    end,
+})
+
+require("lspconfig").tsserver.setup({
+    on_attach = function(client, bufnr)
+        client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.document_range_formatting = false
+        on_attach(client, bufnr);
+    end,
+})
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+   vim.lsp.diagnostic.on_publish_diagnostics, {
+     signs = true, -- shows E: error, W: warning, I: info, H: hint
+     update_in_insert = false,
+     underline = true,
+     severity_sort = true,
+   }
+)
+
+local signs = { Error = " ", Warning = " ", Hint = " ", Information = " " }
+for type, icon in pairs(signs) do
+  local hl = "LspDiagnosticsSign" .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+end
+
+require('gitsigns').setup({
+  sign_priority = 2,
+  signs = {
+    add          = {hl = 'GitSignsAdd'   , text = '+', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
+    change       = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+    delete       = {hl = 'GitSignsDelete', text = '-', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+    topdelete    = {hl = 'GitSignsDelete', text = '-', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+    changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+  },
+})
+
+-- Configure autocomplete
+local cmp = require'cmp'
+cmp.setup({
+  formatting = {
+    format = function(entry, vim_item)
+      -- set a name for each source
+      vim_item.menu = ({
+        buffer = "[Buffer]",
+        nvim_lsp = "[LSP]",
+        path = "[Path]",
+      })[entry.source.name]
+      return vim_item
+    end,
+  },
+  snippet = {
+    expand = function(args)
+      vim.fn["vsnip#anonymous"](args.body)
+    end,
+  },
+  mapping = {
+    ['<C-Space>'] = cmp.mapping.complete(),
+  },
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'buffer' },
+    { name = 'path' },
+  }
+})
+
+require('nvim-autopairs').setup{}
+require("nvim-autopairs.completion.cmp").setup({
+  map_cr = true, --  map <CR> on insert mode to eg: move back a line after adding a newline; conflicts with other CR mappings; also does not work?
+  map_complete = true,
+  auto_select = false,
+})
+
+-- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers..
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
+-- Something needed by cmp-buffer
+get_bufnrs = function()
+  return vim.api.nvim_list_bufs()
+end
+EOF
+
+" ----------------------------------------------------------------------------
+" Keybindings
+" ----------------------------------------------------------------------------
 
 " quit with capital Q also
 command! -bar -bang Q quit<bang>
 command! -bar -bang Qa quitall<bang>
 command! Ccl ccl
-
-" map CTRL-A and CTRL-E to home and end, respectively.
-map  <C-A> <Home>
-map  <C-E> <End>
-map! <C-A> <Home>
-map! <C-E> <End>
 
 " reset the mapleader to ;
 let mapleader = ";"
@@ -225,18 +334,11 @@ nnoremap <Leader>t :e<space>
 nnoremap <Leader>[ :bp<CR>
 nnoremap <Leader>] :bn<CR>
 
-" map gp to Prettier
-nnoremap gp :Prettier<CR>
-
-" Add manual command for PHP prettier since the built-in one doesn't seem to
-" work
-command! PrettierPHP silent !prettier --write --use-tabs --trailing-comma-php php5 --brace-style 1tbs --single-quote %
+" map gp to autoformat
+nnoremap gp :lua vim.lsp.buf.formatting()<CR>
 
 " Alias :GD to :GrepDef
 cnoreabbrev GD GrepDef
-
-" Alias NF to NERDTreeFind
-cnoreabbrev NF NERDTreeFind
 
 " Function to fix tab and highlight settings when they get screwed up
 function! FixThings()
@@ -262,7 +364,7 @@ function! Paste_on_off()
 endfunc
 
 " map Leader-n to toggle NERDTree
-nnoremap <Leader>n :NERDTreeToggle<CR>
+nnoremap <leader>n <cmd>CHADopen<cr>
 
 " Map leader-: to add a semicolon to the end of the line
 nnoremap <Leader>: mqA;<esc>`q
@@ -306,7 +408,7 @@ endfunction
 command! OpenInGrok call OpenInGrok()
 
 " Map CTRL-Space to autocomplete
-inoremap <c-space> <c-n>
+" inoremap <c-space> <c-n>
 
 nmap <Leader>ss :<C-u>SessionSave<CR>
 nmap <Leader>sl :<C-u>SessionLoad<CR>
@@ -329,49 +431,19 @@ if exists('+termguicolors')
 endif
 
 " Set the theme
-" colorscheme elflord " my favorite for a long time with customizations
-colorscheme molokai " always a good one
-" colorscheme nord 
-
-" Simplify colors during vimdiff
-" highlight DiffAdd    cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-" highlight DiffDelete cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-" highlight DiffChange cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-" highlight DiffText   cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=bg guibg=Red
-
-" For some reason paragraph text always appears as italic, so make it easier to read at least.
-" hi markdownItalic ctermfg=253 ctermbg=238 guifg=#DADADA guibg=#40403C
+let g:sonokai_transparent_background = 1
+colorscheme sonokai
 
 " Make the background transparent
 hi Normal guibg=NONE ctermbg=NONE
 
 " ----------------------------------------------------------------------------
-" FileTypes
-" ----------------------------------------------------------------------------
-
-" Show flow syntax: https://github.com/pangloss/vim-javascript#configuration-variables
-let g:javascript_plugin_flow = 1
-let g:flow#enable = 0
-let g:flow#showquickfix = 0
-
-" ----------------------------------------------------------------------------
-" Prettier
-" ----------------------------------------------------------------------------
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
-
-" ----------------------------------------------------------------------------
 " Other
 " ----------------------------------------------------------------------------
-" https://github.com/airblade/vim-gitgutter/issues/490
-let g:gitgutter_terminal_reports_focus = 0
 let g:fzf_mru_relative = 1 " Only list files in the current directory
 let g:fzf_preview_window = '' " Disable preview window
 
 " Allow jsonc (json with comments)
 autocmd FileType json syntax match Comment +\/\/.\+$+
 
-" Autoformat JS files on save
-" augroup formatOnSave
-"   autocmd!
-"   autocmd BufWritePre *.js,*.ts,*.tsx,*.jsx execute '!yarn eslint --fix %'
-" augroup END
+let g:chadtree_settings = { "view.width": 50 }
