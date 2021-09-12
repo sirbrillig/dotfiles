@@ -123,8 +123,8 @@ set iskeyword-=\$ " Removes dollar sign from keyword characters
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
 set updatetime=300
-" Auto-resize sign column to show multiple signs
-set signcolumn=auto:3
+" Resize sign column to show multiple signs
+set signcolumn=auto:1
 
 set backupdir=/tmp
 set undodir=/tmp
