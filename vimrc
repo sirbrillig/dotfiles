@@ -168,8 +168,6 @@ let g:airline_powerline_fonts = 1
 " ----------------------------------------------------------------------------
 
 lua << EOF
-local nvim_lsp = require('lspconfig')
-
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
@@ -200,14 +198,14 @@ require("null-ls").config({
   diagnostics_format = "[#{c}] #{m} (#{s})",
   sources = {
     require("null-ls").builtins.formatting.eslint_d,
-    require("null-ls").builtins.diagnostics.eslint_d, -- does not do anything?
-    require("null-ls").builtins.diagnostics.phpcs, -- does not do anything?
+    require("null-ls").builtins.diagnostics.eslint_d,
+    require("null-ls").builtins.diagnostics.phpcs,
   }
 })
 
 require("lspconfig")["null-ls"].setup({
     on_attach = function(client, bufnr)
-    -- format on save
+      -- format on save
       if client.resolved_capabilities.document_formatting then
           vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
       end
