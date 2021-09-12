@@ -18,7 +18,6 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-surround' " Add or change surrounding tokens, eg: quotes
-Plug 'tpope/vim-endwise' " Add end after if, etc, in languages that use those block delimiters
 Plug 'nvim-lua/plenary.nvim' " Library for some neovim things, I think
 Plug 'lewis6991/gitsigns.nvim' " Highlight git additions or removals
 Plug 'danro/rename.vim' " Adds :Rename command
@@ -272,7 +271,19 @@ cmp.setup({
   }
 })
 
-require('nvim-autopairs').setup{}
+require('nvim-autopairs').setup({
+    check_ts = true,
+    ts_config = {
+        lua = {'string'},-- it will not add pair on that treesitter node
+        javascript = {'template_string'},
+        java = false,-- don't check treesitter on java
+    }
+})
+
+require('nvim-treesitter.configs').setup {
+  autopairs = {enable = true}
+}
+
 require("nvim-autopairs.completion.cmp").setup({
   map_cr = true, --  map <CR> on insert mode to eg: move back a line after adding a newline; conflicts with other CR mappings; also does not work?
   map_complete = true,
