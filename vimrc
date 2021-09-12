@@ -35,7 +35,6 @@ Plug 'windwp/nvim-autopairs' " Adds autopopulating closing parens/brackets/brace
 Plug 'tomtom/tcomment_vim' " Use gc to toggle comments or gcc for a single line
 Plug 'neovim/nvim-lspconfig' " starts language servers, I think
 Plug 'EinfachToll/DidYouMean' " Shows suggestions when you try to open the wrong filename
-Plug 'iamcco/diagnostic-languageserver', { 'do': 'yarn install' }
 Plug 'ruanyl/vim-gh-line' " type gh to open selected or current line in github
 Plug 'karb94/neoscroll.nvim' " smooth scrolling
 Plug 'glepnir/dashboard-nvim' " startup dashboard
@@ -46,6 +45,7 @@ Plug 'hrsh7th/cmp-buffer' " buffer source for nvim-cmp
 Plug 'hrsh7th/cmp-path' " path source for nvim-cmp
 Plug 'nvim-treesitter/nvim-treesitter' " Library for other plugs and themes that deal with syntax
 Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
+Plug 'jose-elias-alvarez/null-ls.nvim'
 
 " Syntax plugins
 Plug 'yuezk/vim-js'
@@ -196,17 +196,32 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
--- Use a loop to conveniently call 'setup' on multiple servers and
--- map buffer local keybindings when the language server attaches
-local servers = { 'tsserver', 'diagnosticls' }
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup {
-    on_attach = on_attach,
-    flags = {
-      debounce_text_changes = 150,
-    }
+require("null-ls").config({
+  diagnostics_format = "[#{c}] #{m} (#{s})",
+  sources = {
+    require("null-ls").builtins.formatting.eslint_d,
+    require("null-ls").builtins.diagnostics.eslint_d, -- does not do anything?
+    require("null-ls").builtins.diagnostics.phpcs, -- does not do anything?
   }
-end
+})
+
+require("lspconfig")["null-ls"].setup({
+    on_attach = function(client, bufnr)
+    -- format on save
+      if client.resolved_capabilities.document_formatting then
+          vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
+      end
+      on_attach(client, bufnr);
+    end,
+})
+
+require("lspconfig").tsserver.setup({
+    on_attach = function(client, bufnr)
+        client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.document_range_formatting = false
+        on_attach(client, bufnr);
+    end,
+})
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
    vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -233,46 +248,6 @@ require('gitsigns').setup({
     changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
   },
 })
-
--- Show eslint errors; doesn't seem to work
-nvim_lsp.diagnosticls.setup {
-    on_attach = on_attach,
-    filetypes = {"javascript", "typescript"},
-    init_options = {
-        linters = {
-            eslint = {
-                command = "./node_modules/.bin/eslint",
-                rootPatterns = {".git"},
-                debounce = 100,
-                args = {
-                    "--stdin",
-                    "--stdin-filename",
-                    "%filepath",
-                    "--format",
-                    "json"
-                },
-                sourceName = "eslint",
-                parseJson = {
-                    errorsRoot = "[0].messages",
-                    line = "line",
-                    column = "column",
-                    endLine = "endLine",
-                    endColumn = "endColumn",
-                    message = "${message} [${ruleId}]",
-                    security = "severity"
-                },
-                securities = {
-                    [2] = "error",
-                    [1] = "warning"
-                }
-            },
-        filetypes = {
-            javascript = "eslint",
-            typescript = "eslint"
-        }
-    }
-  }
-}
 
 -- Configure autocomplete
 local cmp = require'cmp'
@@ -365,12 +340,8 @@ nnoremap <Leader>t :e<space>
 nnoremap <Leader>[ :bp<CR>
 nnoremap <Leader>] :bn<CR>
 
-" map gp to Prettier
-nnoremap gp :Prettier<CR>
-
-" Add manual command for PHP prettier since the built-in one doesn't seem to
-" work
-command! PrettierPHP silent !prettier --write --use-tabs --trailing-comma-php php5 --brace-style 1tbs --single-quote %
+" map gp to autoformat
+nnoremap gp :lua vim.lsp.buf.formatting()<CR>
 
 " Alias :GD to :GrepDef
 cnoreabbrev GD GrepDef
@@ -480,11 +451,5 @@ let g:fzf_preview_window = '' " Disable preview window
 
 " Allow jsonc (json with comments)
 autocmd FileType json syntax match Comment +\/\/.\+$+
-
-" Autoformat JS files on save
-augroup formatOnSave
-  autocmd!
-  autocmd BufWritePre *.js,*.ts,*.tsx,*.jsx execute '!yarn eslint --fix %'
-augroup END
 
 let g:chadtree_settings = { "view.width": 50 }
