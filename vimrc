@@ -196,6 +196,7 @@ end
 
 require("null-ls").config({
   diagnostics_format = "[#{c}] #{m} (#{s})",
+  -- debug = true,
   sources = {
     require("null-ls").builtins.formatting.eslint_d,
     require("null-ls").builtins.diagnostics.eslint_d,
