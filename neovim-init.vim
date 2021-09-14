@@ -14,8 +14,9 @@ call plug#begin('~/.vim/bundle')
 " ----------------------------------------------------------------------------
 Plug 'vim-scripts/L9'
 Plug 'vim-scripts/mru.vim'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+Plug 'akinsho/bufferline.nvim' " bufferline (tabline)
+Plug 'hoob3rt/lualine.nvim' " statusline
+Plug 'kyazdani42/nvim-web-devicons' " icons for lualine, bufferline (and possibly others)
 Plug 'tpope/vim-surround' " Add or change surrounding tokens, eg: quotes
 Plug 'nvim-lua/plenary.nvim' " Library for some neovim things, I think
 Plug 'lewis6991/gitsigns.nvim' " Highlight git additions or removals
@@ -139,21 +140,38 @@ let g:vim_json_syntax_conceal = 0
 " Or run :syntax sync fromstart
 syntax sync minlines=500
 
-lua require('neoscroll').setup()
-
 let g:dashboard_default_executive = 'fzf'
 
-" ----------------------------------------------------------------------------
-" vim-airline
-" ----------------------------------------------------------------------------
-let g:bufferline_fname_mod = ':p:.'
-let g:bufferline_echo = 0
-set t_Co=256
-let g:airline_theme='wombat'
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#syntastic#enabled = 1
-let g:airline#extensions#whitespace#enabled = 0
-let g:airline_powerline_fonts = 1
+lua << EOF
+require('neoscroll').setup()
+
+require('lualine').setup({
+  sections = {
+    lualine_c = {{
+      'filename',
+      file_status = true,
+      path = 1,
+    }},
+  },
+  options = {
+    theme = 'wombat',
+  },
+})
+
+require("bufferline").setup({
+  options = {
+    separator_style = "thick",
+    show_buffer_close_icons = false,
+    offsets = {
+      {
+        filetype = "CHADTree",
+        text = "File Explorer",
+        text_align = "left",
+      },
+    },
+  }
+})
+EOF
 
 " ----------------------------------------------------------------------------
 " LSP
@@ -323,7 +341,7 @@ vnoremap <Leader>s :s///c<Left><Left><Left>
 nnoremap <Leader>o o^
 
 " map leader-r to reload the vimrc.
-nnoremap <Leader>r :source $MYVIMRC<CR>:AirlineToggle<CR>:AirlineToggle<CR>:AirlineRefresh<CR>:echom "vimrc reloaded"<CR>
+nnoremap <Leader>r :source $MYVIMRC<CR>:echom "vimrc reloaded"<CR>
 
 " map backslash to save.
 nnoremap \ :w<CR>
