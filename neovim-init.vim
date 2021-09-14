@@ -14,7 +14,6 @@ call plug#begin('~/.vim/bundle')
 " ----------------------------------------------------------------------------
 Plug 'vim-scripts/L9'
 Plug 'vim-scripts/mru.vim'
-Plug 'ryanoasis/vim-devicons'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-surround' " Add or change surrounding tokens, eg: quotes
@@ -33,7 +32,6 @@ Plug 'ruanyl/vim-gh-line' " type gh to open selected or current line in github
 Plug 'karb94/neoscroll.nvim' " smooth scrolling
 Plug 'glepnir/dashboard-nvim' " startup dashboard
 Plug 'hrsh7th/nvim-cmp' " autocomplete
-Plug 'hrsh7th/vim-vsnip' " snippets, required by nvim-cmp
 Plug 'hrsh7th/cmp-nvim-lsp' " lsp source for nvim-cmp
 Plug 'hrsh7th/cmp-buffer' " buffer source for nvim-cmp
 Plug 'hrsh7th/cmp-path' " path source for nvim-cmp
@@ -191,10 +189,12 @@ end
 require("null-ls").config({
   diagnostics_format = "[#{c}] #{m} (#{s})",
   -- debug = true,
+  default_timeout = 50000,
   sources = {
     require("null-ls").builtins.formatting.eslint_d,
     require("null-ls").builtins.diagnostics.eslint_d,
     require("null-ls").builtins.diagnostics.phpcs,
+    -- require("null-ls").builtins.formatting.phpcbf,
   }
 })
 
@@ -243,7 +243,7 @@ require('gitsigns').setup({
 })
 
 -- Configure autocomplete
-local cmp = require'cmp'
+local cmp = require('cmp')
 cmp.setup({
   formatting = {
     format = function(entry, vim_item)
@@ -254,11 +254,6 @@ cmp.setup({
         path = "[Path]",
       })[entry.source.name]
       return vim_item
-    end,
-  },
-  snippet = {
-    expand = function(args)
-      vim.fn["vsnip#anonymous"](args.body)
     end,
   },
   mapping = {
@@ -274,9 +269,7 @@ cmp.setup({
 require('nvim-autopairs').setup({
     check_ts = true,
     ts_config = {
-        lua = {'string'},-- it will not add pair on that treesitter node
         javascript = {'template_string'},
-        java = false,-- don't check treesitter on java
     }
 })
 
@@ -285,14 +278,14 @@ require('nvim-treesitter.configs').setup {
 }
 
 require("nvim-autopairs.completion.cmp").setup({
-  map_cr = true, --  map <CR> on insert mode to eg: move back a line after adding a newline; conflicts with other CR mappings; also does not work?
+  map_cr = true, --  map <CR> on insert mode to eg: move back a line after adding a newline
   map_complete = true,
   auto_select = false,
 })
 
--- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers..
+-- I don't know what this does but it was suggested by nvim-cmp
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+require('cmp_nvim_lsp').update_capabilities(capabilities)
 
 -- Something needed by cmp-buffer
 get_bufnrs = function()
@@ -457,4 +450,5 @@ let g:fzf_preview_window = '' " Disable preview window
 " Allow jsonc (json with comments)
 autocmd FileType json syntax match Comment +\/\/.\+$+
 
-let g:chadtree_settings = { "view.width": 50 }
+" chadtree git polling destroys the cpu
+let g:chadtree_settings = { "view.width": 50, "options.polling_rate": 60, "options.version_control.enable": v:false }
