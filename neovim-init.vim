@@ -127,7 +127,8 @@ set directory=/tmp
 set clipboard=unnamed
 
 " Display indentation guides
-set list listchars=tab:\|\ ,trail:·,extends:»,precedes:«,nbsp:×
+set list
+set listchars=tab:\|\ ,trail:·,extends:»,precedes:«,nbsp:×
 
 " Highlight searches made by Ag
 let g:ag_highlight=1
@@ -160,7 +161,6 @@ require('lualine').setup({
 
 require("bufferline").setup({
   options = {
-    separator_style = "thick",
     show_buffer_close_icons = false,
     offsets = {
       {
