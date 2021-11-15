@@ -35,10 +35,11 @@ Plug 'glepnir/dashboard-nvim' " startup dashboard
 Plug 'hrsh7th/nvim-cmp' " autocomplete
 Plug 'hrsh7th/cmp-nvim-lsp' " lsp source for nvim-cmp
 Plug 'hrsh7th/cmp-buffer' " buffer source for nvim-cmp
+Plug 'hrsh7th/vim-vsnip' " snippets, required by nvim-cmp
 Plug 'hrsh7th/cmp-path' " path source for nvim-cmp
 Plug 'nvim-treesitter/nvim-treesitter' " Library for other plugs and themes that deal with syntax
-Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
-Plug 'jose-elias-alvarez/null-ls.nvim'
+Plug 'jose-elias-alvarez/null-ls.nvim' " Language server for various misc. linters like phpcs
+Plug 'kyazdani42/nvim-tree.lua' " File explorer
 
 " Syntax plugins
 Plug 'yuezk/vim-js'
@@ -59,7 +60,8 @@ Plug 'tjvr/vim-nearley'
 Plug 'itspriddle/vim-shellcheck'
 
 " Search plugins
-Plug 'jremmen/vim-ripgrep' " Requires ripgrep
+" Plug 'jremmen/vim-ripgrep' " Broken because of https://github.com/jremmen/vim-ripgrep/pull/58
+Plug 'mi544/vim-ripgrep' " Fork of the one above
 Plug '~/Code/vim-grepdef'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -162,13 +164,7 @@ require('lualine').setup({
 require("bufferline").setup({
   options = {
     show_buffer_close_icons = false,
-    offsets = {
-      {
-        filetype = "CHADTree",
-        text = "File Explorer",
-        text_align = "left",
-      },
-    },
+    offsets = {},
   }
 })
 EOF
@@ -207,7 +203,8 @@ end
 require("null-ls").config({
   diagnostics_format = "[#{c}] #{m} (#{s})",
   -- debug = true,
-  default_timeout = 50000,
+  -- default_timeout = 50000,
+  debounce = 1000,
   sources = {
     require("null-ls").builtins.formatting.eslint_d,
     require("null-ls").builtins.diagnostics.eslint_d,
@@ -236,7 +233,7 @@ require("lspconfig").tsserver.setup({
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
    vim.lsp.diagnostic.on_publish_diagnostics, {
-     signs = true, -- shows E: error, W: warning, I: info, H: hint
+     signs = true,
      update_in_insert = false,
      underline = true,
      severity_sort = true,
@@ -263,6 +260,9 @@ require('gitsigns').setup({
 -- Configure autocomplete
 local cmp = require('cmp')
 cmp.setup({
+  completion = {
+    keyword_length = 3,
+  },
   formatting = {
     format = function(entry, vim_item)
       -- set a name for each source
@@ -272,6 +272,11 @@ cmp.setup({
         path = "[Path]",
       })[entry.source.name]
       return vim_item
+    end,
+  },
+  snippet = {
+    expand = function(args)
+      vim.fn["vsnip#anonymous"](args.body)
     end,
   },
   mapping = {
@@ -309,6 +314,54 @@ require('cmp_nvim_lsp').update_capabilities(capabilities)
 get_bufnrs = function()
   return vim.api.nvim_list_bufs()
 end
+
+require('nvim-tree').setup {
+  disable_netrw       = true,
+  hijack_netrw        = true,
+  open_on_setup       = false,
+  ignore_ft_on_setup  = {},
+  auto_close          = false,
+  open_on_tab         = false,
+  hijack_cursor       = false,
+  update_cwd          = false,
+  update_to_buf_dir   = {
+    enable = true,
+    auto_open = true,
+  },
+  diagnostics = {
+    enable = false,
+    icons = {
+      hint = "",
+      info = "",
+      warning = "",
+      error = "",
+    }
+  },
+  update_focused_file = {
+    enable      = false,
+    update_cwd  = false,
+    ignore_list = {}
+  },
+  system_open = {
+    cmd  = nil,
+    args = {}
+  },
+  filters = {
+    dotfiles = false,
+    custom = {}
+  },
+  view = {
+    width = 45,
+    height = 30,
+    hide_root_folder = false,
+    side = 'left',
+    auto_resize = true,
+    mappings = {
+      custom_only = false,
+      list = {}
+    }
+  }
+}
 EOF
 
 " ----------------------------------------------------------------------------
@@ -357,7 +410,7 @@ nnoremap <Leader>[ :bp<CR>
 nnoremap <Leader>] :bn<CR>
 
 " map gp to autoformat
-nnoremap gp :lua vim.lsp.buf.formatting()<CR>
+nnoremap gp :lua vim.lsp.buf.formatting_sync()<CR>
 
 " Alias :GD to :GrepDef
 cnoreabbrev GD GrepDef
@@ -385,8 +438,8 @@ function! Paste_on_off()
   endif
 endfunc
 
-" map Leader-n to toggle NERDTree
-nnoremap <leader>n <cmd>CHADopen<cr>
+" map Leader-n to toggle file explorer (eg: NERDTree)
+nnoremap <leader>n <cmd>NvimTreeFindFileToggle<cr>
 
 " Map leader-: to add a semicolon to the end of the line
 nnoremap <Leader>: mqA;<esc>`q
@@ -467,6 +520,3 @@ let g:fzf_preview_window = '' " Disable preview window
 
 " Allow jsonc (json with comments)
 autocmd FileType json syntax match Comment +\/\/.\+$+
-
-" chadtree git polling destroys the cpu
-let g:chadtree_settings = { "view.width": 50, "options.polling_rate": 60, "options.version_control.enable": v:false }
