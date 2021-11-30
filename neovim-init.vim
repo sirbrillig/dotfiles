@@ -460,7 +460,7 @@ nnoremap <Leader>b :Buffers<CR>
 nnoremap <Leader>x :Bdelete<CR>
 
 " Map leader-g to grep for the word under the cursor
-nnoremap <Leader>g :Rg <cword>
+nnoremap <Leader>g :Rg -w <cword>
 
 " Map leader-G to begin a search
 nnoremap <Leader>G :Rg 
