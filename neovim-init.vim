@@ -23,7 +23,8 @@ Plug 'lewis6991/gitsigns.nvim' " Highlight git additions or removals
 Plug 'danro/rename.vim' " Adds :Rename command
 Plug 'moll/vim-bbye' " alows closing buffers
 Plug 'kshenoy/vim-signature' " displays vim marks in signs column
-Plug 'tpope/vim-sleuth' " Sets shiftwidth and expandtab automatically
+" Plug 'tpope/vim-sleuth' " Sets shiftwidth and expandtab automatically, buggy
+" when changing shiftwidth it inexplicably changes it to 4 instead of tabstop.
 Plug 'junegunn/vader.vim' " vimscript testing framework
 Plug 'windwp/nvim-autopairs' " Adds autopopulating closing parens/brackets/braces/quotes
 Plug 'tomtom/tcomment_vim' " Use gc to toggle comments or gcc for a single line
@@ -81,15 +82,19 @@ runtime macros/matchit.vim
 " Options
 " ----------------------------------------------------------------------------
 syntax on
+filetype on
+filetype plugin on
+filetype indent on
 set hlsearch "highlight search matches
 set autoindent "use previous line's indent level
+set preserveindent " when reindenting try to preserve existing indentation as much as possible
+set copyindent " when starting a new line use the indent of the previous line
 set background=dark "assume dark background.
 set hidden "allow edited buffers to be hidden
 set switchbuf=useopen "use existing buffer rather than opening a new one
 set showtabline=1 "show the tab bar only if more than 1 tab
 set smarttab "pressing tab fixes indent.
 set noet "use tabs to indent
-set copyindent
 set softtabstop=0
 set shiftwidth=2
 set tabstop=2
@@ -107,9 +112,6 @@ set scrolloff=3 " minimum lines to keep above and below cursor
 set laststatus=2 " always show the status line
 set cmdheight=2 " slightly more room for notices
 let g:netrw_silent=1 " be quiet when using netrw
-filetype on
-filetype plugin on
-filetype indent on
 set cursorline " highlight the current cursor line number
 set number " show line numbers
 set path+=** " Allow recursive find
@@ -144,6 +146,9 @@ let g:vim_json_syntax_conceal = 0
 syntax sync minlines=500
 
 let g:dashboard_default_executive = 'fzf'
+
+" Disable buggy indenting of leafgarland/typescript-vim
+let g:typescript_indent_disable = 1
 
 lua << EOF
 require('neoscroll').setup()
@@ -200,7 +205,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
-require("null-ls").config({
+require("null-ls").setup({
   diagnostics_format = "[#{c}] #{m} (#{s})",
   -- debug = true,
   -- default_timeout = 50000,
@@ -210,16 +215,12 @@ require("null-ls").config({
     require("null-ls").builtins.diagnostics.eslint_d,
     require("null-ls").builtins.diagnostics.phpcs,
     -- require("null-ls").builtins.formatting.phpcbf,
-  }
-})
-
-require("lspconfig")["null-ls"].setup({
-    on_attach = function(client, bufnr)
+  },
+  on_attach = function(client)
       -- format on save
       if client.resolved_capabilities.document_formatting then
-          vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
+        vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
       end
-      on_attach(client, bufnr);
     end,
 })
 
@@ -281,6 +282,7 @@ cmp.setup({
   },
   mapping = {
     ['<C-Space>'] = cmp.mapping.complete(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
   },
   sources = {
     { name = 'nvim_lsp' },
@@ -299,12 +301,6 @@ require('nvim-autopairs').setup({
 require('nvim-treesitter.configs').setup {
   autopairs = {enable = true}
 }
-
-require("nvim-autopairs.completion.cmp").setup({
-  map_cr = true, --  map <CR> on insert mode to eg: move back a line after adding a newline
-  map_complete = true,
-  auto_select = false,
-})
 
 -- I don't know what this does but it was suggested by nvim-cmp
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -481,9 +477,6 @@ function! OpenInGrok()
   exec "!open " . shellescape(s:uri) . ""
 endfunction
 command! OpenInGrok call OpenInGrok()
-
-" Map CTRL-Space to autocomplete
-" inoremap <c-space> <c-n>
 
 nmap <Leader>ss :<C-u>SessionSave<CR>
 nmap <Leader>sl :<C-u>SessionLoad<CR>
