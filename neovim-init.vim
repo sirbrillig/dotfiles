@@ -67,6 +67,7 @@ Plug '~/Code/vim-grepdef'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'pbogut/fzf-mru.vim'
+Plug 'gfanto/fzf-lsp.nvim'
 
 " Color scheme plugins
 Plug 'tanvirtin/monokai.nvim'
@@ -195,14 +196,15 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
   buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
   buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
   buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', '<C-j>', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', '<C-j>', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+
+  -- list all symbols in document in quickfix
+  buf_set_keymap('n', '<space>s', '<cmd>lua vim.lsp.buf.document_symbol()<CR>', opts)
+
+	-- list all lsp errors in quickfix
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-  buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
 require("null-ls").setup({
@@ -221,6 +223,7 @@ require("null-ls").setup({
       if client.resolved_capabilities.document_formatting then
         vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
       end
+      on_attach(client, bufnr);
     end,
 })
 
@@ -231,6 +234,7 @@ require("lspconfig").tsserver.setup({
         on_attach(client, bufnr);
     end,
 })
+require("lspconfig").phpactor.setup({})
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
    vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -240,6 +244,10 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
      severity_sort = true,
    }
 )
+
+vim.diagnostic.config({
+  virtual_text = false,
+})
 
 local signs = { Error = " ", Warning = " ", Hint = " ", Information = " " }
 for type, icon in pairs(signs) do
@@ -408,6 +416,9 @@ nnoremap <Leader>] :bn<CR>
 " map gp to autoformat
 nnoremap gp :lua vim.lsp.buf.formatting_sync()<CR>
 
+" Alias :DS to :DocumentSymbols to open fzf with all symbols
+cnoreabbrev DS DocumentSymbols
+
 " Alias :GD to :GrepDef
 cnoreabbrev GD GrepDef
 
@@ -460,10 +471,6 @@ nnoremap <Leader>g :Rg -w <cword>
 
 " Map leader-G to begin a search
 nnoremap <Leader>G :Rg 
-
-" Map leader-c, leader-C to copy/paste selected text in MacOS
-vnoremap <Leader>c :w !pbcopy<CR><CR>:echom "copied to MacOS clipboard"<CR>
-nnoremap <Leader>C :set paste<CR>:r !pbpaste<CR>:set nopaste<CR>:echom "pasted from MacOS clipboard"<CR>
 
 " Map leader-y to paste from last register 0 (last yank)
 noremap <Leader>y "0p<CR>
