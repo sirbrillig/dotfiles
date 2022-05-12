@@ -18,7 +18,7 @@ Plug 'akinsho/bufferline.nvim' " bufferline (tabline)
 Plug 'hoob3rt/lualine.nvim' " statusline
 Plug 'kyazdani42/nvim-web-devicons' " icons for lualine, bufferline (and possibly others)
 Plug 'tpope/vim-surround' " Add or change surrounding tokens, eg: quotes
-Plug 'nvim-lua/plenary.nvim' " Library for some neovim things, I think
+Plug 'nvim-lua/plenary.nvim' " Library for some neovim things, I think; required by gitsigns, null-ls, etc.
 Plug 'lewis6991/gitsigns.nvim' " Highlight git additions or removals
 Plug 'danro/rename.vim' " Adds :Rename command
 Plug 'moll/vim-bbye' " alows closing buffers
@@ -161,9 +161,11 @@ require('lualine').setup({
       file_status = true,
       path = 1,
     }},
+    lualine_x = {'filetype'},
   },
   options = {
     theme = 'wombat',
+    globalstatus = true,
   },
 })
 
