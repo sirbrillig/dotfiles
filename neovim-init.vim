@@ -220,12 +220,19 @@ require("null-ls").setup({
     require("null-ls").builtins.diagnostics.phpcs,
     -- require("null-ls").builtins.formatting.phpcbf,
   },
-  on_attach = function(client)
-      -- format on save
-      if client.resolved_capabilities.document_formatting then
-        vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
-      end
-      on_attach(client, bufnr);
+  on_attach = function(client, bufnr)
+        -- auto-format on save; see https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Formatting-on-save
+        if client.supports_method("textDocument/formatting") then
+            vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+            vim.api.nvim_create_autocmd("BufWritePre", {
+                group = augroup,
+                buffer = bufnr,
+                callback = function()
+                    -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
+                    vim.lsp.buf.formatting_sync()
+                end,
+            })
+        end
     end,
 })
 
@@ -290,10 +297,10 @@ cmp.setup({
       vim.fn["vsnip#anonymous"](args.body)
     end,
   },
-  mapping = {
+  mapping = cmp.mapping.preset.insert({
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-  },
+  }),
   sources = {
     { name = 'nvim_lsp' },
     { name = 'buffer' },
@@ -326,7 +333,6 @@ require('nvim-tree').setup {
   hijack_netrw        = true,
   open_on_setup       = false,
   ignore_ft_on_setup  = {},
-  auto_close          = false,
   open_on_tab         = false,
   hijack_cursor       = false,
   update_cwd          = false,
