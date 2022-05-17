@@ -233,6 +233,7 @@ require("null-ls").setup({
                 end,
             })
         end
+        on_attach(client, bufnr);
     end,
 })
 
