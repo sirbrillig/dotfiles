@@ -41,6 +41,7 @@ Plug 'hrsh7th/cmp-path' " path source for nvim-cmp
 Plug 'nvim-treesitter/nvim-treesitter' " Library for other plugs and themes that deal with syntax
 Plug 'jose-elias-alvarez/null-ls.nvim' " Language server for various misc. linters like phpcs
 Plug 'kyazdani42/nvim-tree.lua' " File explorer
+Plug 'gbprod/substitute.nvim' " Exchange register for text object
 
 " Syntax plugins
 Plug 'yuezk/vim-js'
@@ -68,6 +69,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'pbogut/fzf-mru.vim'
 Plug 'gfanto/fzf-lsp.nvim'
+Plug 'sk1418/QFGrep'
 
 " Color scheme plugins
 Plug 'tanvirtin/monokai.nvim'
@@ -174,6 +176,12 @@ require("bufferline").setup({
     show_buffer_close_icons = false,
     offsets = {},
   }
+})
+
+require("substitute").setup({
+  -- your configuration comes here
+  -- or leave it empty to use the default settings
+  -- refer to the configuration section below
 })
 EOF
 
@@ -337,10 +345,6 @@ require('nvim-tree').setup {
   open_on_tab         = false,
   hijack_cursor       = false,
   update_cwd          = false,
-  update_to_buf_dir   = {
-    enable = true,
-    auto_open = true,
-  },
   diagnostics = {
     enable = false,
     icons = {
@@ -368,7 +372,6 @@ require('nvim-tree').setup {
     height = 30,
     hide_root_folder = false,
     side = 'left',
-    auto_resize = true,
     mappings = {
       custom_only = false,
       list = {}
@@ -502,6 +505,14 @@ nnoremap <silent> <Leader>tc :DashboardChangeColorscheme<CR>
 nnoremap <silent> <Leader>fa :DashboardFindWord<CR>
 nnoremap <silent> <Leader>fb :DashboardJumpMark<CR>
 nnoremap <silent> <Leader>cn :DashboardNewFile<CR>
+
+" Keybindings for substitute.nvim
+lua << EOF
+vim.keymap.set("n", "s", "<cmd>lua require('substitute').operator()<cr>", { noremap = true })
+vim.keymap.set("n", "ss", "<cmd>lua require('substitute').line()<cr>", { noremap = true })
+vim.keymap.set("n", "S", "<cmd>lua require('substitute').eol()<cr>", { noremap = true })
+vim.keymap.set("x", "s", "<cmd>lua require('substitute').visual()<cr>", { noremap = true })
+EOF
 
 " ----------------------------------------------------------------------------
 " Colors
