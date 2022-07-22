@@ -32,7 +32,6 @@ Plug 'neovim/nvim-lspconfig' " starts language servers, I think
 Plug 'EinfachToll/DidYouMean' " Shows suggestions when you try to open the wrong filename
 Plug 'ruanyl/vim-gh-line' " type gh to open selected or current line in github
 Plug 'karb94/neoscroll.nvim' " smooth scrolling
-Plug 'glepnir/dashboard-nvim' " startup dashboard
 Plug 'hrsh7th/nvim-cmp' " autocomplete
 Plug 'hrsh7th/cmp-nvim-lsp' " lsp source for nvim-cmp
 Plug 'hrsh7th/cmp-buffer' " buffer source for nvim-cmp
@@ -147,8 +146,6 @@ let g:vim_json_syntax_conceal = 0
 " http://vim.wikia.com/wiki/Fix_syntax_highlighting
 " Or run :syntax sync fromstart
 syntax sync minlines=500
-
-let g:dashboard_default_executive = 'fzf'
 
 " Disable buggy indenting of leafgarland/typescript-vim
 let g:typescript_indent_disable = 1
@@ -499,12 +496,6 @@ command! OpenInGrok call OpenInGrok()
 
 nmap <Leader>ss :<C-u>SessionSave<CR>
 nmap <Leader>sl :<C-u>SessionLoad<CR>
-nnoremap <silent> <Leader>fh :DashboardFindHistory<CR>
-nnoremap <silent> <Leader>ff :DashboardFindFile<CR>
-nnoremap <silent> <Leader>tc :DashboardChangeColorscheme<CR>
-nnoremap <silent> <Leader>fa :DashboardFindWord<CR>
-nnoremap <silent> <Leader>fb :DashboardJumpMark<CR>
-nnoremap <silent> <Leader>cn :DashboardNewFile<CR>
 
 " Keybindings for substitute.nvim
 lua << EOF
