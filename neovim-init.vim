@@ -41,6 +41,7 @@ Plug 'nvim-treesitter/nvim-treesitter' " Library for other plugs and themes that
 Plug 'jose-elias-alvarez/null-ls.nvim' " Language server for various misc. linters like phpcs
 Plug 'kyazdani42/nvim-tree.lua' " File explorer
 Plug 'gbprod/substitute.nvim' " Exchange register for text object
+Plug 'junegunn/vim-easy-align' " Allow aligning columns in docblocks
 
 " Syntax plugins
 Plug 'yuezk/vim-js'
@@ -136,9 +137,6 @@ set clipboard=unnamed
 set list
 set listchars=tab:\|\ ,trail:·,extends:»,precedes:«,nbsp:×
 
-" Highlight searches made by Ag
-let g:ag_highlight=1
-
 " Disable JSON quote concealing
 let g:vim_json_syntax_conceal = 0
 
@@ -164,7 +162,6 @@ require('lualine').setup({
   },
   options = {
     theme = 'wombat',
-    globalstatus = true,
   },
 })
 
@@ -175,11 +172,7 @@ require("bufferline").setup({
   }
 })
 
-require("substitute").setup({
-  -- your configuration comes here
-  -- or leave it empty to use the default settings
-  -- refer to the configuration section below
-})
+require("substitute").setup({})
 EOF
 
 " ----------------------------------------------------------------------------
@@ -505,6 +498,15 @@ vim.keymap.set("n", "S", "<cmd>lua require('substitute').eol()<cr>", { noremap =
 vim.keymap.set("x", "s", "<cmd>lua require('substitute').visual()<cr>", { noremap = true })
 EOF
 
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
+" Align jsdoc/phpdoc param lists
+xmap gA :EasyAlign */\v\s{2,}/ {'a': 'l', 'ig': []}<CR>
+
 " ----------------------------------------------------------------------------
 " Colors
 " ----------------------------------------------------------------------------
@@ -531,3 +533,6 @@ let g:fzf_preview_window = '' " Disable preview window
 
 " Allow jsonc (json with comments)
 autocmd FileType json syntax match Comment +\/\/.\+$+
+
+" Overwrite buggy nvim php indentation which breaks comments
+autocmd FileType php setlocal autoindent
