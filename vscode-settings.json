@@ -167,5 +167,6 @@
     "php.validate.enable": false,
     "AllAutocomplete.cycleOpenDocumentsOnLaunch": true,
     "phpcs.trace.server": "messages",
-    "phpCodeSniffer.standard": "PEAR"
+    "phpCodeSniffer.standard": "Default",
+    "phpCodeSniffer.autoExecutable": true
 }
