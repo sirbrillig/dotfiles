@@ -26,10 +26,10 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-endwise'
-Plug 'airblade/vim-gitgutter'
+Plug 'airblade/vim-gitgutter' " Adds git marks in the gutter
 Plug 'danro/rename.vim' " Adds :Rename command
-Plug 'moll/vim-bbye'
-Plug 'kshenoy/vim-signature'
+Plug 'moll/vim-bbye' " Allows truly deleting buffers
+Plug 'kshenoy/vim-signature' " Toggle and display marks in gutter
 Plug 'tpope/vim-sleuth' " Sets shiftwidth and expandtab automatically
 Plug 'junegunn/vader.vim' " vimscript testing framework
 Plug 'windwp/nvim-autopairs' " Adds autopopulating closing parens/brackets/braces/quotes
