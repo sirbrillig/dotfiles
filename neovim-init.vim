@@ -226,8 +226,7 @@ require("null-ls").setup({
                 group = augroup,
                 buffer = bufnr,
                 callback = function()
-                    -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
-                    vim.lsp.buf.formatting_sync()
+                    vim.lsp.buf.format({ bufnr = bufnr })
                 end,
             })
         end
@@ -237,8 +236,8 @@ require("null-ls").setup({
 
 require("lspconfig").tsserver.setup({
     on_attach = function(client, bufnr)
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.document_range_formatting = false
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.documentRangeFormattingProvider = false
         on_attach(client, bufnr);
     end,
 })
@@ -318,10 +317,6 @@ require('nvim-treesitter.configs').setup {
   autopairs = {enable = true}
 }
 
--- I don't know what this does but it was suggested by nvim-cmp
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-require('cmp_nvim_lsp').update_capabilities(capabilities)
-
 -- Something needed by cmp-buffer
 get_bufnrs = function()
   return vim.api.nvim_list_bufs()
@@ -359,7 +354,6 @@ require('nvim-tree').setup {
   },
   view = {
     width = 45,
-    height = 30,
     hide_root_folder = false,
     side = 'left',
     mappings = {
@@ -481,7 +475,7 @@ noremap <Leader>y "0p<CR>
 function! OpenInGrok()
   let s:filepath = expand('%')
   let s:linenumber = line(".")
-  let s:baseuri = "https://opengrok.a8c.com/source/xref/trunk/"
+  let s:baseuri = "https://opengrok.a8c.com/source/xref/wpcom/"
   let s:uri = s:baseuri . s:filepath . "\\#" . s:linenumber
   exec "!open " . shellescape(s:uri) . ""
 endfunction
