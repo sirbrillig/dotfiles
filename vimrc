@@ -295,6 +295,9 @@ nnoremap <Leader>C :set paste<CR>:r !pbpaste<CR>:set nopaste<CR>:echom "pasted f
 " Map leader-y to paste from last register 0 (last yank)
 noremap <Leader>y "0p<CR>
 
+" Map `cp` to copy the current filename
+nnoremap cp :let @+ = expand("%")
+
 " Add command for opening current file and line in OpenGrok
 function! OpenInGrok()
   let s:filepath = expand('%')

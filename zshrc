@@ -87,10 +87,8 @@ bindkey '^R' history-incremental-search-backward
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias mcsync='unison -ui text -repeat watch dev-mc'
 alias usyn='unison -ui text -repeat watch automattic-sandbox'
-alias unisync-force-local='unison -ui text -auto -force "/Users/payton/Code/automattic-sandbox" automattic-sandbox'
-alias unisync-force-remote='unison -ui text -auto -force "ssh://wpdev@wpsandbox//home/wpcom/public_html" automattic-sandbox'
-alias pitsync='unison -ui text -repeat watch the-pit-of-despair'
-alias gtsync='unison -ui text -repeat watch guided-transfer'
+alias usyn-force-local='unison -ui text -auto -force "/Users/payton/Code/automattic-sandbox" automattic-sandbox'
+alias usyn-force-remote='unison -ui text -auto -force "ssh://wpdev@wpsandbox//home/wpcom/public_html" automattic-sandbox'
 alias ls="ls -G -F"
 
 # Use rg for fzf to ignore gitignore contents
@@ -139,3 +137,9 @@ export NODE_OPTIONS=--max-old-space-size=6144
 # # Add environment variable COCOS_TEMPLATES_ROOT for cocos2d-x
 # export COCOS_TEMPLATES_ROOT="/Users/payton/Downloads/cocos2d-x-4.0/templates"
 # export PATH=$COCOS_TEMPLATES_ROOT:$PATH
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+eval "$(atuin init zsh --disable-up-arrow)"

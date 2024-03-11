@@ -62,8 +62,8 @@ Plug 'tjvr/vim-nearley'
 Plug 'itspriddle/vim-shellcheck'
 
 " Search plugins
-" Plug 'jremmen/vim-ripgrep' " Broken because of https://github.com/jremmen/vim-ripgrep/pull/58
-Plug 'mi544/vim-ripgrep' " Fork of the one above
+Plug 'jremmen/vim-ripgrep' " Broken because of https://github.com/jremmen/vim-ripgrep/pull/58
+" Plug 'mi544/vim-ripgrep' " Fork of the one above
 Plug '~/Code/vim-grepdef'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -108,6 +108,7 @@ set ignorecase "case-insensitive searching
 set smartcase "do case-sensitive if upper-case characters.
 set gdefault "assume the /g flag on :s.
 set formatoptions+=crqlj "auto-format comments in code.
+set formatexpr= " prevent lsp from hijacking normal formatting
 set textwidth=0 "for wrapping
 set backspace=indent,eol,start "allow erasing previously entered characters in insert mode.
 set wildmenu " show list instead of just completing
@@ -241,7 +242,13 @@ require("lspconfig").tsserver.setup({
         on_attach(client, bufnr);
     end,
 })
-require("lspconfig").phpactor.setup({})
+require'lspconfig'.phpactor.setup{
+    on_attach = on_attach,
+    init_options = {
+        -- ["language_server_phpstan.enabled"] = false,
+        -- ["language_server_psalm.enabled"] = false,
+    }
+}
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
    vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -325,8 +332,6 @@ end
 require('nvim-tree').setup {
   disable_netrw       = true,
   hijack_netrw        = true,
-  open_on_setup       = false,
-  ignore_ft_on_setup  = {},
   open_on_tab         = false,
   hijack_cursor       = false,
   update_cwd          = false,
@@ -410,7 +415,7 @@ nnoremap <Leader>[ :bp<CR>
 nnoremap <Leader>] :bn<CR>
 
 " map gp to autoformat
-nnoremap gp :lua vim.lsp.buf.formatting_sync()<CR>
+nnoremap gp :lua vim.lsp.buf.format()<CR>
 
 " Alias :DS to :DocumentSymbols to open fzf with all symbols
 cnoreabbrev DS DocumentSymbols
@@ -470,6 +475,9 @@ nnoremap <Leader>G :Rg
 
 " Map leader-y to paste from last register 0 (last yank)
 noremap <Leader>y "0p<CR>
+
+" Map leader-cf to copy the current filename
+nnoremap <Leader>cf :let @+ = expand("%")<CR>:echom "copied current filename"<CR>
 
 " Add command for opening current file and line in OpenGrok
 function! OpenInGrok()
