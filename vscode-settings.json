@@ -170,5 +170,7 @@
     "AllAutocomplete.cycleOpenDocumentsOnLaunch": true,
     "phpcs.trace.server": "messages",
     "phpCodeSniffer.standard": "Default",
-    "phpCodeSniffer.autoExecutable": true
+    "phpCodeSniffer.autoExecutable": true,
+    "godotTools.editorPath.godot4": "/Applications/Godot.app/Contents/MacOS/Godot",
+    "vim.replaceWithRegister": true
 }

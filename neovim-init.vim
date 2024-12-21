@@ -60,6 +60,10 @@ Plug 'StanAngeloff/php.vim'
 Plug 'jxnblk/vim-mdx-js'
 Plug 'tjvr/vim-nearley'
 Plug 'itspriddle/vim-shellcheck'
+Plug 'neovim/nvim-lspconfig'
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install --frozen-lockfile --production',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
 
 " Search plugins
 Plug 'jremmen/vim-ripgrep' " Broken because of https://github.com/jremmen/vim-ripgrep/pull/58
@@ -108,7 +112,7 @@ set ignorecase "case-insensitive searching
 set smartcase "do case-sensitive if upper-case characters.
 set gdefault "assume the /g flag on :s.
 set formatoptions+=crqlj "auto-format comments in code.
-set formatexpr= " prevent lsp from hijacking normal formatting
+" set formatexpr= " prevent lsp from hijacking normal formatting
 set textwidth=0 "for wrapping
 set backspace=indent,eol,start "allow erasing previously entered characters in insert mode.
 set wildmenu " show list instead of just completing
@@ -149,6 +153,10 @@ syntax sync minlines=500
 " Disable buggy indenting of leafgarland/typescript-vim
 let g:typescript_indent_disable = 1
 
+" Allow auto formatting for files without "@format" or "@prettier" tag
+let g:prettier#autoformat = 1
+let g:prettier#autoformat_require_pragma = 0
+
 lua << EOF
 require('neoscroll').setup()
 
@@ -181,6 +189,7 @@ EOF
 " ----------------------------------------------------------------------------
 
 lua << EOF
+
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
@@ -205,7 +214,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>s', '<cmd>lua vim.lsp.buf.document_symbol()<CR>', opts)
 
 	-- list all lsp errors in quickfix
-  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  buf_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 end
 
 require("null-ls").setup({
@@ -235,7 +244,7 @@ require("null-ls").setup({
     end,
 })
 
-require("lspconfig").tsserver.setup({
+require("lspconfig").ts_ls.setup({
     on_attach = function(client, bufnr)
         client.server_capabilities.documentFormattingProvider = false
         client.server_capabilities.documentRangeFormattingProvider = false
@@ -269,15 +278,23 @@ for type, icon in pairs(signs) do
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 end
 
-require('gitsigns').setup({
-  sign_priority = 2,
-  signs = {
-    add          = {hl = 'GitSignsAdd'   , text = '+', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
-    change       = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-    delete       = {hl = 'GitSignsDelete', text = '-', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-    topdelete    = {hl = 'GitSignsDelete', text = '-', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-    changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-  },
+require('gitsigns').setup({})
+
+-- Rust LSP
+require'lspconfig'.rust_analyzer.setup({
+	on_attach = function(client, bufnr)
+			vim.keymap.set('n', '<C-k>', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+			vim.keymap.set('n', '<C-j>', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+			on_attach(client, bufnr);
+		end,
+})
+-- Format on save
+vim.api.nvim_create_autocmd("BufWritePre", {
+	group = augroup,
+	buffer = bufnr,
+	callback = function()
+		vim.lsp.buf.format({ bufnr = bufnr })
+	end,
 })
 
 -- Configure autocomplete
@@ -473,6 +490,16 @@ noremap <Leader>y "0p<CR>
 
 " Map leader-cf to copy the current filename
 nnoremap <Leader>cf :let @+ = expand("%")<CR>:echom "copied current filename"<CR>
+
+" Add command for opening current file and line in a8c Github Enterprise
+function! GHE()
+  let s:filepath = expand('%')
+  let s:linenumber = line(".")
+  let s:baseuri = "https://github.a8c.com/Automattic/wpcom/blob/trunk/"
+  let s:uri = s:baseuri . s:filepath . "\\#L" . s:linenumber
+  exec "!open " . shellescape(s:uri) . ""
+endfunction
+command! GHE call GHE()
 
 " Add command for opening current file and line in OpenGrok
 function! OpenInGrok()
