@@ -38,7 +38,8 @@ Plug 'hrsh7th/cmp-buffer' " buffer source for nvim-cmp
 Plug 'hrsh7th/vim-vsnip' " snippets, required by nvim-cmp
 Plug 'hrsh7th/cmp-path' " path source for nvim-cmp
 Plug 'nvim-treesitter/nvim-treesitter' " Library for other plugs and themes that deal with syntax
-Plug 'jose-elias-alvarez/null-ls.nvim' " Language server for various misc. linters like phpcs
+Plug 'nvimtools/none-ls.nvim' " Language server for various misc. linters like phpcs
+Plug 'nvimtools/none-ls-extras.nvim' " Extensions to none-ls. Includes eslint_d
 Plug 'kyazdani42/nvim-tree.lua' " File explorer
 Plug 'gbprod/substitute.nvim' " Exchange register for text object
 Plug 'junegunn/vim-easy-align' " Allow aligning columns in docblocks
@@ -223,8 +224,8 @@ require("null-ls").setup({
   -- default_timeout = 50000,
   debounce = 1000,
   sources = {
-    require("null-ls").builtins.formatting.eslint_d,
-    require("null-ls").builtins.diagnostics.eslint_d,
+  	require("none-ls.diagnostics.eslint_d"),
+  	require("none-ls.formatting.eslint_d"),
     require("null-ls").builtins.diagnostics.phpcs,
     -- require("null-ls").builtins.formatting.phpcbf,
   },
@@ -352,6 +353,12 @@ require('nvim-tree').setup {
   open_on_tab         = false,
   hijack_cursor       = false,
   update_cwd          = false,
+  filesystem_watchers = {
+    enable = false,
+  },
+  git = {
+    enable = false,
+  },
   diagnostics = {
     enable = false,
     icons = {
@@ -372,7 +379,7 @@ require('nvim-tree').setup {
   },
   filters = {
     dotfiles = false,
-    custom = {}
+    custom = { "^.git$" },
   },
   view = {
     width = 45,
