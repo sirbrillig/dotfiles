@@ -397,7 +397,9 @@ command! -bar -bang Q quit<bang>
 command! -bar -bang Qa quitall<bang>
 command! Ccl ccl
 
-" reset the mapleader to ;
+" reset the mapleader to SPACE
+" nnoremap <SPACE> <Nop>
+" let mapleader = " "
 let mapleader = ";"
 
 " Use leader-; as "repeat last f or t movement"
@@ -567,3 +569,9 @@ autocmd FileType json syntax match Comment +\/\/.\+$+
 
 " Overwrite buggy nvim php indentation which breaks comments
 autocmd FileType php setlocal autoindent
+
+" Auto close quickfix after selecting an entry if there is only one entry
+function! CloseQuickFixIfOneEntry()
+	if len(getqflist()) < 2 | ccl | endif
+endfunction
+autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>:call CloseQuickFixIfOneEntry()<CR>
