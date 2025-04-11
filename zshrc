@@ -53,7 +53,7 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 
 export PATH="/Users/payton/.rvm/gems/ruby-2.0.0-p247/bin:/Users/payton/.rvm/gems/ruby-2.0.0-p247@global/bin:/Users/payton/.rvm/rubies/ruby-2.0.0-p247/bin:/Users/payton/.rvm/bin:/Users/payton/.rvm/bin:/usr/local/bin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/var/lib/gems/1.8/bin:/usr/local/share/npm/bin:/var/lib/gems/1.8/bin:/Users/payton/bin:/usr/local/share/npm/bin:/usr/local/sbin"
-export PATH=$PATH:/Users/payton/.composer/vendor/bin
+export PATH=$PATH:/Users/payton/vendor/bin
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -95,9 +95,9 @@ alias ls="ls -G -F"
 export FZF_DEFAULT_COMMAND='rg --files'
 export FZF_ALT_C_COMMAND='find . -maxdepth 1 -type d'
 # Enable fzf auto completion
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # Bind CTRL-W to cd with fuzzy-search
-bindkey '^W' fzf-cd-widget
+#bindkey '^W' fzf-cd-widget
 
 # Set environment variable for socks proxy address for using Phabricator (arc):
 export SOCKS5PROXY="127.0.0.1:8080"

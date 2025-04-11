@@ -252,13 +252,13 @@ require("lspconfig").ts_ls.setup({
         on_attach(client, bufnr);
     end,
 })
-require'lspconfig'.phpactor.setup{
-    on_attach = on_attach,
-    init_options = {
-        -- ["language_server_phpstan.enabled"] = false,
-        -- ["language_server_psalm.enabled"] = false,
-    }
-}
+-- require'lspconfig'.phpactor.setup{
+--     on_attach = on_attach,
+--     init_options = {
+--         -- ["language_server_phpstan.enabled"] = false,
+--         -- ["language_server_psalm.enabled"] = false,
+--     }
+-- }
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
    vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -290,13 +290,13 @@ require'lspconfig'.rust_analyzer.setup({
 		end,
 })
 -- Format on save
-vim.api.nvim_create_autocmd("BufWritePre", {
-	group = augroup,
-	buffer = bufnr,
-	callback = function()
-		vim.lsp.buf.format({ bufnr = bufnr })
-	end,
-})
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+-- 	group = augroup,
+-- 	buffer = bufnr,
+-- 	callback = function()
+-- 		vim.lsp.buf.format({ bufnr = bufnr })
+-- 	end,
+-- })
 
 -- Configure autocomplete
 local cmp = require('cmp')

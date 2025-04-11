@@ -34,8 +34,8 @@ Plug 'tpope/vim-sleuth' " Sets shiftwidth and expandtab automatically
 Plug 'junegunn/vader.vim' " vimscript testing framework
 Plug 'windwp/nvim-autopairs' " Adds autopopulating closing parens/brackets/braces/quotes
 Plug 'tomtom/tcomment_vim' " Use gc to toggle comments or gcc for a single line
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'neoclide/coc-eslint'
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'neoclide/coc-eslint'
 Plug 'EinfachToll/DidYouMean'
 Plug 'iamcco/diagnostic-languageserver', { 'do': 'yarn install' }
 Plug 'ruanyl/vim-gh-line' " type gh to open selected or current line in github
@@ -68,12 +68,12 @@ Plug 'pbogut/fzf-mru.vim'
 
 " Color scheme plugins
 Plug 'tomasr/molokai'
-Plug 'arcticicestudio/nord-vim'
+"Plug 'arcticicestudio/nord-vim'
 
 call plug#end()
 
 " Allow matching ruby do/end blocks
-runtime macros/matchit.vim
+"runtime macros/matchit.vim
 
 " ----------------------------------------------------------------------------
 " Options
@@ -166,13 +166,13 @@ let g:airline_powerline_fonts = 1
 " ----------------------------------------------------------------------------
 
 " Map ctrl-j and ctrl-k to jump to previous/next linting error
-nmap <silent> <C-k> <Plug>(coc-diagnostic-prev)
-nmap <silent> <C-j> <Plug>(coc-diagnostic-next)
+" nmap <silent> <C-k> <Plug>(coc-diagnostic-prev)
+" nmap <silent> <C-j> <Plug>(coc-diagnostic-next)
 " GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+" nmap <silent> gd <Plug>(coc-definition)
+" nmap <silent> gy <Plug>(coc-type-definition)
+" nmap <silent> gi <Plug>(coc-implementation)
+" nmap <silent> gr <Plug>(coc-references)
 
 " allow using [[ and ]] for curly braces not in the first column
 map [[ [{
@@ -360,7 +360,7 @@ let g:flow#showquickfix = 0
 " ----------------------------------------------------------------------------
 " Prettier
 " ----------------------------------------------------------------------------
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
+" command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 " ----------------------------------------------------------------------------
 " Other
