@@ -103,7 +103,7 @@ export FZF_ALT_C_COMMAND='find . -maxdepth 1 -type d'
 export SOCKS5PROXY="127.0.0.1:8080"
 
 # Enable autojump
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+# [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 
 # Recommended by calypso doctor
 export NODE_OPTIONS=--max-old-space-size=6144
@@ -139,9 +139,19 @@ export NODE_OPTIONS=--max-old-space-size=6144
 # export PATH=$COCOS_TEMPLATES_ROOT:$PATH
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# This is super slow; see https://superuser.com/a/1611283/2783000
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+alias nvm="unalias nvm; [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"; nvm $@"
 
-eval "$(atuin init zsh --disable-up-arrow)"
+# eval "$(atuin init zsh --disable-up-arrow)"
 
 . "$HOME/.cargo/env"
+
+# pnpm
+export PNPM_HOME="/Users/payton/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

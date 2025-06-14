@@ -12,6 +12,8 @@
   cm = commit
   co = checkout
   st = status
+  find = !git checkout $(git branch --sort=-creatordate | fzf | tr '*' ' ' | cut -d' ' -f3)
+  trunkbase = "!f() { git checkout trunk && git pull && git checkout - && git rebase trunk; }; f"
   pushnew = push -u origin HEAD
   cpull = "!f() { git checkout $1 && git pull; }; f"
   lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
