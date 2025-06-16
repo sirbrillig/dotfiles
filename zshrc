@@ -7,6 +7,16 @@ export ZSH="$HOME/.oh-my-zsh"
 # https://github.com/jeffreytse/zsh-vi-mode?tab=readme-ov-file
 source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
+# Antigen is a plugin manager for zsh
+# Some bug in antigen? https://github.com/zsh-users/antigen/issues/543
+# ANTIGEN_MUTEX=false
+# source "${HOME}/bin/antigen.zsh"
+
+# antigen bundle mafredri/zsh-async
+# This doesn't seem to work or do anything at all
+# antigen bundle allanjamesvestal/fast-zsh-nvm
+# AUTO_LOAD_NVMRC_FILES=true
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -101,9 +111,21 @@ export FZF_ALT_C_COMMAND='find . -maxdepth 1 -type d'
 
 export NVM_DIR="$HOME/.nvm"
 # This is super slow; see https://superuser.com/a/1611283/2783000
+# So we load nvm only when we enter a directory which has an .nvmrc file.
 # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-alias nvm="unalias nvm; [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"; nvm $@"
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+alias load-nvm='source "$NVM_DIR/nvm.sh"'
+autoload -U add-zsh-hook
+load-nvmrc() {
+	local nvmrc_path
+	nvmrc_path=".nvmrc"
+	if [ -f "$nvmrc_path" ]; then
+		[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+		[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+	fi
+}
+add-zsh-hook chpwd load-nvmrc
+load-nvmrc
 
 . "$HOME/.cargo/env"
 

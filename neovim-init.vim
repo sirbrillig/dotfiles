@@ -218,17 +218,26 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 end
 
-require("null-ls").setup({
+local null_ls = require("null-ls")
+
+-- Check if .eslintrc.js exists
+local eslint_config_exists = vim.fn.filereadable(".eslintrc.js") == 1
+local sources = {
+	require("null-ls").builtins.diagnostics.phpcs,
+}
+
+if eslint_config_exists then
+  table.insert(sources, 1, require("none-ls.diagnostics.eslint_d"))
+  table.insert(sources, 1, require("none-ls.formatting.eslint_d"))
+end
+
+-- Setup with conditional sources
+null_ls.setup({
   diagnostics_format = "[#{c}] #{m} (#{s})",
   -- debug = true,
   -- default_timeout = 50000,
   debounce = 1000,
-  sources = {
-  	require("none-ls.diagnostics.eslint_d"),
-  	require("none-ls.formatting.eslint_d"),
-    require("null-ls").builtins.diagnostics.phpcs,
-    -- require("null-ls").builtins.formatting.phpcbf,
-  },
+  sources = sources,
   on_attach = function(client, bufnr)
         -- auto-format on save; see https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Formatting-on-save
         if client.supports_method("textDocument/formatting") then
