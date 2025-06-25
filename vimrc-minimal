@@ -42,12 +42,13 @@ Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sleuth' " Sets shiftwidth and expandtab automatically
 Plug 'tpope/vim-surround'
+Plug 'svermeulen/vim-subversive' " Exchange register for text object
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-scripts/AutoComplPop'
 Plug 'vim-scripts/L9'
 Plug 'vim-scripts/mru.vim'
-Plug 'w0rp/ale'
+" Plug 'w0rp/ale'
 Plug 'windwp/nvim-autopairs' " Adds autopopulating closing parens/brackets/braces/quotes
 
 " Syntax plugins
@@ -99,7 +100,7 @@ filetype indent on
 set cursorline " highlight the current cursor line number
 set number " show line numbers
 set path+=** " Allow recursive find
-set completeopt=menuone,longest " Configure tab autocomplete
+"set completeopt=menuone,longest " Configure tab autocomplete
 set iskeyword+=\- " Adds dash character to keyword characters
 
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
@@ -128,22 +129,24 @@ let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
 
 " Display indentation guides
-set list listchars=tab:\|\ ,trail:·,extends:»,precedes:<,nbsp:~
+"set list listchars=tab:\|\ ,trail:·,extends:»,precedes:<,nbsp:~
 
 " Disable JSON quote concealing
 let g:vim_json_syntax_conceal = 0
+
+inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<CR>"
 
 " ----------------------------------------------------------------------------
 " vim-airline
 " ----------------------------------------------------------------------------
 let g:bufferline_fname_mod = ':p:.'
 let g:bufferline_echo = 0
-set t_Co=256
+" set t_Co=256
 let g:airline_theme='wombat'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#whitespace#enabled = 0
-let g:airline#extensions#ale#enabled = 1
-let g:airline_powerline_fonts = 1
+" let g:airline#extensions#ale#enabled = 1
+" let g:airline_powerline_fonts = 1
 
 " ----------------------------------------------------------------------------
 " Keybindings
@@ -238,6 +241,11 @@ nnoremap <Leader>g :Rg -w <cword>
 
 " Map leader-G to begin a search
 nnoremap <Leader>G :Rg
+
+" s for substitute
+nmap s <plug>(SubversiveSubstitute)
+nmap ss <plug>(SubversiveSubstituteLine)
+nmap S <plug>(SubversiveSubstituteToEndOfLine)
 
 " ----------------------------------------------------------------------------
 " Colors
