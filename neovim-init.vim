@@ -220,12 +220,21 @@ end
 
 local null_ls = require("null-ls")
 
--- Check if .eslintrc.js exists
-local eslint_config_exists = vim.fn.filereadable(".eslintrc.js") == 1
 local sources = {
-	require("null-ls").builtins.diagnostics.phpcs,
+	-- Use vendor phpcs if it exists
+	null_ls.builtins.diagnostics.phpcs.with({
+		dynamic_command = function(params, done)
+			local local_phpcs = params.root .. "/vendor/bin/phpcs"
+			if vim.fn.executable(local_phpcs) == 1 then
+				done(local_phpcs)
+			end
+			done("phpcs")
+		end,
+	}),
 }
 
+-- Check if .eslintrc.js exists
+local eslint_config_exists = vim.fn.filereadable(".eslintrc.js") == 1
 if eslint_config_exists then
   table.insert(sources, 1, require("none-ls.diagnostics.eslint_d"))
   table.insert(sources, 1, require("none-ls.formatting.eslint_d"))
