@@ -227,8 +227,9 @@ local sources = {
 			local local_phpcs = params.root .. "/vendor/bin/phpcs"
 			if vim.fn.executable(local_phpcs) == 1 then
 				done(local_phpcs)
+			else
+				done("phpcs")
 			end
-			done("phpcs")
 		end,
 	}),
 }
@@ -249,16 +250,16 @@ null_ls.setup({
   sources = sources,
   on_attach = function(client, bufnr)
         -- auto-format on save; see https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Formatting-on-save
-        if client.supports_method("textDocument/formatting") then
-            vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-            vim.api.nvim_create_autocmd("BufWritePre", {
-                group = augroup,
-                buffer = bufnr,
-                callback = function()
-                    vim.lsp.buf.format({ bufnr = bufnr })
-                end,
-            })
-        end
+        -- if client.supports_method("textDocument/formatting") then
+        --     vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+        --     vim.api.nvim_create_autocmd("BufWritePre", {
+        --         group = augroup,
+        --         buffer = bufnr,
+        --         callback = function()
+        --             vim.lsp.buf.format({ bufnr = bufnr })
+        --         end,
+        --     })
+        -- end
         on_attach(client, bufnr);
     end,
 })
