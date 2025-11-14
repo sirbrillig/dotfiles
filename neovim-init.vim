@@ -41,6 +41,7 @@ Plug 'nvim-treesitter/nvim-treesitter' " Library for other plugs and themes that
 Plug 'nvimtools/none-ls.nvim' " Language server for various misc. linters like phpcs
 Plug 'nvimtools/none-ls-extras.nvim' " Extensions to none-ls. Includes eslint_d
 Plug 'kyazdani42/nvim-tree.lua' " File explorer
+Plug 'nvim-tree/nvim-web-devicons' " Icons for nvim-tree (requires patched Nerd Font)
 Plug 'gbprod/substitute.nvim' " Exchange register for text object
 Plug 'junegunn/vim-easy-align' " Allow aligning columns in docblocks
 
@@ -62,6 +63,7 @@ Plug 'jxnblk/vim-mdx-js'
 Plug 'tjvr/vim-nearley'
 Plug 'itspriddle/vim-shellcheck'
 Plug 'neovim/nvim-lspconfig'
+Plug 'mrcjkb/rustaceanvim'
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install --frozen-lockfile --production',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
@@ -80,6 +82,8 @@ Plug 'sk1418/QFGrep'
 Plug 'tanvirtin/monokai.nvim'
 Plug 'folke/tokyonight.nvim'
 Plug 'sainnhe/sonokai'
+Plug 'EdenEast/nightfox.nvim'
+Plug 'catppuccin/nvim'
 
 call plug#end()
 
@@ -264,13 +268,23 @@ null_ls.setup({
     end,
 })
 
-require("lspconfig").ts_ls.setup({
-    on_attach = function(client, bufnr)
-        client.server_capabilities.documentFormattingProvider = false
-        client.server_capabilities.documentRangeFormattingProvider = false
-        on_attach(client, bufnr);
-    end,
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'typescript', 'javascript', 'typescriptreact', 'javascriptreact' },
+  callback = function(args)
+    vim.lsp.start({
+      name = 'ts_ls',
+      cmd = { 'typescript-language-server', '--stdio' },
+      root_dir = vim.fs.dirname(vim.fs.find({'package.json', 'tsconfig.json', '.git'}, { upward = true })[1]),
+    })
+  end,
 })
+-- require("lspconfig").ts_ls.setup({
+--     on_attach = function(client, bufnr)
+--         client.server_capabilities.documentFormattingProvider = false
+--         client.server_capabilities.documentRangeFormattingProvider = false
+--         on_attach(client, bufnr);
+--     end,
+-- })
 -- require'lspconfig'.phpactor.setup{
 --     on_attach = on_attach,
 --     init_options = {
@@ -300,14 +314,30 @@ end
 
 require('gitsigns').setup({})
 
+vim.g.rustaceanvim = {
+  server = {
+    on_attach = function(client, bufnr)
+      -- Call your common on_attach function
+      on_attach(client, bufnr)
+
+      -- Add any Rust-specific on_attach configurations here
+      -- For example, setting up rust-analyzer specific keymaps or commands
+      -- if require('rustaceanvim.config').is_rust_analyzer_client(client) then
+      --   vim.keymap.set('n', '<leader>rr', '<cmd>RustaceanvimRun<CR>', { buffer = bufnr, desc = 'Run Rust project' })
+      -- end
+    end,
+  },
+  -- Other rustaceanvim configurations
+}
+
 -- Rust LSP
-require'lspconfig'.rust_analyzer.setup({
-	on_attach = function(client, bufnr)
-			vim.keymap.set('n', '<C-k>', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-			vim.keymap.set('n', '<C-j>', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-			on_attach(client, bufnr);
-		end,
-})
+-- require('lspconfig').rust_analyzer.setup {
+-- 	on_attach = function(client, bufnr)
+-- 			vim.keymap.set('n', '<C-k>', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+-- 			vim.keymap.set('n', '<C-j>', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+-- 			on_attach(client, bufnr);
+-- 		end,
+-- }
 -- Format on save
 -- vim.api.nvim_create_autocmd("BufWritePre", {
 -- 	group = augroup,
@@ -571,8 +601,8 @@ if exists('+termguicolors')
 endif
 
 " Set the theme
-let g:sonokai_transparent_background = 1
-colorscheme sonokai
+" colorscheme sonokai
+colorscheme catppuccin-macchiato
 
 " Make the background transparent
 hi Normal guibg=NONE ctermbg=NONE
