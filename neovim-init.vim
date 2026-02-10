@@ -549,6 +549,27 @@ noremap <Leader>y "0p<CR>
 " Map leader-cf to copy the current filename
 nnoremap <Leader>cf :let @+ = expand("%")<CR>:echom "copied current filename"<CR>
 
+" Function to copy filename with line number(s)
+function! CopyFilenameWithLine() range
+  let l:filename = expand("%")
+
+  " Check if called from visual mode or normal mode
+  if a:firstline == a:lastline
+    " Single line (normal mode or single-line visual selection)
+    let l:result = l:filename . ":" . a:firstline
+  else
+    " Multiple lines (visual mode)
+    let l:result = l:filename . ":" . a:firstline . "-" . a:lastline
+  endif
+
+  let @+ = l:result
+  echom "copied " . l:result
+endfunction
+
+" Map leader-cl to copy filename with line number(s)
+nnoremap <Leader>cl :call CopyFilenameWithLine()<CR>
+vnoremap <Leader>cl :call CopyFilenameWithLine()<CR>
+
 " Add command for opening current file and line in a8c Github Enterprise
 function! GHE()
   let s:filepath = expand('%')
