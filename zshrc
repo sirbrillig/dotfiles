@@ -141,6 +141,9 @@ esac
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# Calypso won't start without this (eyeroll)
+export NODE_OPTIONS="--max-old-space-size=8192"
+
 # fnm
 FNM_PATH="/Users/payton/Library/Application Support/fnm"
 if [ -d "$FNM_PATH" ]; then

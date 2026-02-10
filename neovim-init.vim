@@ -62,7 +62,6 @@ Plug 'StanAngeloff/php.vim'
 Plug 'jxnblk/vim-mdx-js'
 Plug 'tjvr/vim-nearley'
 Plug 'itspriddle/vim-shellcheck'
-Plug 'neovim/nvim-lspconfig'
 Plug 'mrcjkb/rustaceanvim'
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install --frozen-lockfile --production',
@@ -222,6 +221,15 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 end
 
+-- Set up LspAttach autocmd to call on_attach for all LSP servers
+vim.api.nvim_create_autocmd('LspAttach', {
+  callback = function(args)
+    local bufnr = args.buf
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    on_attach(client, bufnr)
+  end,
+})
+
 local null_ls = require("null-ls")
 
 local sources = {
@@ -247,7 +255,7 @@ end
 
 -- Setup with conditional sources
 null_ls.setup({
-  diagnostics_format = "[#{c}] #{m} (#{s})",
+  -- diagnostics_format = "[#{c}] #{m} (#{s})",  -- Disabled: causes errors with messages containing %
   -- debug = true,
   -- default_timeout = 50000,
   debounce = 1000,
@@ -268,16 +276,8 @@ null_ls.setup({
     end,
 })
 
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'typescript', 'javascript', 'typescriptreact', 'javascriptreact' },
-  callback = function(args)
-    vim.lsp.start({
-      name = 'ts_ls',
-      cmd = { 'typescript-language-server', '--stdio' },
-      root_dir = vim.fs.dirname(vim.fs.find({'package.json', 'tsconfig.json', '.git'}, { upward = true })[1]),
-    })
-  end,
-})
+-- Enable tsgo LSP (configuration in ~/.config/nvim/lsp/tsgo.lua)
+vim.lsp.enable("tsgo")
 -- require("lspconfig").ts_ls.setup({
 --     on_attach = function(client, bufnr)
 --         client.server_capabilities.documentFormattingProvider = false
