@@ -65,7 +65,7 @@ Plug 'itspriddle/vim-shellcheck'
 Plug 'mrcjkb/rustaceanvim'
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install --frozen-lockfile --production',
-  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'vue', 'svelte', 'yaml', 'html'] }
 
 " Search plugins
 Plug 'jremmen/vim-ripgrep' " Broken because of https://github.com/jremmen/vim-ripgrep/pull/58
@@ -589,6 +589,97 @@ function! OpenInGrok()
   exec "!open " . shellescape(s:uri) . ""
 endfunction
 command! OpenInGrok call OpenInGrok()
+
+" ----------------------------------------------------------------------------
+" Open current file/line on GitHub Enterprise for Unison-synced sandbox dirs
+" (dev-mc, automattic-sandbox). These have no local .git (Unison ignores it),
+" so vim-gh-line can't work. Instead we ask git ON the sandbox over SSH for the
+" repo + default branch, then build a github.a8c.com blob URL. Auto-detects the
+" right repo even for nested repos (e.g. dev-mc/calypso). Use <leader>gH (or
+" :GHSandbox); your normal <leader>gh still works for real local git repos.
+" ----------------------------------------------------------------------------
+lua << EOF
+-- SSH target that Unison syncs through (see *.prf `root = ssh://...`).
+vim.g.gh_sandbox_ssh = vim.g.gh_sandbox_ssh or 'wpsandbox'
+-- Map each local synced dir -> its path on the sandbox (the *.prf roots).
+vim.g.gh_sandbox_roots = vim.g.gh_sandbox_roots or {
+  ['/Users/payton/Code/dev-mc'] = '/home/missioncontrol/public_html',
+  ['/Users/payton/Code/automattic-sandbox'] = '/home/wpcom/public_html',
+}
+
+-- Single-quote a string for safe inclusion in a remote shell command.
+local function shq(s)
+  return "'" .. tostring(s):gsub("'", "'\\''") .. "'"
+end
+
+-- Runs on the sandbox. Reads $REMOTE_ROOT and $REL, prints the blob URL base
+-- (no #Lnn anchor); the anchor is appended locally.
+local REMOTE_SCRIPT = [[
+F="$REMOTE_ROOT/$REL"
+D=$(dirname "$F")
+TOP=$(git -C "$D" rev-parse --show-toplevel 2>/dev/null) || { echo "not a git repo on sandbox: $D" >&2; exit 1; }
+URL=$(git -C "$D" config --get remote.origin.url 2>/dev/null) || { echo "no remote.origin.url for $D" >&2; exit 1; }
+BR=$(git -C "$D" symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null | sed "s@^origin/@@")
+if [ -z "$BR" ]; then BR=trunk; fi
+REL2=${F#"$TOP"/}
+CLEAN=$(printf "%s" "$URL" | sed -E -e "s#^[a-z]+://##" -e "s#^[^@]*@##" -e "s#:#/#" -e "s#\.git\$##")
+HOST=${CLEAN%%/*}
+REPO=${CLEAN#*/}
+printf "https://%s/%s/blob/%s/%s\n" "$HOST" "$REPO" "$BR" "$REL2"
+]]
+
+local function gh_sandbox(line1, line2)
+  local abs = vim.fn.expand('%:p')
+  if abs == '' then
+    vim.notify('GHSandbox: no file in buffer', vim.log.levels.ERROR)
+    return
+  end
+  -- longest-prefix match against the configured local roots
+  local localroot, remoteroot
+  for lr, rr in pairs(vim.g.gh_sandbox_roots) do
+    if (abs == lr or abs:sub(1, #lr + 1) == lr .. '/') and (not localroot or #lr > #localroot) then
+      localroot, remoteroot = lr, rr
+    end
+  end
+  if not localroot then
+    vim.notify('GHSandbox: ' .. abs .. ' is not under a configured sandbox root (g:gh_sandbox_roots)', vim.log.levels.WARN)
+    return
+  end
+  local rel = abs:sub(#localroot + 2)
+  local remote_cmd = 'REMOTE_ROOT=' .. shq(remoteroot) .. ' REL=' .. shq(rel) .. ' sh -c ' .. shq(REMOTE_SCRIPT)
+  -- Mirror the plain `ssh wpsandbox <cmd>` that works in the terminal: no
+  -- BatchMode and no PreferredAuthentications override, so the a8c Secure Enclave
+  -- key flow (~/.ssh/a8c-key.config IdentityAgent) authenticates exactly as usual.
+  -- The vim.system `timeout` below bounds any hang instead of BatchMode.
+  local cmd = { 'ssh', '-o', 'ConnectTimeout=8', vim.g.gh_sandbox_ssh, remote_cmd }
+  vim.notify('GHSandbox: resolving on sandbox…', vim.log.levels.INFO)
+  vim.system(cmd, { text = true, timeout = 20000 }, function(obj)
+    vim.schedule(function()
+      if obj.code ~= 0 then
+        local msg = (obj.stderr and obj.stderr ~= '' and obj.stderr) or obj.stdout or 'ssh error/timeout'
+        vim.notify('GHSandbox failed (exit ' .. tostring(obj.code) .. '): ' .. vim.trim(msg), vim.log.levels.ERROR)
+        return
+      end
+      local base = vim.trim(obj.stdout or '')
+      if base == '' then
+        vim.notify('GHSandbox: empty response from sandbox', vim.log.levels.ERROR)
+        return
+      end
+      local anchor = (line1 == line2) and ('#L' .. line1) or ('#L' .. line1 .. '-L' .. line2)
+      local url = base .. anchor
+      vim.ui.open(url)
+      vim.notify('GHSandbox: ' .. url, vim.log.levels.INFO)
+    end)
+  end)
+end
+
+vim.api.nvim_create_user_command('GHSandbox', function(o)
+  gh_sandbox(o.line1, o.line2)
+end, { range = true, desc = 'Open current file/line on GHE for Unison-synced sandbox dirs' })
+
+vim.keymap.set('n', '<leader>gH', ':GHSandbox<CR>', { silent = true, desc = 'Open line on GHE (sandbox)' })
+vim.keymap.set('x', '<leader>gH', ':GHSandbox<CR>', { silent = true, desc = 'Open selection on GHE (sandbox)' })
+EOF
 
 nmap <Leader>ss :<C-u>SessionSave<CR>
 nmap <Leader>sl :<C-u>SessionLoad<CR>

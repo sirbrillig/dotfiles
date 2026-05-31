@@ -141,6 +141,9 @@ esac
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# Prevent claude code from trying to use its own node-wrapped rg
+export USE_BUILTIN_RIPGREP=0
+
 # Calypso won't start without this (eyeroll)
 export NODE_OPTIONS="--max-old-space-size=8192"
 
@@ -151,3 +154,11 @@ if [ -d "$FNM_PATH" ]; then
   eval "`fnm env`"
 fi
 eval "$(fnm env --use-on-cd --shell zsh)"
+export PATH="$HOME/.local/bin:$PATH"
+
+# bun completions
+[ -s "/Users/payton/.bun/_bun" ] && source "/Users/payton/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

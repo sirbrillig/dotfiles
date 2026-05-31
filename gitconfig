@@ -16,7 +16,7 @@
   trunkbase = "!f() { git checkout trunk && git pull && git checkout - && git rebase trunk; }; f"
   pushnew = push -u origin HEAD
   cpull = "!f() { git checkout $1 && git pull; }; f"
-  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+  lg = !TZ=UTC git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --abbrev-commit --date=format-local:'%Y-%m-%d %H:%M UTC'
   bnew = checkout -b
   recent = branch --sort=-committerdate
   backup-create = "!f() { git branch -f backup-$(git rev-parse --abbrev-ref HEAD) && echo 'Backup created. Use git backup-restore to restore.'; }; f"
