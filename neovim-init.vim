@@ -570,26 +570,6 @@ endfunction
 nnoremap <Leader>cl :call CopyFilenameWithLine()<CR>
 vnoremap <Leader>cl :call CopyFilenameWithLine()<CR>
 
-" Add command for opening current file and line in a8c Github Enterprise
-function! GHE()
-  let s:filepath = expand('%')
-  let s:linenumber = line(".")
-  let s:baseuri = "https://github.a8c.com/Automattic/wpcom/blob/trunk/"
-  let s:uri = s:baseuri . s:filepath . "\\#L" . s:linenumber
-  exec "!open " . shellescape(s:uri) . ""
-endfunction
-command! GHE call GHE()
-
-" Add command for opening current file and line in OpenGrok
-function! OpenInGrok()
-  let s:filepath = expand('%')
-  let s:linenumber = line(".")
-  let s:baseuri = "https://opengrok.a8c.com/source/xref/wpcom/"
-  let s:uri = s:baseuri . s:filepath . "\\#" . s:linenumber
-  exec "!open " . shellescape(s:uri) . ""
-endfunction
-command! OpenInGrok call OpenInGrok()
-
 " ----------------------------------------------------------------------------
 " Open current file/line on GitHub Enterprise for Unison-synced sandbox dirs
 " (dev-mc, automattic-sandbox). These have no local .git (Unison ignores it),
