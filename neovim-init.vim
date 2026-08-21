@@ -246,6 +246,11 @@ local sources = {
 	}),
 }
 
+-- Force eslint_d to use legacy (.eslintrc.*) config. ESLint 9+ defaults to flat
+-- config; repos that only have .eslintrc.js (e.g. wp-calypso) need this or the
+-- eslint_d daemon fails to find a config.
+vim.env.ESLINT_USE_FLAT_CONFIG = "false"
+
 -- Check if .eslintrc.js exists
 local eslint_config_exists = vim.fn.filereadable(".eslintrc.js") == 1
 if eslint_config_exists then
