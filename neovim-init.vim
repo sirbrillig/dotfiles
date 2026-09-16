@@ -197,28 +197,25 @@ lua << EOF
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
   -- Enable completion triggered by <c-x><c-o>
-  -- buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+  -- vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
 
   -- Mappings.
-  local opts = { noremap=true, silent=true }
+  local opts = { buffer = bufnr, silent = true }
 
   -- See `:help vim.lsp.*` for documentation on any of the below functions
-  buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', '<C-j>', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+  vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
+  vim.keymap.set('n', '<C-k>', function() vim.diagnostic.jump({ count = -1, float = true }) end, opts)
+  vim.keymap.set('n', '<C-j>', function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
 
   -- list all symbols in document in quickfix
-  buf_set_keymap('n', '<space>s', '<cmd>lua vim.lsp.buf.document_symbol()<CR>', opts)
+  vim.keymap.set('n', '<space>s', vim.lsp.buf.document_symbol, opts)
 
 	-- list all lsp errors in quickfix
-  buf_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+  vim.keymap.set('n', '<space>e', vim.diagnostic.setloclist, opts)
 end
 
 -- Set up LspAttach autocmd to call on_attach for all LSP servers
@@ -298,24 +295,20 @@ vim.lsp.enable("tsgo")
 --     }
 -- }
 
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-   vim.lsp.diagnostic.on_publish_diagnostics, {
-     signs = true,
-     update_in_insert = false,
-     underline = true,
-     severity_sort = true,
-   }
-)
-
 vim.diagnostic.config({
   virtual_text = false,
+  update_in_insert = false,
+  underline = true,
+  severity_sort = true,
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = " ",
+      [vim.diagnostic.severity.WARN] = " ",
+      [vim.diagnostic.severity.HINT] = " ",
+      [vim.diagnostic.severity.INFO] = " ",
+    },
+  },
 })
-
-local signs = { Error = " ", Warning = " ", Hint = " ", Information = " " }
-for type, icon in pairs(signs) do
-  local hl = "LspDiagnosticsSign" .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-end
 
 require('gitsigns').setup({})
 

@@ -4,6 +4,9 @@
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+# homebrew (note that this adds to the PATH so don't erase it later)
+eval "$(/opt/homebrew/bin/brew shellenv zsh)"
+
 # https://github.com/jeffreytse/zsh-vi-mode?tab=readme-ov-file
 source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
@@ -84,7 +87,7 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export PATH="/Users/payton/.rvm/gems/ruby-2.0.0-p247/bin:/Users/payton/.rvm/gems/ruby-2.0.0-p247@global/bin:/Users/payton/.rvm/rubies/ruby-2.0.0-p247/bin:/Users/payton/.rvm/bin:/Users/payton/.rvm/bin:/usr/local/bin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/var/lib/gems/1.8/bin:/usr/local/share/npm/bin:/var/lib/gems/1.8/bin:/Users/payton/bin:/usr/local/share/npm/bin:/usr/local/sbin"
+export PATH="$PATH:/Users/payton/.rvm/gems/ruby-2.0.0-p247/bin:/Users/payton/.rvm/gems/ruby-2.0.0-p247@global/bin:/Users/payton/.rvm/rubies/ruby-2.0.0-p247/bin:/Users/payton/.rvm/bin:/Users/payton/.rvm/bin:/usr/local/bin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/var/lib/gems/1.8/bin:/usr/local/share/npm/bin:/var/lib/gems/1.8/bin:/Users/payton/bin:/usr/local/share/npm/bin:/usr/local/sbin"
 export PATH=$PATH:/Users/payton/vendor/bin
 
 export EDITOR='nvim'
@@ -162,3 +165,4 @@ export PATH="$HOME/.local/bin:$PATH"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
