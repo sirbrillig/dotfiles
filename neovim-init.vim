@@ -37,7 +37,6 @@ Plug 'hrsh7th/cmp-nvim-lsp' " lsp source for nvim-cmp
 Plug 'hrsh7th/cmp-buffer' " buffer source for nvim-cmp
 Plug 'hrsh7th/vim-vsnip' " snippets, required by nvim-cmp
 Plug 'hrsh7th/cmp-path' " path source for nvim-cmp
-Plug 'nvim-treesitter/nvim-treesitter' " Library for other plugs and themes that deal with syntax
 Plug 'nvimtools/none-ls.nvim' " Language server for various misc. linters like phpcs
 Plug 'nvimtools/none-ls-extras.nvim' " Extensions to none-ls. Includes eslint_d
 Plug 'kyazdani42/nvim-tree.lua' " File explorer
@@ -251,8 +250,11 @@ vim.env.ESLINT_USE_FLAT_CONFIG = "false"
 -- Check if .eslintrc.js exists
 local eslint_config_exists = vim.fn.filereadable(".eslintrc.js") == 1
 if eslint_config_exists then
-  table.insert(sources, 1, require("none-ls.diagnostics.eslint_d"))
-  table.insert(sources, 1, require("none-ls.formatting.eslint_d"))
+  -- eslint_d forwards the daemon's stderr to stdout, so Node warnings (e.g.
+  -- ESLint's eslintrc deprecation notice) corrupt the JSON diagnostics output.
+  local eslint_d_env = { ESLINT_USE_FLAT_CONFIG = "false", NODE_OPTIONS = "--no-warnings" }
+  table.insert(sources, 1, require("none-ls.diagnostics.eslint_d").with({ env = eslint_d_env }))
+  table.insert(sources, 1, require("none-ls.formatting.eslint_d").with({ env = eslint_d_env }))
 end
 
 -- Setup with conditional sources
@@ -384,10 +386,6 @@ require('nvim-autopairs').setup({
         javascript = {'template_string'},
     }
 })
-
-require('nvim-treesitter.configs').setup {
-  autopairs = {enable = true}
-}
 
 -- Something needed by cmp-buffer
 get_bufnrs = function()
